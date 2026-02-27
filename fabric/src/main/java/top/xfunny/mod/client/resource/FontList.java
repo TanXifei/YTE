@@ -9,10 +9,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static top.xfunny.mod.Init.LOGGER;
+
 public class FontList {
     public static FontList instance = new FontList();
 
-    private Map<String, Font> fonts = new HashMap<String, Font>();
+    private final Map<String, Font> fonts = new HashMap<>();
     private boolean fontsLoaded = false;
 
     public void FontReload() {
@@ -20,7 +22,7 @@ public class FontList {
         fontsLoaded = false;
     }
 
-    public void FlonList() {
+    public void loadAllFonts() {
         if (!fontsLoaded) {
             // 字体列表
             loadFont("ces-14x7", "font/ces-14x7.ttf");
@@ -54,7 +56,7 @@ public class FontList {
             loadFont("otis-segmented", "font/otis-segmented.ttf");
             loadFont("wqy-microhei", "font/wqy-microhei.ttc");
             loadFont("thyssenkrupp_lcd", "font/new-thyssenkrupp.ttf");
-            loadFont("kone-kss", "font/kone-kss-800-signalization.ttf");
+            // loadFont("kone-kss", "font/kone-kss-800-signalization.ttf");
             loadFont("hitachi-led-seg", "font/hitachi-cip71-led.ttf");
             loadFont("hitachi-led-seg-fix", "font/hitachi-cip71-led-left.ttf");
             loadFont("hitachi-led-dot_matrix", "font/hitachi-dot-matrix-regular.ttf"); // 待弃用
@@ -65,7 +67,7 @@ public class FontList {
             loadFont("hitachi-bxsclc5-pafc-compact", "font/hitachi-bxsclc5-led-pafc-compact.ttf"); // 深圳 PAFC 使用，暂不可用
             loadFont("hitachi-lcd-seg", "font/hitachi-hip31-lcd.ttf");
             loadFont("hitachi-japan-lcd", "font/hitachi-hip32-lcd.ttf");
-            loadFont("hitachi-hip43", "font/hitachi-hip43-lcd.ttf");
+            loadFont("hitachi-hip43", "font/hitachi-hip43-lcd.ttf"); // SCLC-LCD4、HIP-27 使用此字体
             loadFont("hitachi-sclva043", "font/hitachi-sclva043-lcd.ttf");
             loadFont("shanghai_mitsubishi_segmented_1","font/shanghai_mitsubishi_segmented_1.ttf");
             loadFont("shanghai_mitsubishi_segmented_1_sp","font/shanghai_mitsubishi_segmented_1_sp.ttf");
@@ -95,6 +97,7 @@ public class FontList {
                 ge.registerFont(font);
                 fonts.put(fontName, font);
             } catch (Exception e) {
+                LOGGER.error(e);
             }
         });
     }
@@ -112,7 +115,7 @@ public class FontList {
         } else if (Objects.equals(fontId, "helvetica")) {
             return new Font("Helvetica", Font.PLAIN, 12);
         } else {
-            FlonList();
+            loadAllFonts();
             font = fonts.get(fontId);
             if (font != null) {
                 return font;

@@ -709,6 +709,5 @@ public class BlockEntityTypes {
     }
 
     public static void init() {
-        Init.LOGGER.info("正在注册方块实体");
     }
 }

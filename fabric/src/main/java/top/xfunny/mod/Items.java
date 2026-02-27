@@ -39,7 +39,6 @@ public class Items {
     }
 
     public static void init() {
-        Init.LOGGER.info("正在注册物品");
     }
 
 }

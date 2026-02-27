@@ -1,6 +1,7 @@
 package top.xfunny.mod.client.render;
 
 
+import org.jetbrains.annotations.NotNull;
 import org.mtr.core.data.Lift;
 import org.mtr.core.data.LiftDirection;
 import org.mtr.libraries.it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -45,7 +46,7 @@ public class RenderHitachiVIB322ButtonDotMatrix extends BlockEntityRenderer<Hita
     }
 
     @Override
-    public void render(HitachiVIB322ButtonDotMatrix.BlockEntity blockEntity, float tickDelta, GraphicsHolder graphicsHolder1, int light, int overlay) {
+    public void render(HitachiVIB322ButtonDotMatrix.BlockEntity blockEntity, float tickDelta, @NotNull GraphicsHolder graphicsHolder1, int light, int overlay) {
         final World world = blockEntity.getWorld2();
         if (world == null) {
             return;
@@ -195,7 +196,7 @@ public class RenderHitachiVIB322ButtonDotMatrix extends BlockEntityRenderer<Hita
                 liftFloorDisplayView.setBasicsAttributes(world,
                         blockPos,
                         sortedPositionsAndLifts.get(i).right(),
-                        FontList.instance.getFont("hitachi-led-dot_matrix"),
+                        FontList.instance.getFont("hitachi-bxsclc5"),
                         5F,
                         0xFFFF4800);
                 liftFloorDisplayView.setTextureId(String.format("hitachi_vib_322_dot_matrix_display_%d", i));
@@ -209,7 +210,7 @@ public class RenderHitachiVIB322ButtonDotMatrix extends BlockEntityRenderer<Hita
                     liftFloorDisplayView.setBasicsAttributes(world,
                             blockPos,
                             sortedPositionsAndLifts.get(i).right(),
-                            FontList.instance.getFont("hitachi-led-dot_matrix_small"),
+                            FontList.instance.getFont("hitachi-bxsclc5-compact"),
                             5F,
                             0xFFFF4800);
                     liftFloorDisplayView.setAdaptMode(LiftFloorDisplayView.AdaptMode.FORCE_FIT_WIDTH);

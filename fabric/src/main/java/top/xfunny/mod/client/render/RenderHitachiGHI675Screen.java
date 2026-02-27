@@ -85,7 +85,7 @@ public class RenderHitachiGHI675Screen<T extends LiftPanelBase.BlockEntityBase> 
                 liftFloorDisplayView.setBasicsAttributes(world,
                         blockPos,
                         sortedPositionsAndLifts.get(i).right(),
-                        FontList.instance.getFont("hitachi-led-dot_matrix"),
+                        FontList.instance.getFont("hitachi-bxsclc5"),
                         5.5F,
                         0xFFFF4800);
                 liftFloorDisplayView.setTextureId(String.format("hitachi_ghi675_screen_display_%d", i));
@@ -100,7 +100,7 @@ public class RenderHitachiGHI675Screen<T extends LiftPanelBase.BlockEntityBase> 
                     liftFloorDisplayView.setBasicsAttributes(world,
                             blockPos,
                             sortedPositionsAndLifts.get(i).right(),
-                            FontList.instance.getFont("hitachi-led-dot_matrix_small"),
+                            FontList.instance.getFont("hitachi-bxsclc5-compact"),
                             5.5F,
                             0xFFFF4800);
                     liftFloorDisplayView.setAdaptMode(LiftFloorDisplayView.AdaptMode.FORCE_FIT_WIDTH);
