@@ -97,7 +97,7 @@ public class FontList {
                 ge.registerFont(font);
                 fonts.put(fontName, font);
             } catch (Exception e) {
-                LOGGER.error(e);
+                LOGGER.error("Invalid font file: {}", fontName, e);
             }
         });
     }
