@@ -1,5 +1,6 @@
 package top.xfunny.mod.client.render;
 
+import org.jetbrains.annotations.NotNull;
 import org.mtr.core.data.Lift;
 import org.mtr.core.data.LiftDirection;
 import org.mtr.libraries.it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -44,7 +45,7 @@ public class RenderHitachiButtonPAFC extends BlockEntityRenderer<HitachiButtonPA
     }
 
     @Override
-    public void render(HitachiButtonPAFC.BlockEntity blockEntity, float tickDelta, GraphicsHolder graphicsHolder1, int light, int overlay) {
+    public void render(HitachiButtonPAFC.BlockEntity blockEntity, float tickDelta, @NotNull GraphicsHolder graphicsHolder1, int light, int overlay) {
         final World world = blockEntity.getWorld2();
         if (world == null) {
             return;
@@ -194,7 +195,7 @@ public class RenderHitachiButtonPAFC extends BlockEntityRenderer<HitachiButtonPA
                 liftFloorDisplayView.setBasicsAttributes(world,
                         blockPos,
                         sortedPositionsAndLifts.get(i).right(),
-                        FontList.instance.getFont("hitachi-led-dot_matrix"),
+                        FontList.instance.getFont("hitachi-bxsclc5"),
                         4.5F,
                         0xFFFF4800);
                 liftFloorDisplayView.setTextureId(String.format("hitachi_button_pafc_display_%d", i));
@@ -210,7 +211,7 @@ public class RenderHitachiButtonPAFC extends BlockEntityRenderer<HitachiButtonPA
                     liftFloorDisplayView.setBasicsAttributes(world,
                             blockPos,
                             sortedPositionsAndLifts.get(i).right(),
-                            FontList.instance.getFont("hitachi-led-dot_matrix_small_pafc"),
+                            FontList.instance.getFont("hitachi-bxsclc5-pafc-compact"),
                             4.5F,
                             0xFFFF4800);
                     liftFloorDisplayView.setMargin(0.01F, 0.7F / 16, 0, 0);

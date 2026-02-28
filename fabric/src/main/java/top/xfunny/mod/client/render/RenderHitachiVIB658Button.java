@@ -195,7 +195,7 @@ public class RenderHitachiVIB658Button extends BlockEntityRenderer<HitachiVIB658
                 liftFloorDisplayView.setBasicsAttributes(world,
                         blockPos,
                         sortedPositionsAndLifts.get(i).right(),
-                        FontList.instance.getFont("hitachi-led-dot_matrix"),
+                        FontList.instance.getFont("hitachi-bxsclc5"),
                         5F,
                         0xFFFF4800);
                 liftFloorDisplayView.setTextureId(String.format("hitachi_vib_658_display_%d", i));
@@ -209,7 +209,7 @@ public class RenderHitachiVIB658Button extends BlockEntityRenderer<HitachiVIB658
                     liftFloorDisplayView.setBasicsAttributes(world,
                             blockPos,
                             sortedPositionsAndLifts.get(i).right(),
-                            FontList.instance.getFont("hitachi-led-dot_matrix_small"),
+                            FontList.instance.getFont("hitachi-bxsclc5-compact"),
                             5F,
                             0xFFFF4800);
                     liftFloorDisplayView.setAdaptMode(LiftFloorDisplayView.AdaptMode.FORCE_FIT_WIDTH);

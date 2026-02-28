@@ -738,7 +738,5 @@ public class Blocks {
     }
 
 
-    public static void init() {
-        Init.LOGGER.info("正在注册方块");
-    }
+    public static void init() {}
 }
