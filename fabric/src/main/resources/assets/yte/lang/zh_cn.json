@@ -255,6 +255,8 @@
   "block.yte.schindler_m_series_screen_3_odd": "迅达M系列候梯楼层显示器（类型3，占一格）",
   "block.yte.schindler_m_series_screen_4_even": "迅达M系列候梯楼层显示器（类型4，占两格）",
   "block.yte.schindler_m_series_screen_4_odd": "迅达M系列候梯楼层显示器（类型4，占一格）",
+  "block.yte.schindler_m_series_screen_5_even": "迅达M系列候梯楼层显示器（类型5，占两格）",
+  "block.yte.schindler_m_series_screen_5_odd": "迅达M系列候梯楼层显示器（类型5，占一格）",
   "block.yte.schindler_s_series_grey_button": "迅达S系列灰色按钮呼梯面板",
   "block.yte.schindler_s_series_dark_grey_button": "迅达S系列深灰色按钮呼梯面板",
   "block.yte.schindler_s_series_blue_button": "迅达S系列蓝色按钮呼梯面板",

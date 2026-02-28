@@ -131,6 +131,16 @@ public final class SoundsHelper {
                         1.0F
                 );
                 break;
+            case "schindler_m_series_lantern_2":
+                serverPlayerEntity.getEntityWorld().playSound(
+                        null,
+                        blockPos,
+                        SoundEvents.SCHINDLER_M_SERIES_LANTERN_2.get(),
+                        SoundCategory.BLOCKS,
+                        1.0F,
+                        1.0F
+                );
+                break;
             case "schindler_m_series_button_1":
                 serverPlayerEntity.getEntityWorld().playSound(
                         null,

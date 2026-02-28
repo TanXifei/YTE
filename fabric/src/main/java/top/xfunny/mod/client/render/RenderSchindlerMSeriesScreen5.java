@@ -17,12 +17,14 @@ import org.mtr.mod.render.StoredMatrixTransformations;
 import top.xfunny.mod.Init;
 import top.xfunny.mod.block.SchindlerMSeriesScreen5Even;
 import top.xfunny.mod.block.base.LiftButtonsBase;
+import top.xfunny.mod.client.InitClient;
 import top.xfunny.mod.client.resource.FontList;
 import top.xfunny.mod.client.view.*;
 import top.xfunny.mod.client.view.view_group.FrameLayout;
 import top.xfunny.mod.client.view.view_group.LinearLayout;
 import top.xfunny.mod.item.YteGroupLiftButtonsLinker;
 import top.xfunny.mod.item.YteLiftButtonsLinker;
+import top.xfunny.mod.packet.PacketLanternSoundInstruction;
 import top.xfunny.mod.util.ClientGetLiftDetails;
 
 import java.util.Comparator;
@@ -34,7 +36,7 @@ public class RenderSchindlerMSeriesScreen5<T extends LiftButtonsBase.BlockEntity
     private static final int PRESSED_COLOR_DOWN = 0xFF8C2C35;
     private static final int DEFAULT_COLOR = 0xFFAAAAAA;
     private static final Identifier BUTTON_TEXTURE = new Identifier(Init.MOD_ID, "textures/block/schindler_m_series_lantern_2.png");
-    private static final Identifier ARROW_TEXTURE = new Identifier(Init.MOD_ID, "textures/block/schindler_m_series_lantern_2.png");
+    private static final Identifier ARROW_TEXTURE = new Identifier(Init.MOD_ID, "textures/block/schindler_m_series_lantern_2_arrow.png");
     private final boolean isOdd;
 
     public RenderSchindlerMSeriesScreen5(Argument dispatcher, Boolean isOdd) {
@@ -71,7 +73,7 @@ public class RenderSchindlerMSeriesScreen5<T extends LiftButtonsBase.BlockEntity
         parentLayout.setBasicsAttributes(world, blockEntity.getPos2());
         parentLayout.setStoredMatrixTransformations(storedMatrixTransformations1);
         parentLayout.setParentDimensions(18F / 16, 3F / 16);
-        parentLayout.setPosition(isOdd ? -0.5625F : -1.0625F, 0.5625F);
+        parentLayout.setPosition(isOdd ? -0.5275F : -1.0275F, 0.5625F);
         parentLayout.setWidth(LayoutSize.MATCH_PARENT);
         parentLayout.setHeight(LayoutSize.MATCH_PARENT);
 
@@ -86,19 +88,21 @@ public class RenderSchindlerMSeriesScreen5<T extends LiftButtonsBase.BlockEntity
         screenLayout.setWidth(LayoutSize.WRAP_CONTENT);
         screenLayout.setHeight(LayoutSize.WRAP_CONTENT);
         screenLayout.setGravity(Gravity.CENTER_VERTICAL);
-        screenLayout.setMargin(0, 0, 1.5F / 16, 0);
+        screenLayout.setMargin(-1F / 16, 0, 0, 0);
 
         final FrameLayout lanternGroupLeft = new FrameLayout();
         lanternGroupLeft.setBasicsAttributes(world, blockPos);
         lanternGroupLeft.setWidth(LayoutSize.WRAP_CONTENT);
         lanternGroupLeft.setHeight(LayoutSize.WRAP_CONTENT);
         lanternGroupLeft.setGravity(Gravity.CENTER_VERTICAL);
+        lanternGroupLeft.setMargin(3.3F / 16, 0, 0, 0);
 
         final FrameLayout lanternGroupRight = new FrameLayout();
         lanternGroupRight.setBasicsAttributes(world, blockPos);
         lanternGroupRight.setWidth(LayoutSize.WRAP_CONTENT);
         lanternGroupRight.setHeight(LayoutSize.WRAP_CONTENT);
         lanternGroupRight.setGravity(Gravity.CENTER_VERTICAL);
+        lanternGroupRight.setMargin(2.3F / 16, 0, 0, 0);
 
         ButtonView upLantern = new ButtonView();
         upLantern.setBasicsAttributes(world, blockEntity.getPos2());
@@ -119,14 +123,14 @@ public class RenderSchindlerMSeriesScreen5<T extends LiftButtonsBase.BlockEntity
         upLantern1.setDefaultColor(DEFAULT_COLOR);
         upLantern1.setPressedColor(PRESSED_COLOR_UP);
 
-        ImageView upArrow = new ButtonView();
+        ImageView upArrow = new ImageView();
         upArrow.setBasicsAttributes(world, blockEntity.getPos2());
         upArrow.setTexture(ARROW_TEXTURE);
         upArrow.setDimension(3F / 16);
         upArrow.setGravity(Gravity.CENTER_VERTICAL);
         upArrow.setLight(light);
 
-        ImageView upArrow1 = new ButtonView();
+        ImageView upArrow1 = new ImageView();
         upArrow1.setBasicsAttributes(world, blockEntity.getPos2());
         upArrow1.setTexture(ARROW_TEXTURE);
         upArrow1.setDimension(3F / 16);
@@ -154,7 +158,7 @@ public class RenderSchindlerMSeriesScreen5<T extends LiftButtonsBase.BlockEntity
         downLantern1.setPressedColor(PRESSED_COLOR_DOWN);
         downLantern1.setFlip(false, true);
 
-        ImageView downArrow = new ButtonView();
+        ImageView downArrow = new ImageView();
         downArrow.setBasicsAttributes(world, blockEntity.getPos2());
         downArrow.setTexture(ARROW_TEXTURE);
         downArrow.setDimension(3F / 16);
@@ -162,7 +166,7 @@ public class RenderSchindlerMSeriesScreen5<T extends LiftButtonsBase.BlockEntity
         downArrow.setLight(light);
         downArrow.setFlip(false, true);
 
-        ImageView downArrow1 = new ButtonView();
+        ImageView downArrow1 = new ImageView();
         downArrow1.setBasicsAttributes(world, blockEntity.getPos2());
         downArrow1.setTexture(ARROW_TEXTURE);
         downArrow1.setDimension(3F / 16);
@@ -193,15 +197,30 @@ public class RenderSchindlerMSeriesScreen5<T extends LiftButtonsBase.BlockEntity
 
                 final ObjectArraySet<LiftDirection> instructionDirections = lift.hasInstruction(floorIndex);
 
+                if(lift.getDoorValue() == 0){
+                    blockEntity.lastUpActive = false;
+                    blockEntity.lastDownActive = false;
+                }
+
                 if (instructionDirections.isEmpty() && pressedButtonDirection != null && lift.getDoorValue() != 0 && floorNumber.equals(currentFloorNumber)) {
                     switch (pressedButtonDirection) {
                         case DOWN:
                             downLantern.activate();
                             downLantern1.activate();
+                            if(!blockEntity.lastDownActive) {
+                                InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "schindler_m_series_lantern_2"));
+                                blockEntity.lastDownActive = true;
+                                blockEntity.lastUpActive = true;
+                            }
                             break;
                         case UP:
                             upLantern.activate();
                             upLantern1.activate();
+                            if(!blockEntity.lastUpActive) {
+                                InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "schindler_m_series_lantern_2"));
+                                blockEntity.lastDownActive = true;
+                                blockEntity.lastUpActive = true;
+                            }
                             break;
                     }
                 }
@@ -214,10 +233,20 @@ public class RenderSchindlerMSeriesScreen5<T extends LiftButtonsBase.BlockEntity
                                     case DOWN:
                                         downLantern.activate();
                                         downLantern1.activate();
+                                        if(!blockEntity.lastDownActive) {
+                                            InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "schindler_m_series_lantern_2"));
+                                            blockEntity.lastDownActive = true;
+                                            blockEntity.lastUpActive = true;
+                                        }
                                         break;
                                     case UP:
                                         upLantern.activate();
                                         upLantern1.activate();
+                                        if(!blockEntity.lastUpActive) {
+                                            InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "schindler_m_series_lantern_2"));
+                                            blockEntity.lastDownActive = true;
+                                            blockEntity.lastUpActive = true;
+                                        }
                                         break;
                                 }
                             }
@@ -226,10 +255,20 @@ public class RenderSchindlerMSeriesScreen5<T extends LiftButtonsBase.BlockEntity
                                 case DOWN:
                                     downLantern.activate();
                                     downLantern1.activate();
+                                    if(!blockEntity.lastDownActive) {
+                                        InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "schindler_m_series_lantern_2"));
+                                        blockEntity.lastDownActive = true;
+                                        blockEntity.lastUpActive = true;
+                                    }
                                     break;
                                 case UP:
                                     upLantern.activate();
                                     upLantern1.activate();
+                                    if(!blockEntity.lastUpActive) {
+                                        InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "schindler_m_series_lantern_2"));
+                                        blockEntity.lastDownActive = true;
+                                        blockEntity.lastUpActive = true;
+                                    }
                                     break;
                             }
                         }
@@ -259,6 +298,7 @@ public class RenderSchindlerMSeriesScreen5<T extends LiftButtonsBase.BlockEntity
                 liftFloorDisplayView.setWidth(2F / 16);//显示屏宽度
                 liftFloorDisplayView.setHeight(2F / 16);//显示屏高度
                 liftFloorDisplayView.setGravity(Gravity.CENTER);
+                liftFloorDisplayView.setLetterSpacing(5);
                 liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.RIGHT);//文字对齐方式，center为居中对齐，left为左对齐，right为右对齐
                 liftFloorDisplayView.setMargin(0.6F / 16, 0, 0.6F / 16, 0);
 
