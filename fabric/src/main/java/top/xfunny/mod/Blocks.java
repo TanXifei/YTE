@@ -217,6 +217,8 @@ public class Blocks {
     public static final BlockRegistryObject SCHINDLER_M_SERIES_SCREEN_3_EVEN;
     public static final BlockRegistryObject SCHINDLER_M_SERIES_SCREEN_4_ODD;
     public static final BlockRegistryObject SCHINDLER_M_SERIES_SCREEN_4_EVEN;
+    public static final BlockRegistryObject SCHINDLER_M_SERIES_SCREEN_5_ODD;
+    public static final BlockRegistryObject SCHINDLER_M_SERIES_SCREEN_5_EVEN;
     public static final BlockRegistryObject SCHINDLER_R_SERIES_SCREEN_1_ODD;
     public static final BlockRegistryObject SCHINDLER_R_SERIES_SCREEN_1_EVEN;
     public static final BlockRegistryObject SCHINDLER_LINEA_BUTTON_1_WHITE;
@@ -574,6 +576,8 @@ public class Blocks {
         SCHINDLER_M_SERIES_SCREEN_3_EVEN = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "schindler_m_series_screen_3_even"), () -> new Block(new SchindlerMSeriesScreen3Even()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         SCHINDLER_M_SERIES_SCREEN_4_ODD = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "schindler_m_series_screen_4_odd"), () -> new Block(new SchindlerMSeriesScreen4Odd()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         SCHINDLER_M_SERIES_SCREEN_4_EVEN = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "schindler_m_series_screen_4_even"), () -> new Block(new SchindlerMSeriesScreen4Even()), CreativeModeTabs.YTE_LIFT_FIXTURES);
+        SCHINDLER_M_SERIES_SCREEN_5_ODD = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "schindler_m_series_screen_5_odd"), () -> new Block(new SchindlerMSeriesScreen5Odd()), CreativeModeTabs.YTE_LIFT_FIXTURES);
+        SCHINDLER_M_SERIES_SCREEN_5_EVEN = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "schindler_m_series_screen_5_even"), () -> new Block(new SchindlerMSeriesScreen5Even()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         SCHINDLER_S_SERIES_GREY_BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "schindler_s_series_grey_button"), () -> new Block(new SchindlerSSeriesGreyButton()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         SCHINDLER_S_SERIES_DARK_GREY_BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "schindler_s_series_dark_grey_button"), () -> new Block(new SchindlerSSeriesDarkGreyButton()), CreativeModeTabs.YTE_LIFT_FIXTURES);
         SCHINDLER_S_SERIES_BLUE_BUTTON = Init.REGISTRY.registerBlockWithBlockItem(new Identifier(Init.MOD_ID, "schindler_s_series_blue_button"), () -> new Block(new SchindlerSSeriesBlueButton()), CreativeModeTabs.YTE_LIFT_FIXTURES);

@@ -239,6 +239,8 @@ public final class InitClient {
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.SCHINDLER_M_SERIES_SCREEN_3_EVEN, dispatcher -> new top.xfunny.mod.client.render.RenderSchindlerMSeriesScreen3<>(dispatcher, false));
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.SCHINDLER_M_SERIES_SCREEN_4_ODD, dispatcher -> new top.xfunny.mod.client.render.RenderSchindlerMSeriesScreen4<>(dispatcher, true));
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.SCHINDLER_M_SERIES_SCREEN_4_EVEN, dispatcher -> new top.xfunny.mod.client.render.RenderSchindlerMSeriesScreen4<>(dispatcher, false));
+        REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.SCHINDLER_M_SERIES_SCREEN_5_ODD, dispatcher -> new top.xfunny.mod.client.render.RenderSchindlerMSeriesScreen5<>(dispatcher, true));
+        REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.SCHINDLER_M_SERIES_SCREEN_5_EVEN, dispatcher -> new top.xfunny.mod.client.render.RenderSchindlerMSeriesScreen5<>(dispatcher, false));
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.SCHINDLER_R_SERIES_SCREEN_1_ODD, dispatcher -> new top.xfunny.mod.client.render.RenderSchindlerRSeriesScreen1<>(dispatcher, true));
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.SCHINDLER_R_SERIES_SCREEN_1_EVEN, dispatcher -> new top.xfunny.mod.client.render.RenderSchindlerRSeriesScreen1<>(dispatcher, false));
         REGISTRY_CLIENT.registerBlockEntityRenderer(BlockEntityTypes.SCHINDLER_S_SERIES_GREY_BUTTON, RenderSchindlerSSeriesGreyButton::new);

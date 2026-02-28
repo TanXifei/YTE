@@ -251,6 +251,8 @@ public class BlockEntityTypes {
     public static final BlockEntityTypeRegistryObject<SchindlerMSeriesScreen3Even.BlockEntity> SCHINDLER_M_SERIES_SCREEN_3_EVEN;
     public static final BlockEntityTypeRegistryObject<SchindlerMSeriesScreen4Odd.BlockEntity> SCHINDLER_M_SERIES_SCREEN_4_ODD;
     public static final BlockEntityTypeRegistryObject<SchindlerMSeriesScreen4Even.BlockEntity> SCHINDLER_M_SERIES_SCREEN_4_EVEN;
+    public static final BlockEntityTypeRegistryObject<SchindlerMSeriesScreen5Odd.BlockEntity> SCHINDLER_M_SERIES_SCREEN_5_ODD;
+    public static final BlockEntityTypeRegistryObject<SchindlerMSeriesScreen5Even.BlockEntity> SCHINDLER_M_SERIES_SCREEN_5_EVEN;
     public static final BlockEntityTypeRegistryObject<SchindlerSSeriesGreyButton.BlockEntity> SCHINDLER_S_SERIES_GREY_BUTTON;
     public static final BlockEntityTypeRegistryObject<SchindlerSSeriesDarkGreyButton.BlockEntity> SCHINDLER_S_SERIES_DARK_GREY_BUTTON;
     public static final BlockEntityTypeRegistryObject<SchindlerSSeriesBlueButton.BlockEntity> SCHINDLER_S_SERIES_BLUE_BUTTON;
@@ -555,6 +557,8 @@ public class BlockEntityTypes {
         SCHINDLER_M_SERIES_SCREEN_3_EVEN = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "schindler_m_series_screen_3_even"), SchindlerMSeriesScreen3Even.BlockEntity::new, Blocks.SCHINDLER_M_SERIES_SCREEN_3_EVEN::get);
         SCHINDLER_M_SERIES_SCREEN_4_ODD = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "schindler_m_series_screen_4_odd"), SchindlerMSeriesScreen4Odd.BlockEntity::new, Blocks.SCHINDLER_M_SERIES_SCREEN_4_ODD::get);
         SCHINDLER_M_SERIES_SCREEN_4_EVEN = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "schindler_m_series_screen_4_even"), SchindlerMSeriesScreen4Even.BlockEntity::new, Blocks.SCHINDLER_M_SERIES_SCREEN_4_EVEN::get);
+        SCHINDLER_M_SERIES_SCREEN_5_ODD = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "schindler_m_series_screen_5_odd"), SchindlerMSeriesScreen5Odd.BlockEntity::new, Blocks.SCHINDLER_M_SERIES_SCREEN_5_ODD::get);
+        SCHINDLER_M_SERIES_SCREEN_5_EVEN = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "schindler_m_series_screen_5_even"), SchindlerMSeriesScreen5Even.BlockEntity::new, Blocks.SCHINDLER_M_SERIES_SCREEN_5_EVEN::get);
         SCHINDLER_S_SERIES_GREY_BUTTON = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "schindler_s_series_grey_button"), SchindlerSSeriesGreyButton.BlockEntity::new, Blocks.SCHINDLER_S_SERIES_GREY_BUTTON::get);
         SCHINDLER_S_SERIES_DARK_GREY_BUTTON = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "schindler_s_series_dark_grey_button"), SchindlerSSeriesDarkGreyButton.BlockEntity::new, Blocks.SCHINDLER_S_SERIES_DARK_GREY_BUTTON::get);
         SCHINDLER_S_SERIES_BLUE_BUTTON = Init.REGISTRY.registerBlockEntityType(new Identifier(Init.MOD_ID, "schindler_s_series_blue_button"), SchindlerSSeriesBlueButton.BlockEntity::new, Blocks.SCHINDLER_S_SERIES_BLUE_BUTTON::get);

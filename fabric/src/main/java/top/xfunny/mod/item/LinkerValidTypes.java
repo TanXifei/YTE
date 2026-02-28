@@ -254,6 +254,8 @@ public class LinkerValidTypes {
             SchindlerMSeriesScreen3Even.class,
             SchindlerMSeriesScreen4Odd.class,
             SchindlerMSeriesScreen4Even.class,
+            SchindlerMSeriesScreen5Odd.class,
+            SchindlerMSeriesScreen5Even.class,
             SchindlerSSeriesGreyButton.class,
             SchindlerSSeriesDarkGreyButton.class,
             SchindlerSSeriesBlueButton.class,
