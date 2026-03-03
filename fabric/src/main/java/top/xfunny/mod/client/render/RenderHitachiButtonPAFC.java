@@ -94,7 +94,7 @@ public class RenderHitachiButtonPAFC extends BlockEntityRenderer<HitachiButtonPA
         buttonLayout.setBasicsAttributes(world, blockPos);
         buttonLayout.setWidth(LayoutSize.MATCH_PARENT);
         buttonLayout.setHeight(LayoutSize.MATCH_PARENT);
-        buttonLayout.setMargin(0, 1F / 16, 0, 0);
+        buttonLayout.setMargin(0, 0.75F / 16, 0, 0); //1F
 
 
         final LinearLayout buttonContainer = new LinearLayout(true);
@@ -196,13 +196,13 @@ public class RenderHitachiButtonPAFC extends BlockEntityRenderer<HitachiButtonPA
                         blockPos,
                         sortedPositionsAndLifts.get(i).right(),
                         FontList.instance.getFont("hitachi-bxsclc5"),
-                        4.5F,
+                        6F,
                         0xFFFF4800);
                 liftFloorDisplayView.setTextureId(String.format("hitachi_button_pafc_display_%d", i));
-                liftFloorDisplayView.setWidth(1.12F / 16);
+                liftFloorDisplayView.setWidth(1.15F / 16); //1.12
                 liftFloorDisplayView.setHeight(1.7F / 16);
 
-                liftFloorDisplayView.setMargin(0.006F, 0.7F / 16, 0, 0);
+                liftFloorDisplayView.setMargin(0.008F, 0.7F / 16, 0, 0);
                 liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.CENTER);
                 liftFloorDisplayView.addStoredMatrixTransformations(graphicsHolder -> graphicsHolder.translate(0, 0, -SMALL_OFFSET));
 
@@ -212,9 +212,9 @@ public class RenderHitachiButtonPAFC extends BlockEntityRenderer<HitachiButtonPA
                             blockPos,
                             sortedPositionsAndLifts.get(i).right(),
                             FontList.instance.getFont("hitachi-bxsclc5-pafc-compact"),
-                            4.5F,
+                            6F,
                             0xFFFF4800);
-                    liftFloorDisplayView.setMargin(0.01F, 0.7F / 16, 0, 0);
+                    liftFloorDisplayView.setMargin(0.008F, 0.7F / 16, 0, 0);
                     liftFloorDisplayView.setAdaptMode(LiftFloorDisplayView.AdaptMode.FORCE_FIT_WIDTH);
                 } else {
                     liftFloorDisplayView.setAdaptMode(LiftFloorDisplayView.AdaptMode.ASPECT_FILL);
@@ -222,8 +222,8 @@ public class RenderHitachiButtonPAFC extends BlockEntityRenderer<HitachiButtonPA
                 final LiftArrowView liftArrowView = new LiftArrowView();
                 liftArrowView.setBasicsAttributes(world, blockPos, sortedPositionsAndLifts.get(i).right(), LiftArrowView.ArrowType.AUTO);
                 liftArrowView.setTexture(ARROW_TEXTURE);
-                liftArrowView.setDimension(0.38F / 16, 384, 512);
-                liftArrowView.setMargin(0, 2.1F / 16, 0, -1.05F / 16);
+                liftArrowView.setDimension(0.4F / 16, 384, 512);
+                liftArrowView.setMargin(0, 2.15F / 16, 0, -0.95F / 16); //-1.05F
                 liftArrowView.setGravity(Gravity.CENTER_HORIZONTAL);
                 liftArrowView.setQueuedRenderLayer(QueuedRenderLayer.LIGHT_TRANSLUCENT);
                 if (unlocked) {
