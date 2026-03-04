@@ -196,10 +196,10 @@ public class RenderHitachiButtonPAFC extends BlockEntityRenderer<HitachiButtonPA
                         blockPos,
                         sortedPositionsAndLifts.get(i).right(),
                         FontList.instance.getFont("hitachi-bxsclc5"),
-                        6F,
+                        5.8F,
                         0xFFFF4800);
                 liftFloorDisplayView.setTextureId(String.format("hitachi_button_pafc_display_%d", i));
-                liftFloorDisplayView.setWidth(1.15F / 16); //1.12
+                liftFloorDisplayView.setWidth(1.095F / 16); //1.12
                 liftFloorDisplayView.setHeight(1.7F / 16);
 
                 liftFloorDisplayView.setMargin(0.007F, 0.7F / 16, 0, 0);
@@ -212,7 +212,7 @@ public class RenderHitachiButtonPAFC extends BlockEntityRenderer<HitachiButtonPA
                             blockPos,
                             sortedPositionsAndLifts.get(i).right(),
                             FontList.instance.getFont("hitachi-bxsclc5-pafc-compact"),
-                            6F,
+                            5.8F,
                             0xFFFF4800);
                     liftFloorDisplayView.setMargin(0.008F, 0.7F / 16, 0, 0);
                     liftFloorDisplayView.setAdaptMode(LiftFloorDisplayView.AdaptMode.FORCE_FIT_WIDTH);
