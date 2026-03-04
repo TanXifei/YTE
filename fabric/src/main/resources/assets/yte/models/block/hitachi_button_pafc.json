@@ -1,5 +1,4 @@
 {
-	"format_version": "1.21.6",
 	"credit": "Made with Blockbench",
 	"textures": {
 		"1": "yte:block/black",
@@ -8,9 +7,9 @@
 	},
 	"elements": [
 		{
-			"from": [6.775, 6.2, 0.075],
-			"to": [9.225, 9.5, 0.075],
-			"rotation": {"angle": 0, "axis": "y", "origin": [7, 3.3, 0.075]},
+			"from": [6.775, 8.2, 0.075],
+			"to": [9.225, 11.5, 0.075],
+			"rotation": {"angle": 0, "axis": "y", "origin": [7, 5.3, 0.075]},
 			"faces": {
 				"north": {"uv": [0, 0, 3.25, 4.5], "texture": "#missing"},
 				"east": {"uv": [0, 0, 0, 4.5], "texture": "#missing"},
@@ -21,9 +20,9 @@
 			}
 		},
 		{
-			"from": [6.325, 0.6, 0],
-			"to": [9.675, 10.4, 0.05],
-			"rotation": {"angle": 0, "axis": "y", "origin": [3.775, 2, 0]},
+			"from": [6.325, 2.6, 0],
+			"to": [9.675, 12.4, 0.05],
+			"rotation": {"angle": 0, "axis": "y", "origin": [3.775, 4, 0]},
 			"faces": {
 				"north": {"uv": [0, 0, 0.3, 11], "texture": "#2"},
 				"east": {"uv": [0, 0, 0.3, 11], "texture": "#2"},
@@ -33,5 +32,6 @@
 				"down": {"uv": [0, 0, 0.3, 11], "texture": "#2"}
 			}
 		}
-	]
+	],
+	"format_version": "1.21.6"
 }
