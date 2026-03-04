@@ -195,7 +195,7 @@ public class RenderHitachiVIB181AButton extends BlockEntityRenderer<HitachiVIB18
                 liftFloorDisplayView.setBasicsAttributes(world,
                         blockPos,
                         sortedPositionsAndLifts.get(i).right(),
-                        FontList.instance.getFont("hhitachi-bxsclc5"),
+                        FontList.instance.getFont("hitachi-bxsclc5"),
                         5F,
                         0xFFFF4800);
                 liftFloorDisplayView.setTextureId(String.format("hitachi_vib_181A_dot_matrix_display_%d", i));
