@@ -87,14 +87,14 @@ public class RenderHitachiButtonPAFC extends BlockEntityRenderer<HitachiButtonPA
         screenLayout.setWidth(LayoutSize.WRAP_CONTENT);
         screenLayout.setHeight(LayoutSize.WRAP_CONTENT);
         screenLayout.setGravity(Gravity.CENTER_HORIZONTAL);
-        screenLayout.setMargin(0, 1.75F / 16, 0, 0);
+        screenLayout.setMargin(0, -0.2F / 16, 0, 0); //1.75F
 
 
         final FrameLayout buttonLayout = new FrameLayout();
         buttonLayout.setBasicsAttributes(world, blockPos);
         buttonLayout.setWidth(LayoutSize.MATCH_PARENT);
         buttonLayout.setHeight(LayoutSize.MATCH_PARENT);
-        buttonLayout.setMargin(0, 0.75F / 16, 0, 0); //1F
+        buttonLayout.setMargin(0, -0.25F / 16, 0, 0); //1F
 
 
         final LinearLayout buttonContainer = new LinearLayout(true);
@@ -202,7 +202,7 @@ public class RenderHitachiButtonPAFC extends BlockEntityRenderer<HitachiButtonPA
                 liftFloorDisplayView.setWidth(1.15F / 16); //1.12
                 liftFloorDisplayView.setHeight(1.7F / 16);
 
-                liftFloorDisplayView.setMargin(0.008F, 0.7F / 16, 0, 0);
+                liftFloorDisplayView.setMargin(0.007F, 0.7F / 16, 0, 0);
                 liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.CENTER);
                 liftFloorDisplayView.addStoredMatrixTransformations(graphicsHolder -> graphicsHolder.translate(0, 0, -SMALL_OFFSET));
 
@@ -260,7 +260,7 @@ public class RenderHitachiButtonPAFC extends BlockEntityRenderer<HitachiButtonPA
 
         if (buttonDescriptor.hasDownButton()) {
             if (buttonDescriptor.hasUpButton()) {
-                downButtonGroup.setMargin(0, 0.2F / 16, 0, 0);
+                downButtonGroup.setMargin(0, 0.15F / 16, 0, 0);
             }
             buttonContainer.addChild(downButtonGroup);
         }
