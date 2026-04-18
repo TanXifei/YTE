@@ -17,255 +17,116 @@ public class ModUpload {
 
 
 	public static void main(String[] args) throws IOException {
-		String changelog = "## \uD83C\uDF89元旦快乐，新年新气象！\n" +
-				"**本mod依赖Minecraft Transit Railway 4.0.0 - 4.0.2 hotfix1**\n" +
-				"### 新增方块\n" +
-				"**Dewhurst 系列**\n" +
-				"*   Dewhurst US81呼梯面板（类型1）\n" +
+		String changelog = "## **更新日志**\n" +
 				"\n" +
-				"**Dover 系列**\n" +
-				"*   Dover Impulse呼梯面板（类型1）\n" +
-				"*   Dover Impulse到站灯（类型1，横向，占一格/两格）\n" +
+				"> **\uD83E\uDDE8 新春快乐，万事如意！**\n" +
+				"> 本 Mod 依赖 **Minecraft Transit Railway 4.0.0 及以上**\n" +
 				"\n" +
-				"**富士达 (Fujitec) 系列**\n" +
-				"*   富士达MIC-400呼梯面板（类型1）\n" +
-				"*   富士达MIC-400呼梯面板（类型1，旧款）\n" +
-				"*   富士达MIC-400呼梯面板（类型1，无屏幕）\n" +
-				"*   富士达MIC-400呼梯面板（类型1，旧款，无屏幕）\n" +
-				"*   富士达MIC-400候梯楼层显示器（类型1，横向/纵向，占一格/两格）\n" +
+				"---\n" +
 				"\n" +
-				"**日立 (Hitachi) 系列**\n" +
-				"*   日立呼梯面板（通用）\n" +
-				"*   日立B85候梯楼层显示器（类型1，横向/纵向，占一格/两格）\n" +
-				"*   日立B89呼梯面板（类型1/2，带/无屏幕）\n" +
-				"*   日立B89候梯楼层显示器（类型1，横向/纵向，占一格/两格）\n" +
-				"*   日立VIB-320 & 320W呼梯面板 (HIP-43款式)\n" +
-				"*   日立VIB-221 & 221W呼梯面板 (HIP-43款式)\n" +
-				"*   日立GHL-668到站灯（占一格/两格）\n" +
-				"*   日立GHL-673到站灯（占一格/两格）\n" +
-				"*   日立VIB-628 & 628W呼梯面板\n" +
-				"*   日立HB-628呼梯面板\n" +
-				"*   日立HB-658呼梯面板\n" +
-				"*   日立VIB-681 & 681W呼梯面板\n" +
-				"*   日立VIB-676 & 676W呼梯面板\n" +
-				"*   日立VIB-673 & 673W呼梯面板 (及 HIP-43款式)\n" +
-				"*   日立HB-673呼梯面板\n" +
-				"*   日立VIB-679 & 679W呼梯面板\n" +
-				"*   日立VIB-181A & 181WA呼梯面板\n" +
-				"*   日立VIB-182A & 182WA呼梯面板\n" +
-				"*   日立HB-181A呼梯面板\n" +
-				"*   日立NCA-MRL呼梯面板\n" +
-				"*   日立VIB-616呼梯面板\n" +
+				"### **新增方块**\n" +
 				"\n" +
-				"**通力 (KONE) 系列**\n" +
-				"*   通力M系列候梯楼层显示器（类型1，小型，占一格/两格）\n" +
+				"#### **通力 (KONE) 系列**\n" +
+				"* 通力 KDS330 系列呼梯面板（类型 1，外挂式，带屏幕，**支持触摸款式**）\n" +
+				"* 通力 KDS330 系列呼梯面板（类型 1，外挂式，无屏幕，**支持触摸款式**）\n" +
+				"* 通力 KDS330 系列候梯楼层显示器（类型 1，外挂式，占一格/两格）\n" +
+				"* 通力 KDS360 系列呼梯面板（类型 1，外挂式，带屏幕）\n" +
+				"* 通力 KDS360 系列呼梯面板（类型 1，外挂式，带屏幕，**屏幕上置款式**）\n" +
+				"* 通力 KDS360 系列呼梯面板（类型 1，外挂式，无屏幕）\n" +
+				"* 通力 KDS220 系列呼梯面板（类型 1，外挂式，带屏幕）\n" +
+				"* 通力 KDS220 系列呼梯面板（类型 1，外挂式，无屏幕）\n" +
+				"* 通力 KDS220 系列候梯楼层显示器（类型 1，外挂式，占一格/两格）\n" +
 				"\n" +
-				"**三菱 (Mitsubishi) 系列**\n" +
-				"*   三菱MP-VF候梯楼层显示器（类型1，横向/纵向，占一格/两格）\n" +
-				"*   三菱MP-VF到站灯（类型1，横向/纵向，占一格/两格）\n" +
-				"*   三菱MP呼梯面板（类型1）\n" +
-				"*   三菱MP触摸呼梯面板（类型1）\n" +
-				"*   三菱PIM-A110呼梯面板\n" +
-				"*   三菱HBM-A110呼梯面板\n" +
-				"*   三菱PIN-A11呼梯面板\n" +
-				"*   三菱HBN-A11呼梯面板\n" +
-				"*   三菱PIH-D330候梯楼层显示器（占一格/两格）\n" +
-				"*   三菱菱电升降机外显（类型2，占一格/两格）\n" +
-				"*   三菱PIE-C210 & C220呼梯面板\n" +
-				"*   三菱HBE-C210 & C220呼梯面板\n" +
-				"*   三菱PI*-A634 & A644呼梯面板 (及 LCD款式、无屏幕款式)\n" +
-				"*   三菱PI*-C634 & C644呼梯面板 (及 LCD款式、无屏幕款式)\n" +
-				"*   三菱HLH-A31S到站灯（横向/纵向，占一格/两格）\n" +
-				"*   三菱HLV-A31S到站灯（横向/纵向，占一格/两格）\n" +
-				"*   三菱HLV-A21S到站灯（占一格/两格）\n" +
-				"*   三菱PIH-C110候梯楼层显示器（占一格/两格）\n" +
-				"*   三菱PIH-C130候梯楼层显示器（占一格/两格）\n" +
+				"#### **奥的斯 (Otis) 系列**\n" +
+				"* 奥的斯 HF023 呼梯面板\n" +
 				"\n" +
-				"**上海三菱 系列**\n" +
-				"*   上海三菱ZPI*-GD10 & GD20呼梯面板\n" +
-				"*   上海三菱ZHB*-G010呼梯面板\n" +
-				"*   上海三菱ZPI*-CD12 & CD22呼梯面板\n" +
-				"*   上海三菱ZPI*-GA13 & GA23呼梯面板\n" +
-				"*   上海三菱ZPIH-C301候梯楼层显示器（占一格/两格）\n" +
-				"*   上海三菱ZPIH-CE01候梯楼层显示器（占一格/两格）\n" +
+				"---\n" +
 				"\n" +
-				"**奥的斯 (Otis) 系列**\n" +
-				"*   奥的斯Series 1到站灯（类型1，占一格/两格）\n" +
-				"*   奥的斯Series 1到站灯（类型1，带屏幕，占一格/两格）\n" +
+				"### **新增功能**\n" +
+				"* **材质升级**：为 `mitsubishi_nexway_button_1` 添加了 **PBR 材质**支持。\n" +
 				"\n" +
-				"**迅达 (Schindler) 系列**\n" +
-				"*   迅达S系列深灰色按钮呼梯面板\n" +
-				"*   迅达S系列蓝色按钮呼梯面板\n" +
-				"*   迅达R系列圆形按钮呼梯面板\n" +
-				"*   迅达R系列候梯楼层显示器（类型1，占一格/两格）\n" +
-				"*   迅达FI GS 700呼梯面板（无屏幕）\n" +
-				"*   迅达FI GS 700触摸呼梯面板（无屏幕）\n" +
-				"*   迅达FI GS 700候梯楼层显示器（钢制/黑色/灰色，占一格/两格）\n" +
+				"---\n" +
 				"\n" +
-				"**东芝 (Toshiba) 系列**\n" +
-				"*   东芝呼梯面板（类型1）\n" +
-				"*   东芝到站灯（类型1，占一格/两格）\n" +
-				"*   东芝候梯楼层显示器（类型1/2，占一格/两格）\n" +
+				"### **新增翻译**\n" +
+				"* 补全 `en_us` 和 `zh_hk` 的翻译。\n" +
 				"\n" +
-				"**铁路设施 (PAT) 系列**\n" +
-				"*   PAT RS01指示牌\n" +
-				"*   PAT RS01指示牌柱\n" +
+				"---\n" +
 				"\n" +
-				"### 新增功能\n" +
-				"*   已为部分到站灯添加音效\n" +
-				"*   为部分三菱部件添加箭头旋转动画\n" +
+				"### **优化内容**\n" +
+				"* **字体渲染系统优化**：\n" +
+				"    * **防止“砍头”**：增大了字体渲染缓冲值，防止溢出导致的字体显示不全。\n" +
+				"    * **排版微调**：将 `TextView` 的字符间距设置方法修改为浮点型，提升显示精度。\n" +
+				"    * **重构逻辑**：重构了自定义字体纹理创建系统，并限制了最大生成资源数量。\n" +
+				"* **渲染表现改进**：\n" +
+				"    * 优化了日立点阵显示器、三菱显示器的渲染逻辑。\n" +
+				"    * 改进了三菱点阵外呼面板的显示方法。\n" +
+				"    * 优化自定义字体缓存，当电梯楼层切换时，显示屏不再闪烁。\n" +
+				"* **系统与资源重构**：\n" +
+				"    * 重构动态纹理与字体资源处理系统。\n" +
+				"    * 移除 `ThyssenKrupp TE-GL1` 呼梯面板的相关遗留文件。\n" +
 				"\n" +
-				"### 新增功能翻译\n" +
-				"*   YTE工具类物品的英文名已根据新版本统一调整，中文名保持不变。\n" +
-				"*   `message.floor_auto_setter_status_need_track_floor_position` 的翻译更新为：“请选中一个楼层轨道”。\n" +
+				"---\n" +
 				"\n" +
-				"### 新增/更新工具提示（Tooltip）\n" +
-				"**日立系列**\n" +
-				"*   显示器型号：HIP-31-2\n" +
-				"*   显示器型号：SCLC-LCD4\n" +
-				"*   按钮型号：ML-MW\n" +
-				"*   按钮型号：UL-MW\n" +
-				"*   长沙国金中心款式\n" +
+				"### **修复内容**\n" +
+				"* **显示修复**：修复了日立 VIB-221 点阵款式中箭头位置偏移的问题。\n" +
+				"* **逻辑修正**：修正了奥的斯 Series 3 ELD 的显示布局。\n" +
 				"\n" +
-				"**上海三菱系列**\n" +
-				"*   显示器型号：ZLHH-110AG01\n" +
-				"*   显示器型号：ZLHH-110DG01\n" +
-				"*   显示器型号：ZLHH-101AG02\n" +
-				"*   按钮型号：A11\n" +
-				"*   按钮型号：A12\n" +
+				"---\n" +
+				"---\n" +
 				"\n" +
-				"### 优化内容\n" +
-				"*   优化自定义字体缓存，当电梯楼层切换时，显示屏不再闪烁\n" +
+				"## **Update Log**\n" +
 				"\n" +
-				"### 修复内容\n" +
-				"*   修复横向轨道下批量楼层设置器失效的问题\n" +
+				"> **\uD83E\uDDE8 Happy Chinese New Year and Best Wishes!**\n" +
+				"> This Mod requires **Minecraft Transit Railway 4.0.0 or above.**\n" +
 				"\n" +
-				"## ✨Happy New Year! YTE Mod Translation Update Log\n" +
+				"---\n" +
 				"\n" +
-				"**English translations for some new blocks are currently missing in the translation files.**  \n" +
+				"### **New Blocks**\n" +
 				"\n" +
-				"**You need to install the official release of Minecraft Transit Railway 4.0.0-4.0.2 hotfix1 before installing this mod!**\n" +
+				"#### **KONE Series**\n" +
+				"* KONE KDS330 Series Call Panels (Type 1, Surface Mounted, with Screen, **Touch Model supported**)\n" +
+				"* KONE KDS330 Series Call Panels (Type 1, Surface Mounted, without Screen, **Touch Model supported**)\n" +
+				"* KONE KDS330 Series Hall Lanterns (Type 1, Surface Mounted, 1-block/2-block wide)\n" +
+				"* KONE KDS360 Series Call Panels (Type 1, Surface Mounted, with Screen)\n" +
+				"* KONE KDS360 Series Call Panels (Type 1, Surface Mounted, with Screen, **Top-mounted Screen model**)\n" +
+				"* KONE KDS360 Series Call Panels (Type 1, Surface Mounted, without Screen)\n" +
+				"* KONE KDS220 Series Call Panels (Type 1, Surface Mounted, with Screen)\n" +
+				"* KONE KDS220 Series Call Panels (Type 1, Surface Mounted, without Screen)\n" +
+				"* KONE KDS220 Series Hall Lanterns (Type 1, Surface Mounted, 1-block/2-block wide)\n" +
 				"\n" +
-				"### New Block Translations\n" +
-				"**Dewhurst Series**\n" +
-				"*   Dewhurst US81 Call Panel(Type 1)\n" +
+				"#### **Otis Series**\n" +
+				"* Otis HF023 Call Panel\n" +
 				"\n" +
-				"**Dover Series**\n" +
-				"*   Dover Impulse Button(Type 1)\n" +
-				"*   Dover Impulse Lantern(Type 1, Horizontal, Odd/Even)\n" +
+				"---\n" +
 				"\n" +
-				"**Fujitec Series**\n" +
-				"*   Fujitec MIC-400 Call Panel(Type 1)\n" +
-				"*   Fujitec MIC-400 Call Panel(Type 1, Old)\n" +
-				"*   Fujitec MIC-400 Call Panel(Type 1, Without Screen)\n" +
-				"*   Fujitec MIC-400 Call Panel(Type 1, Old, Without Screen)\n" +
-				"*   Fujitec MIC-400 Screen(Type 1, Horizontal/Vertical, Odd/Even)\n" +
+				"### **New Features**\n" +
+				"* **Texture Upgrade**: Added **PBR texture** support for `mitsubishi_nexway_button_1`.\n" +
 				"\n" +
-				"**Hitachi Series**\n" +
-				"*   Hitachi Call Panel\n" +
-				"*   Hitachi B85 Screen(Type 1, Horizontal/Vertical, Odd/Even)\n" +
-				"*   Hitachi B89 Call Panel(Type 1/2, With/Without Screen)\n" +
-				"*   Hitachi B89 Screen(Type 1, Horizontal/Vertical, Odd/Even)\n" +
-				"*   Hitachi VIB-320 & 320W Call Panel (HIP-43 version)\n" +
-				"*   Hitachi VIB-221 & 221W Call Panel (HIP-43 version)\n" +
-				"*   Hitachi GHL-668 Lantern (Odd/Even)\n" +
-				"*   Hitachi GHL-673 Lantern (Odd/Even)\n" +
-				"*   Hitachi VIB-628 & 628W Call Panel\n" +
-				"*   Hitachi HB-628 Call Panel\n" +
-				"*   Hitachi HB-658 Call Panel\n" +
-				"*   Hitachi VIB-681 & 681W Call Panel\n" +
-				"*   Hitachi VIB-676 & 676W Call Panel\n" +
-				"*   Hitachi VIB-673 & 673W Call Panel (and HIP-43 version)\n" +
-				"*   Hitachi HB-673 Call Panel\n" +
-				"*   Hitachi VIB-679 & 679W Call Panel\n" +
-				"*   Hitachi VIB-181A & 181WA Call Panel\n" +
-				"*   Hitachi VIB-182A & 182WA Call Panel\n" +
-				"*   Hitachi HB-181A Call Panel\n" +
-				"*   Hitachi NCA-MRL Call Panel\n" +
-				"*   Hitachi VIB-616 Call Panel\n" +
+				"---\n" +
 				"\n" +
-				"**KONE Series**\n" +
-				"*   Kone M-Series Hall Floor Indicator(Type 1, Small, Odd/Even)\n" +
+				"### **New Translations**\n" +
+				"* Completed translations for `en_us` and `zh_hk`.\n" +
 				"\n" +
-				"**Mitsubishi Series**\n" +
-				"*   Mitsubishi MP-VF Screen (Type 1, Horizontal/Vertical, Odd/Even)\n" +
-				"*   Mitsubishi MP-VF Lantern (Type 1, Horizontal/Vertical, Odd/Even)\n" +
-				"*   Mitsubishi MP Button (Type 1)\n" +
-				"*   Mitsubishi MP Touch Button (Type 1)\n" +
-				"*   Mitsubishi PIM-A110 Call Panel\n" +
-				"*   Mitsubishi HBM-A110 Call Panel\n" +
-				"*   Mitsubishi PIN-A11 Call Panel\n" +
-				"*   Mitsubishi HBN-A11 Call Panel\n" +
-				"*   Mitsubishi PIH-D330 Screen (Odd/Even)\n" +
-				"*   Mitsubishi Ryoden Screen (Type 2, Odd/Even)\n" +
-				"*   Mitsubishi PIE-C210 & C220 Call Panel\n" +
-				"*   Mitsubishi HBE-C210 & C220 Call Panel\n" +
-				"*   Mitsubishi PI*-A634 & A644 Call Panel (and LCD version, Without Screen version)\n" +
-				"*   Mitsubishi PI*-C634 & C644 Call Panel (and LCD version, Without Screen version)\n" +
-				"*   Mitsubishi HLH-A31S Hall Lantern (Horizontal/Vertical, Odd/Even)\n" +
-				"*   Mitsubishi HLV-A31S Hall Lantern (Horizontal/Vertical, Odd/Even)\n" +
-				"*   Mitsubishi HLV-A21S Hall Lantern (Odd/Even)\n" +
-				"*   Mitsubishi PIH-C110 Screen (Odd/Even)\n" +
-				"*   Mitsubishi PIH-C130 Screen (Odd/Even)\n" +
+				"---\n" +
 				"\n" +
-				"**Shanghai Mitsubishi Series**\n" +
-				"*   Shanghai Mitsubishi ZPI*-GD10 & GD20 Call Panel\n" +
-				"*   Shanghai Mitsubishi ZHB*-G010 Call Panel\n" +
-				"*   Shanghai Mitsubishi ZPI*-CD12 & CD22 Call Panel\n" +
-				"*   Shanghai Mitsubishi ZPI*-GA13 & GA23 Call Panel\n" +
-				"*   Shanghai Mitsubishi ZPIH-C301 Hall Floor Indicator(Type 1) (Odd/Even)\n" +
-				"*   Shanghai Mitsubishi ZPIH-CE01 Hall Floor Indicator(Type 1) (Odd/Even)\n" +
+				"### **Optimizations**\n" +
+				"* **Font Rendering System Optimization**:\n" +
+				"    * **Overflow Prevention**: Increased font rendering buffer values to prevent text clipping caused by overflow.\n" +
+				"    * **Layout Fine-tuning**: Changed the `TextView` character spacing method to float for improved display precision.\n" +
+				"    * **Logic Refactor**: Refactored the custom font texture creation system and limited the maximum number of generated resources.\n" +
+				"* **Rendering Performance Improvements**:\n" +
+				"    * Optimized rendering logic for Hitachi dot-matrix and Mitsubishi displays.\n" +
+				"    * Improved the display method for Mitsubishi dot-matrix call panels.\n" +
+				"    * Optimized custom font caching; displays no longer flicker when elevator floors change.\n" +
+				"* **System & Resource Refactoring**:\n" +
+				"    * Refactored dynamic texture and font resource handling systems.\n" +
+				"    * Removed legacy files related to the `ThyssenKrupp TE-GL1` call panel.\n" +
 				"\n" +
-				"**OTIS Series**\n" +
-				"*   OTIS Series 1 Hall Lantern(Type 1) (Odd/Even)\n" +
-				"*   OTIS Series 1 Hall Lantern(Type 1, With Screen) (Odd/Even)\n" +
+				"---\n" +
 				"\n" +
-				"**Schindler Series**\n" +
-				"*   Schindler S-Series Dark Grey Button Call Panel\n" +
-				"*   Schindler S-Series Blue Button Call Panel\n" +
-				"*   Schindler R-Series Round Button Call Panel\n" +
-				"*   Schindler R-Series Hall Floor Indicator(Type 1) (Odd/Even)\n" +
-				"*   Schindler FI GS 700 Call Panel(Without Screen)\n" +
-				"*   Schindler FI GS 700 Touch Call Panel(Without Screen)\n" +
-				"*   Schindler FI GS 700 Screen(Steel/Black/Grey) (Odd/Even)\n" +
-				"\n" +
-				"**Toshiba Series**\n" +
-				"*   Toshiba Button (Type 1)\n" +
-				"*   Toshiba Lantern (Type 1) (Odd/Even)\n" +
-				"*   Toshiba Screen (Type 1/2) (Odd/Even)\n" +
-				"\n" +
-				"**Railway Facilities (PAT) Series**\n" +
-				"*   PAT RS01 Railway Sign\n" +
-				"*   PAT RS01 Railway Sign Pole\n" +
-				"\n" +
-				"### New Features\n" +
-				"*   Added sound effects for some arrival indicators (hall lanterns).\n" +
-				"*   Added arrow rotation animation for some Mitsubishi components.\n" +
-				"\n" +
-				"### Translation Updates for Features\n" +
-				"*   English names for YTE tool items have been unified according to the new version. Chinese names remain unchanged.\n" +
-				"*   The translation for `message.floor_auto_setter_status_need_track_floor_position` has been updated to: \"Please select an lift/elevator floor track.\"\n" +
-				"\n" +
-				"### New/Updated Tooltips\n" +
-				"**Hitachi Series**\n" +
-				"*   Display: HIP-31-2\n" +
-				"*   Display: SCLC-LCD4\n" +
-				"*   Button: ML-MW\n" +
-				"*   Button: UL-MW\n" +
-				"*   Changsha IFS Style\n" +
-				"\n" +
-				"**Shanghai Mitsubishi Series**\n" +
-				"*   Display: ZLHH-110AG01\n" +
-				"*   Display: ZLHH-110DG01\n" +
-				"*   Display: ZLHH-101AG02\n" +
-				"*   Button: A11\n" +
-				"*   Button: A12\n" +
-				"\n" +
-				"### Improvements\n" +
-				"*   Optimized custom font caching. Screens no longer flicker when the elevator floor changes.\n" +
-				"\n" +
-				"### Fixes\n" +
-				"*   Fixed an issue where the Lift Floor Auto Setter would not work correctly with horizontal elevator tracks.";
+				"### **Bug Fixes**\n" +
+				"* **Display Fixes**: Fixed arrow position offset in the Hitachi VIB-221 dot-matrix model.\n" +
+				"* **Logic Correction**: Corrected the display layout for the Otis Series 3 ELD.";
 
 
 
