@@ -8,17 +8,19 @@ import org.mtr.libraries.it.unimi.dsi.fastutil.objects.ObjectArraySet;
 import org.mtr.libraries.it.unimi.dsi.fastutil.objects.ObjectImmutableList;
 import org.mtr.mapping.holder.*;
 import org.mtr.mapping.mapper.*;
-import org.mtr.mod.InitClient;
+
+import top.xfunny.mod.client.InitClient;
 import org.mtr.mod.client.CustomResourceLoader;
 import org.mtr.mod.client.IDrawing;
 import org.mtr.mod.client.MinecraftClientData;
 import org.mtr.mod.data.IGui;
 import org.mtr.mod.generated.lang.TranslationProvider;
-import org.mtr.mod.packet.PacketUpdateRailwaySignConfig;
 import org.mtr.mod.render.RenderRailwaySign;
 import org.mtr.mod.resource.SignResource;
 import org.mtr.mod.screen.*;
+import top.xfunny.mod.Init;
 import top.xfunny.mod.block.PATRS01RailwaySign;
+import top.xfunny.mod.packet.PacketUpdatePATRS01RailwaySignConfig;
 
 import javax.annotation.Nullable;
 
@@ -59,7 +61,7 @@ public class PATRS01RailwaySignScreen extends ScreenExtension implements IGui {
 
         allSignIds.addAll(CustomResourceLoader.getSortedSignIds());
 
-        final Station station = InitClient.findStation(signPos);
+        final Station station = org.mtr.mod.InitClient.findStation(signPos);
         if (station == null) {
             exitsForList = ObjectImmutableList.of();
             platformsForList = ObjectImmutableList.of();
@@ -213,8 +215,8 @@ public class PATRS01RailwaySignScreen extends ScreenExtension implements IGui {
 
     @Override
     public void onClose2() {
-        InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketUpdateRailwaySignConfig(signPos, selectedIds, signIds));
-        super.onClose2();
+         super.onClose2();
+         InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketUpdatePATRS01RailwaySignConfig(signPos, selectedIds, signIds));
     }
 
     @Override

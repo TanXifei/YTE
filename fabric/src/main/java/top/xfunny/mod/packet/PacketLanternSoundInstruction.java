@@ -9,6 +9,7 @@ import org.mtr.mapping.tool.PacketBufferReceiver;
 import org.mtr.mapping.tool.PacketBufferSender;
 import org.mtr.mod.Init;
 
+
 public final class PacketLanternSoundInstruction extends PacketHandler {
     private final String soundInstruction;
     private final BlockPos blockPos;

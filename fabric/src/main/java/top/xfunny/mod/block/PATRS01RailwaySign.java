@@ -169,8 +169,8 @@ public class PATRS01RailwaySign extends BlockExtension implements IBlock, Direct
 
     public static class BlockEntity extends BlockEntityExtension {
 
-        private static final String KEY_SELECTED_IDS = "selected_ids";
-        private static final String KEY_SIGN_LENGTH = "sign_length";
+        private static final String KEY_SELECTED_IDS = "pat_01_selected_ids";
+        private static final String KEY_SIGN_LENGTH = "pat_01_sign_length";
         private final LongAVLTreeSet selectedIds;
         private final String[] signIds;
 

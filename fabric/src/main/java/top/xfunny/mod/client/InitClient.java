@@ -13,14 +13,14 @@ import top.xfunny.mod.client.render.*;
 import top.xfunny.mod.client.resource.FontList;
 import top.xfunny.mod.config.ClientConfig;
 import top.xfunny.mod.item.YTEItemBlockClickingBase;
+import top.xfunny.mod.packet.PacketUpdatePATRS01RailwaySignConfig;
 
 
 public final class InitClient {
-    public static final RegistryClient REGISTRY_CLIENT = new RegistryClient(Init.REGISTRY);
+    public static RegistryClient REGISTRY_CLIENT = new RegistryClient(Init.REGISTRY);;
     private static final ClientConfig config = new ClientConfig();
     private static long lastMillis = 0;
     private static long gameMillis = 0;
-
 
     public static void init() {
         initializeConfig();
@@ -386,7 +386,9 @@ public final class InitClient {
         REGISTRY_CLIENT.registerItemModelPredicate(Items.YTE_GROUP_LIFT_BUTTONS_LINK_CONNECTOR, new Identifier(Init.MOD_ID, "selected"), checkItemPredicateTag());
         REGISTRY_CLIENT.registerItemModelPredicate(Items.YTE_GROUP_LIFT_BUTTONS_LINK_REMOVER, new Identifier(Init.MOD_ID, "selected"), checkItemPredicateTag());
 
+
         REGISTRY_CLIENT.setupPackets(new Identifier(Init.MOD_ID, "packet"));
+
 
         REGISTRY_CLIENT.eventRegistryClient.registerClientJoin(() -> {
             MinecraftClientData.reset();
@@ -399,7 +401,6 @@ public final class InitClient {
 
         // TODO: 发布前请注释此行代码。
         REGISTRY_CLIENT.eventRegistryClient.registerGuiRendering(RenderWatermark::render);
-
         REGISTRY_CLIENT.init();
     }
 
@@ -422,9 +423,5 @@ public final class InitClient {
 
     public static ClientConfig getConfig() {
         return config;
-    }
-
-    public static float getGameTick() {
-        return (float) gameMillis / 50.0F;
     }
 }

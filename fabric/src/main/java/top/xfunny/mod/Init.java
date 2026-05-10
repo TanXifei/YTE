@@ -21,6 +21,7 @@ public final class Init {
 
 
     public static void init() {
+
         long startTime = System.currentTimeMillis();
         Map<String, Runnable> initSteps = new LinkedHashMap<>();
 
@@ -35,7 +36,6 @@ public final class Init {
             REGISTRY.registerPacket(PacketYTEOpenBlockEntityScreen.class, PacketYTEOpenBlockEntityScreen::new);
             REGISTRY.registerPacket(PacketUpdatePATRS01RailwaySignConfig.class, PacketUpdatePATRS01RailwaySignConfig::new);
             REGISTRY.registerPacket(PacketLanternSoundInstruction.class, PacketLanternSoundInstruction::new);
-            REGISTRY.init();
         });
 
         int currentStep = 1;
@@ -49,6 +49,7 @@ public final class Init {
         long endTime = System.currentTimeMillis();
         long duration = endTime - startTime;
         LOGGER.info("Yunzhu Transit Extension initialized successfully in {} ms.", duration);
+        REGISTRY.init();
     }
 
     public static Position blockPosToPosition(BlockPos blockPos) {
