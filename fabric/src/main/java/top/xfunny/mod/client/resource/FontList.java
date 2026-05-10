@@ -69,9 +69,9 @@ public class FontList {
             loadFont("hitachi-japan-lcd", "font/hitachi-hip32-lcd.ttf");
             loadFont("hitachi-hip43", "font/hitachi-hip43-lcd.ttf"); // SCLC-LCD4、HIP-27 使用此字体
             loadFont("hitachi-sclva043", "font/hitachi-sclva043-lcd.ttf");
-            loadFont("shanghai_mitsubishi_segmented_1","font/shanghai_mitsubishi_segmented_1.ttf");
-            loadFont("shanghai_mitsubishi_segmented_1_sp","font/shanghai_mitsubishi_segmented_1_sp.ttf");
-            loadFont("shanghai_mitsubishi_lcd_1","font/shanghai_mitsubishi_lcd_1.ttf");
+            loadFont("shanghai_mitsubishi_segmented_1", "font/shanghai_mitsubishi_segmented_1.ttf");
+            loadFont("shanghai_mitsubishi_segmented_1_sp", "font/shanghai_mitsubishi_segmented_1_sp.ttf");
+            loadFont("shanghai_mitsubishi_lcd_1", "font/shanghai_mitsubishi_lcd_1.ttf");
             loadFont("schindler_m_series_segment", "font/schindler_m_series_segment.ttf");
             loadFont("schindler_r_series_led", "font/schindler_r_series_led.otf");
             loadFont("tonic-led", "font/tonic-led.ttf");

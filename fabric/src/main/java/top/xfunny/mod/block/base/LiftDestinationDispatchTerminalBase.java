@@ -331,7 +331,7 @@ public abstract class LiftDestinationDispatchTerminalBase extends BlockExtension
                 BlockPos currentTrackPosition = trackPositionAndChar2.left();
                 char currentChar = trackPositionAndChar2.right();
 
-                if(currentTrackPosition != null){
+                if (currentTrackPosition != null) {
                     hasButtonsClient(currentTrackPosition, (floor, lift) -> {
                         final Vector position = lift.getPosition((floorPosition1, floorPosition2) -> ItemLiftRefresher.findPath(new World(world.data), floorPosition1, floorPosition2));
                         BlockPos liftPos = new BlockPos((int) position.x, (int) position.y, (int) position.z);
@@ -364,8 +364,7 @@ public abstract class LiftDestinationDispatchTerminalBase extends BlockExtension
                 scheduler.schedule(() -> {
                     liftButtonPositions.forEach(lanternPos -> {// 传递乘客方向至到站灯
                         BlockEntity lanternBlockEntity = world.getBlockEntity(lanternPos);
-                        if (lanternBlockEntity != null && lanternBlockEntity.data instanceof LiftButtonsBase.BlockEntityBase) {
-                            LiftButtonsBase.BlockEntityBase lanternData = (LiftButtonsBase.BlockEntityBase) lanternBlockEntity.data;
+                        if (lanternBlockEntity != null && lanternBlockEntity.data instanceof LiftButtonsBase.BlockEntityBase lanternData) {
                             lanternData.setPressedButtonDirection(data.liftDirection);
                         }
                     });

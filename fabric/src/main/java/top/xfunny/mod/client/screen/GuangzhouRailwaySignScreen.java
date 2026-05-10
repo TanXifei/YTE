@@ -9,8 +9,8 @@ import top.xfunny.mod.client.screen.base.BaseConfigScreen;
 import top.xfunny.mod.client.screen.widget.ContentItem;
 
 public class GuangzhouRailwaySignScreen extends BaseConfigScreen {
-    protected String signId;
     private final ButtonWidgetExtension signSelected;
+    protected String signId;
 
     public GuangzhouRailwaySignScreen(BlockPos blockPos) {
         super(blockPos);
@@ -18,9 +18,9 @@ public class GuangzhouRailwaySignScreen extends BaseConfigScreen {
 
         signSelected = new ButtonWidgetExtension(0, 0, 60, 20, TextHelper.translatable("selectWorld.edit"), (btn) ->
                 MinecraftClient.getInstance().openScreen(
-                new Screen(new SignSettingScreen(blockPos, signId, (str) ->
-                        this.signId = str).withPreviousScreen(new Screen(this)))
-        ));
+                        new Screen(new SignSettingScreen(blockPos, signId, (str) ->
+                                this.signId = str).withPreviousScreen(new Screen(this)))
+                ));
     }
 
     @Override
@@ -39,7 +39,7 @@ public class GuangzhouRailwaySignScreen extends BaseConfigScreen {
         super.onClose2();
     }
 
-    public MutableText getScreenTitle(){
+    public MutableText getScreenTitle() {
         return TextHelper.translatable("测试屏幕");
     }
 
@@ -48,8 +48,8 @@ public class GuangzhouRailwaySignScreen extends BaseConfigScreen {
         addChild(new ClickableWidget(signSelected));
         ContentItem chooseSignItem = new ContentItem(TextHelper.translatable(signId), signSelected);
 
-        if(signId != null){
-            chooseSignItem.setIcon(new Identifier("mtr","textures/block/sign/" +  signId + ".png"));
+        if (signId != null) {
+            chooseSignItem.setIcon(new Identifier("mtr", "textures/block/sign/" + signId + ".png"));
         }
 
         listViewWidget.addCategory(TextHelper.translatable("gui.yte.signs.list.signs_setting"));

@@ -1,16 +1,11 @@
 package top.xfunny.mod.client.render;
 
-import org.mtr.mapping.holder.ClientPlayerEntity;
-import org.mtr.mapping.holder.MinecraftClient;
-import org.mtr.mapping.holder.MutableText;
-import org.mtr.mapping.holder.Window;
 import org.mtr.mapping.mapper.GraphicsHolder;
-import org.mtr.mapping.mapper.TextHelper;
-import top.xfunny.mod.Keys;
 
 public class RenderWatermark {
     private static final int a = 10;
-    public static void render(GraphicsHolder b){
+
+    public static void render(GraphicsHolder b) {
         /*
         final MinecraftClient c = MinecraftClient.getInstance();
         final Window x = c.getWindow();

@@ -209,7 +209,7 @@ public class RenderThyssenKruppALC01Button1 extends BlockEntityRenderer<ThyssenK
                 liftArrowView.setBasicsAttributes(world, blockPos, lift, LiftArrowView.ArrowType.AUTO);
                 liftArrowView.setTexture(ARROW_TEXTURE);
                 liftArrowView.setDimension(0.625F / 16);
-                liftArrowView.setMargin(0.5F/16, 1.87F / 16, 0, 0);
+                liftArrowView.setMargin(0.5F / 16, 1.87F / 16, 0, 0);
                 liftArrowView.setGravity(Gravity.CENTER_HORIZONTAL);
                 liftArrowView.setQueuedRenderLayer(QueuedRenderLayer.LIGHT_TRANSLUCENT);
                 liftArrowView.setColor(0xFFCC0000);

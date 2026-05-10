@@ -104,7 +104,7 @@ public class RenderKoneKSS280Screen1<T extends LiftPanelBase.BlockEntityBase> ex
                 liftArrowView_left.setDimension(1F / 16);
                 liftArrowView_left.setMargin(0.25F / 16, 1.875F / 16, 0, 0);
                 liftArrowView_left.setQueuedRenderLayer(QueuedRenderLayer.LIGHT_TRANSLUCENT);
-                liftArrowView_left.setFlip(false,true);
+                liftArrowView_left.setFlip(false, true);
                 liftArrowView_left.setColor(0xFFFFFFFF);
 
 

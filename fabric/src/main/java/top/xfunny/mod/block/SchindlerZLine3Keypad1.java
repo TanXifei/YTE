@@ -56,15 +56,13 @@ public class SchindlerZLine3Keypad1 extends LiftDestinationDispatchTerminalBase 
         final double hitY = MathHelper.fractionalPart(hit.getPos().getYMapped());
 
         final org.mtr.mapping.holder.BlockEntity blockEntity = world.getBlockEntity(pos);
-        if (blockEntity == null || !(blockEntity.data instanceof LiftDestinationDispatchTerminalBase.BlockEntityBase)) {
+        if (blockEntity == null || !(blockEntity.data instanceof BlockEntityBase data)) {
             return ActionResult.FAIL;
         }
-        final LiftDestinationDispatchTerminalBase.BlockEntityBase data = (LiftDestinationDispatchTerminalBase.BlockEntityBase) blockEntity.data;
 
-        if (!(blockEntity.data instanceof SchindlerZLine3Keypad1.BlockEntity)) {
+        if (!(blockEntity.data instanceof BlockEntity data1)) {
             return ActionResult.FAIL;
         }
-        final SchindlerZLine3Keypad1.BlockEntity data1 = (SchindlerZLine3Keypad1.BlockEntity) blockEntity.data;
 
         // 获取按键映射
         final DefaultButtonsKeyMapping keyMapping = data.getKeyMapping();
@@ -167,7 +165,7 @@ public class SchindlerZLine3Keypad1 extends LiftDestinationDispatchTerminalBase 
     public static class BlockEntity extends LiftDestinationDispatchTerminalBase.BlockEntityBase {
         public ArrayList<Object> inputString = new ArrayList<>();
 
-        private ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
         private ScheduledFuture<?> scheduledTask;
 
         public BlockEntity(BlockPos pos, BlockState state) {

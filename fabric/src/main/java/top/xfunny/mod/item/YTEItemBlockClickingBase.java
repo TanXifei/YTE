@@ -3,8 +3,6 @@ package top.xfunny.mod.item;
 import org.mtr.mapping.holder.*;
 import org.mtr.mapping.mapper.ItemExtension;
 import org.mtr.mod.generated.lang.TranslationProvider;
-import top.xfunny.mod.Init;
-import top.xfunny.mod.LiftFloorRegistry;
 import top.xfunny.mod.block.base.LiftButtonsBase;
 import top.xfunny.mod.block.base.LiftDestinationDispatchTerminalBase;
 import top.xfunny.mod.block.base.LiftPanelBase;
@@ -29,11 +27,11 @@ public abstract class YTEItemBlockClickingBase extends ItemExtension {
                 final CompoundTag compoundTag = context.getStack().getOrCreateTag();
 
 
-                if(compoundTag.contains(TAG_SECOND_POS)){//如果已点击两个点,第三次点击
+                if (compoundTag.contains(TAG_SECOND_POS)) {//如果已点击两个点,第三次点击
                     final BlockPos posEnd = BlockPos.fromLong(compoundTag.getLong(TAG_POS));
                     final BlockPos posStart = BlockPos.fromLong(compoundTag.getLong(TAG_SECOND_POS));
                     final BlockPos posThird = context.getBlockPos();
-                    onThirdClick(context, posStart, posEnd,posThird, compoundTag);
+                    onThirdClick(context, posStart, posEnd, posThird, compoundTag);
                     compoundTag.remove(TAG_SECOND_POS);
                     compoundTag.remove(TAG_POS);
 
@@ -64,8 +62,6 @@ public abstract class YTEItemBlockClickingBase extends ItemExtension {
                 }
 
 
-
-
                 return ActionResult.SUCCESS;
             } else {
                 return ActionResult.FAIL;
@@ -88,7 +84,7 @@ public abstract class YTEItemBlockClickingBase extends ItemExtension {
 
     protected abstract void onEndClick(ItemUsageContext context, BlockPos posEnd, CompoundTag compoundTag);
 
-    protected abstract void onThirdClick(ItemUsageContext context,BlockPos pos1, BlockPos pos2, BlockPos pos3, CompoundTag compoundTag);
+    protected abstract void onThirdClick(ItemUsageContext context, BlockPos pos1, BlockPos pos2, BlockPos pos3, CompoundTag compoundTag);
 
     protected abstract boolean clickCondition(ItemUsageContext context);
 }

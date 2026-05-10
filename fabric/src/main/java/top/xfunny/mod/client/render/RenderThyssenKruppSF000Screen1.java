@@ -95,13 +95,13 @@ public class RenderThyssenKruppSF000Screen1<T extends LiftPanelBase.BlockEntityB
                         3.5F,
                         0xFFCC0000);
                 liftFloorDisplayView.setTextureId(String.format("thyssenkrupp_sf000_screen_1_display_%d", i))
-;
+                ;
                 liftFloorDisplayView.setWidth(2.6F / 16);
                 liftFloorDisplayView.setHeight(2.8F / 16);
                 liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.RIGHT);
                 liftFloorDisplayView.setLetterSpacing(0);
                 liftFloorDisplayView.setDisplayLength(2, 0);
-                liftFloorDisplayView.setMargin(1.5F/16, 6F / 16, 0, 0);
+                liftFloorDisplayView.setMargin(1.5F / 16, 6F / 16, 0, 0);
                 liftFloorDisplayView.addStoredMatrixTransformations(graphicsHolder -> graphicsHolder.translate(0, 0, -SMALL_OFFSET));
 
                 final LiftArrowView liftArrowView_left = new LiftArrowView();
@@ -109,9 +109,9 @@ public class RenderThyssenKruppSF000Screen1<T extends LiftPanelBase.BlockEntityB
                 liftArrowView_left.setTexture(new Identifier(Init.MOD_ID, "textures/block/thyssenkrupp_arrow_1.png"));
                 liftArrowView_left.setAnimationScrolling(false, 0.05F);
                 liftArrowView_left.setDimension(0.7F / 16);
-                liftArrowView_left.setMargin(-2.35F/16 , 6.975F / 16, 0, 0);
+                liftArrowView_left.setMargin(-2.35F / 16, 6.975F / 16, 0, 0);
                 liftArrowView_left.setQueuedRenderLayer(QueuedRenderLayer.LIGHT_TRANSLUCENT);
-                liftArrowView_left.setFlip(false,true);
+                liftArrowView_left.setFlip(false, true);
                 liftArrowView_left.setColor(0xFFCC0000);
 
 

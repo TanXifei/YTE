@@ -14,7 +14,6 @@ import org.mtr.mod.data.IGui;
 import org.mtr.mod.render.QueuedRenderLayer;
 import org.mtr.mod.render.StoredMatrixTransformations;
 import top.xfunny.mod.Init;
-import top.xfunny.mod.block.SchindlerLineaScreen2WhiteHorizontalEven;
 import top.xfunny.mod.block.SchindlerLineaScreen2WhiteVerticalEven;
 import top.xfunny.mod.block.base.LiftPanelBase;
 import top.xfunny.mod.client.resource.FontList;
@@ -90,13 +89,13 @@ public class RenderSchindlerLineaScreen2WhiteVertical<T extends LiftPanelBase.Bl
                         3.5F,
                         0xFFFF0000);
                 liftFloorDisplayView.setTextureId(String.format("schindler_linea_100_screen_display_%d", i))
-;
+                ;
                 liftFloorDisplayView.setWidth(2.6F / 16);
                 liftFloorDisplayView.setHeight(2.8F / 16);
                 liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.CENTER);
                 liftFloorDisplayView.setLetterSpacing(0);
                 liftFloorDisplayView.setDisplayLength(2, 0);
-                liftFloorDisplayView.setMargin(1.7F/16, 5.725F / 16, 0, 0);
+                liftFloorDisplayView.setMargin(1.7F / 16, 5.725F / 16, 0, 0);
                 liftFloorDisplayView.addStoredMatrixTransformations(graphicsHolder -> graphicsHolder.translate(0, 0, -SMALL_OFFSET));
 
                 final LiftArrowView liftArrowView_left = new LiftArrowView();
@@ -104,7 +103,7 @@ public class RenderSchindlerLineaScreen2WhiteVertical<T extends LiftPanelBase.Bl
                 liftArrowView_left.setTexture(new Identifier(Init.MOD_ID, "textures/block/schindler_linea_arrow_2.png"));
                 liftArrowView_left.setAnimationScrolling(false, 0.05F);
                 liftArrowView_left.setDimension(1.1F / 16);
-                liftArrowView_left.setMargin(-1.875F/16, 5.05F / 16, 0, 0);
+                liftArrowView_left.setMargin(-1.875F / 16, 5.05F / 16, 0, 0);
                 liftArrowView_left.setQueuedRenderLayer(QueuedRenderLayer.LIGHT_TRANSLUCENT);
                 liftArrowView_left.setColor(0xFFFF0000);
 

@@ -29,11 +29,11 @@ import top.xfunny.mod.util.ReverseRendering;
 import java.util.Comparator;
 
 public class RenderTestLiftPanel extends BlockEntityRenderer<TestLiftPanel.BlockEntity> implements DirectionHelper, IGui, IBlock {
-//已弃用
+    //已弃用
     private static final float ARROW_SPEED = 0.04F;
     private static final Identifier ARROW_TEXTURE = new Identifier(Init.MOD_ID, "textures/block/lift_arrow.png");
     private final boolean isOdd;
-    private Lift lift = null;
+    private final Lift lift = null;
 
     public RenderTestLiftPanel(Argument dispatcher, Boolean isOdd) {
         super(dispatcher);
@@ -170,7 +170,7 @@ public class RenderTestLiftPanel extends BlockEntityRenderer<TestLiftPanel.Block
 
                 }
                 float finalOffset = offset1;
-                MainRenderer.scheduleRender(TextureList.instance.getTestLiftPanelDisplay(text ,0xFFAA00).identifier, false, QueuedRenderLayer.LIGHT_TRANSLUCENT, (graphicsHolder, offset) -> {
+                MainRenderer.scheduleRender(TextureList.instance.getTestLiftPanelDisplay(text, 0xFFAA00).identifier, false, QueuedRenderLayer.LIGHT_TRANSLUCENT, (graphicsHolder, offset) -> {
                     storedMatrixTransformations.transform(graphicsHolder, offset);
                     // 绘制楼层信息纹理
                     IDrawing.drawTexture(graphicsHolder, -width + 0.9F, y - 0.07F, width1, height1, finalOffset, 0, finalOffset + (float) 1 / text.length() + 0.0001F * text.length(), 1F, Direction.UP, ARGB_WHITE, GraphicsHolder.getDefaultLight());//楼层数字尺寸设置

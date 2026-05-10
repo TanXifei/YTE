@@ -13,7 +13,6 @@ import org.mtr.mod.client.MinecraftClientData;
 import org.mtr.mod.packet.PacketPressLiftButton;
 import top.xfunny.mod.*;
 import top.xfunny.mod.Items;
-import top.xfunny.mod.SoundEvents;
 import top.xfunny.mod.keymapping.DefaultButtonsKeyMapping;
 import top.xfunny.mod.util.TransformPositionX;
 
@@ -25,8 +24,6 @@ import java.util.function.Consumer;
 
 import static org.mtr.core.data.LiftDirection.NONE;
 
-;
-
 public abstract class LiftButtonsBase extends BlockExtension implements DirectionHelper, BlockWithEntity, IBlock {
     public static final BooleanProperty UNLOCKED = BooleanProperty.of("unlocked");
     public static final BooleanProperty SINGLE = BooleanProperty.of("single");
@@ -37,13 +34,13 @@ public abstract class LiftButtonsBase extends BlockExtension implements Directio
     public LiftButtonsBase(boolean allowPress, boolean isOdd) {
         super(BlockHelper.createBlockSettings(true, true));
         this.isOdd = isOdd;
-        this.allowPress = allowPress;
+        LiftButtonsBase.allowPress = allowPress;
     }
 
     public LiftButtonsBase(boolean allowPress, boolean isOdd, double median) {//todo:即将弃用
         super(BlockHelper.createBlockSettings(true, true));
         this.isOdd = isOdd;
-        this.allowPress = allowPress;
+        LiftButtonsBase.allowPress = allowPress;
         this.median = median;
     }
 
@@ -117,8 +114,7 @@ public abstract class LiftButtonsBase extends BlockExtension implements Directio
 
                         connectedLanternPositions.forEach(lanternPos -> {
                             BlockEntity lanternBlockEntity = world.getBlockEntity(lanternPos);
-                            if (lanternBlockEntity != null && lanternBlockEntity.data instanceof LiftButtonsBase.BlockEntityBase) {
-                                LiftButtonsBase.BlockEntityBase lanternData = (LiftButtonsBase.BlockEntityBase) lanternBlockEntity.data;
+                            if (lanternBlockEntity != null && lanternBlockEntity.data instanceof BlockEntityBase lanternData) {
 
                                 if (descriptor.hasDownButton() && descriptor.hasUpButton()) {
                                     // 双向按钮情况：根据点击位置设置方向
@@ -236,13 +232,10 @@ public abstract class LiftButtonsBase extends BlockExtension implements Directio
         public LiftDirection liftDirection = NONE;
 
         public BlockPos selfPos;
-
-        private LiftDirection pressedButtonDirection;
-
-        private DefaultButtonsKeyMapping keyMapping = new DefaultButtonsKeyMapping();
-
         public boolean lastUpActive = false;
         public boolean lastDownActive = false;
+        private LiftDirection pressedButtonDirection;
+        private DefaultButtonsKeyMapping keyMapping = new DefaultButtonsKeyMapping();
 
 
         public BlockEntityBase(BlockEntityType<?> type, BlockPos blockPos, BlockState blockState) {

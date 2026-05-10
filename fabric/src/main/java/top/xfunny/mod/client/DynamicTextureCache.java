@@ -14,11 +14,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Supplier;
 
 public class DynamicTextureCache {// 使用AI优化
-    public static DynamicTextureCache instance = new DynamicTextureCache();
-
     private static final int COOLDOWN_TIME = 10000; // 10s
     private static final Identifier DEFAULT_TRANSPARENT_RESOURCE = new Identifier(Init.MOD_ID, "textures/block/transparent.png");
-
+    public static DynamicTextureCache instance = new DynamicTextureCache();
     private final Object2ObjectLinkedOpenHashMap<String, DynamicResource> dynamicResources = new Object2ObjectLinkedOpenHashMap<>();
 
     // 强引用兜底
@@ -157,6 +155,7 @@ public class DynamicTextureCache {// 使用AI优化
     private enum DefaultRenderingColor {
         TRANSPARENT(DEFAULT_TRANSPARENT_RESOURCE);
         private final DynamicResource dynamicResource;
+
         DefaultRenderingColor(Identifier identifier) {
             dynamicResource = new DynamicResource(identifier, null);
         }

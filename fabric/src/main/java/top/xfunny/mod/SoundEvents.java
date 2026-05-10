@@ -67,5 +67,6 @@ public class SoundEvents {
         MITSUBISHI_MP_LANTERN_1 = Init.REGISTRY.registerSoundEvent(new Identifier(Init.MOD_ID, "mitsubishi_mp_lantern_1"));
     }
 
-    public static void init() {}
+    public static void init() {
+    }
 }

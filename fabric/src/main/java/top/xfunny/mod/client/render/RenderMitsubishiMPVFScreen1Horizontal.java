@@ -104,7 +104,7 @@ public class RenderMitsubishiMPVFScreen1Horizontal<T extends LiftButtonsBase.Blo
         final ButtonView downLanternLeft = new ButtonView();
         downLanternLeft.setBasicsAttributes(world, blockPos);
         downLanternLeft.setTexture(BUTTON_TEXTURE);
-        downLanternLeft.setDimension(1.375F / 16,236,256);
+        downLanternLeft.setDimension(1.375F / 16, 236, 256);
         downLanternLeft.setGravity(Gravity.CENTER);
         downLanternLeft.setLight(light);
         downLanternLeft.setDefaultColor(DEFAULT_COLOR);
@@ -114,7 +114,7 @@ public class RenderMitsubishiMPVFScreen1Horizontal<T extends LiftButtonsBase.Blo
         final ButtonView downLanternRight = new ButtonView();
         downLanternRight.setBasicsAttributes(world, blockPos);
         downLanternRight.setTexture(BUTTON_TEXTURE);
-        downLanternRight.setDimension(1.375F / 16,236,256);
+        downLanternRight.setDimension(1.375F / 16, 236, 256);
         downLanternRight.setGravity(Gravity.CENTER);
         downLanternRight.setLight(light);
         downLanternRight.setDefaultColor(DEFAULT_COLOR);
@@ -124,7 +124,7 @@ public class RenderMitsubishiMPVFScreen1Horizontal<T extends LiftButtonsBase.Blo
         final ButtonView upLanternLeft = new ButtonView();
         upLanternLeft.setBasicsAttributes(world, blockPos);
         upLanternLeft.setTexture(BUTTON_TEXTURE);
-        upLanternLeft.setDimension(1.375F / 16,236,256);
+        upLanternLeft.setDimension(1.375F / 16, 236, 256);
         upLanternLeft.setGravity(Gravity.CENTER);
         upLanternLeft.setLight(light);
         upLanternLeft.setDefaultColor(DEFAULT_COLOR);
@@ -133,7 +133,7 @@ public class RenderMitsubishiMPVFScreen1Horizontal<T extends LiftButtonsBase.Blo
         final ButtonView upLanternRight = new ButtonView();
         upLanternRight.setBasicsAttributes(world, blockPos);
         upLanternRight.setTexture(BUTTON_TEXTURE);
-        upLanternRight.setDimension(1.375F / 16,236,256);
+        upLanternRight.setDimension(1.375F / 16, 236, 256);
         upLanternRight.setGravity(Gravity.CENTER);
         upLanternRight.setLight(light);
         upLanternRight.setDefaultColor(DEFAULT_COLOR);
@@ -174,7 +174,7 @@ public class RenderMitsubishiMPVFScreen1Horizontal<T extends LiftButtonsBase.Blo
                         case DOWN:
                             downLanternLeft.activate();
                             downLanternRight.activate();
-                            if(!blockEntity.lastDownActive){
+                            if (!blockEntity.lastDownActive) {
                                 InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "mitsubishi_mp_lantern_1"));
                                 blockEntity.lastDownActive = true;
                                 blockEntity.lastUpActive = true;
@@ -183,7 +183,7 @@ public class RenderMitsubishiMPVFScreen1Horizontal<T extends LiftButtonsBase.Blo
                         case UP:
                             upLanternLeft.activate();
                             upLanternRight.activate();
-                            if(!blockEntity.lastDownActive){
+                            if (!blockEntity.lastDownActive) {
                                 InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "mitsubishi_mp_lantern_1"));
                                 blockEntity.lastDownActive = true;
                                 blockEntity.lastUpActive = true;
@@ -200,7 +200,7 @@ public class RenderMitsubishiMPVFScreen1Horizontal<T extends LiftButtonsBase.Blo
                                     case DOWN:
                                         downLanternLeft.activate();
                                         downLanternRight.activate();
-                                        if(!blockEntity.lastDownActive){
+                                        if (!blockEntity.lastDownActive) {
                                             InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "mitsubishi_mp_lantern_1"));
                                             blockEntity.lastDownActive = true;
                                             blockEntity.lastUpActive = true;
@@ -209,7 +209,7 @@ public class RenderMitsubishiMPVFScreen1Horizontal<T extends LiftButtonsBase.Blo
                                     case UP:
                                         upLanternLeft.activate();
                                         upLanternRight.activate();
-                                        if(!blockEntity.lastDownActive){
+                                        if (!blockEntity.lastDownActive) {
                                             InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "mitsubishi_mp_lantern_1"));
                                             blockEntity.lastDownActive = true;
                                             blockEntity.lastUpActive = true;
@@ -222,7 +222,7 @@ public class RenderMitsubishiMPVFScreen1Horizontal<T extends LiftButtonsBase.Blo
                                 case DOWN:
                                     downLanternLeft.activate();
                                     downLanternRight.activate();
-                                    if(!blockEntity.lastDownActive){
+                                    if (!blockEntity.lastDownActive) {
                                         InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "mitsubishi_mp_lantern_1"));
                                         blockEntity.lastDownActive = true;
                                         blockEntity.lastUpActive = true;
@@ -231,7 +231,7 @@ public class RenderMitsubishiMPVFScreen1Horizontal<T extends LiftButtonsBase.Blo
                                 case UP:
                                     upLanternLeft.activate();
                                     upLanternRight.activate();
-                                    if(!blockEntity.lastDownActive){
+                                    if (!blockEntity.lastDownActive) {
                                         InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "mitsubishi_mp_lantern_1"));
                                         blockEntity.lastDownActive = true;
                                         blockEntity.lastUpActive = true;

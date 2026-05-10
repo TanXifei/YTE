@@ -93,7 +93,7 @@ public class RenderMitsubishiMPVFScreen1Vertical<T extends LiftButtonsBase.Block
         ButtonView upLantern = new ButtonView();
         upLantern.setBasicsAttributes(world, blockEntity.getPos2());
         upLantern.setTexture(BUTTON_TEXTURE);
-        upLantern.setDimension(1.375F / 16,236,256);
+        upLantern.setDimension(1.375F / 16, 236, 256);
         upLantern.setGravity(Gravity.CENTER_HORIZONTAL);
         upLantern.setLight(light);
         upLantern.setDefaultColor(DEFAULT_COLOR);
@@ -102,7 +102,7 @@ public class RenderMitsubishiMPVFScreen1Vertical<T extends LiftButtonsBase.Block
         ButtonView downLantern = new ButtonView();
         downLantern.setBasicsAttributes(world, blockEntity.getPos2());
         downLantern.setTexture(BUTTON_TEXTURE);
-        downLantern.setDimension(1.375F / 16,236,256);
+        downLantern.setDimension(1.375F / 16, 236, 256);
         downLantern.setGravity(Gravity.CENTER_HORIZONTAL);
         downLantern.setLight(light);
         downLantern.setDefaultColor(DEFAULT_COLOR);
@@ -119,27 +119,71 @@ public class RenderMitsubishiMPVFScreen1Vertical<T extends LiftButtonsBase.Block
         final ObjectArrayList<ObjectObjectImmutablePair<BlockPos, Lift>> sortedPositionsAndLifts = new ObjectArrayList<>();
 
         blockEntity.forEachTrackPosition(trackPosition -> {
-                    line.RenderLine(holdingLinker, trackPosition);
+            line.RenderLine(holdingLinker, trackPosition);
 
-                    MitsubishiMPVFButton1.hasButtonsClient(trackPosition, buttonDescriptor, (floorIndex, lift) -> {
-                        sortedPositionsAndLifts.add(new ObjectObjectImmutablePair<>(trackPosition, lift));
+            MitsubishiMPVFButton1.hasButtonsClient(trackPosition, buttonDescriptor, (floorIndex, lift) -> {
+                sortedPositionsAndLifts.add(new ObjectObjectImmutablePair<>(trackPosition, lift));
 
-                        LiftDirection pressedButtonDirection = blockEntity.getPressedButtonDirection();
+                LiftDirection pressedButtonDirection = blockEntity.getPressedButtonDirection();
 
-                        ObjectObjectImmutablePair<LiftDirection, ObjectObjectImmutablePair<String, String>> liftDetails = ClientGetLiftDetails.getLiftDetails(world, lift, org.mtr.mod.Init.positionToBlockPos(lift.getCurrentFloor().getPosition()));
-                        String floorNumber = liftDetails.right().left();
-                        String currentFloorNumber = RenderLifts.getLiftDetails(world, lift, trackPosition).right().left();
+                ObjectObjectImmutablePair<LiftDirection, ObjectObjectImmutablePair<String, String>> liftDetails = ClientGetLiftDetails.getLiftDetails(world, lift, org.mtr.mod.Init.positionToBlockPos(lift.getCurrentFloor().getPosition()));
+                String floorNumber = liftDetails.right().left();
+                String currentFloorNumber = RenderLifts.getLiftDetails(world, lift, trackPosition).right().left();
 
-                        final ObjectArraySet<LiftDirection> instructionDirections = lift.hasInstruction(floorIndex);
+                final ObjectArraySet<LiftDirection> instructionDirections = lift.hasInstruction(floorIndex);
 
-                        if (lift.getDoorValue() == 0) {
-                            blockEntity.lastUpActive = false;
-                            blockEntity.lastDownActive = false;
-                        }
+                if (lift.getDoorValue() == 0) {
+                    blockEntity.lastUpActive = false;
+                    blockEntity.lastDownActive = false;
+                }
 
 
-                        if (instructionDirections.isEmpty() && pressedButtonDirection != null && lift.getDoorValue() != 0 && floorNumber.equals(currentFloorNumber)) {
-                            switch (pressedButtonDirection) {
+                if (instructionDirections.isEmpty() && pressedButtonDirection != null && lift.getDoorValue() != 0 && floorNumber.equals(currentFloorNumber)) {
+                    switch (pressedButtonDirection) {
+                        case DOWN:
+                            downLantern.activate();
+                            if (!blockEntity.lastDownActive) {
+                                InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "mitsubishi_mp_lantern_1"));
+                                blockEntity.lastDownActive = true;
+                                blockEntity.lastUpActive = true;
+                            }
+                            break;
+                        case UP:
+                            upLantern.activate();
+                            if (!blockEntity.lastDownActive) {
+                                InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "mitsubishi_mp_lantern_1"));
+                                blockEntity.lastDownActive = true;
+                                blockEntity.lastUpActive = true;
+                            }
+                            break;
+                    }
+                }
+
+                instructionDirections.forEach(liftDirection -> {
+                    if (lift.getDoorValue() != 0 && floorNumber.equals(currentFloorNumber)) {
+                        if (liftDirection == NONE) {
+                            if (pressedButtonDirection != null) {
+                                switch (pressedButtonDirection) {
+                                    case DOWN:
+                                        downLantern.activate();
+                                        if (!blockEntity.lastDownActive) {
+                                            InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "mitsubishi_mp_lantern_1"));
+                                            blockEntity.lastDownActive = true;
+                                            blockEntity.lastUpActive = true;
+                                        }
+                                        break;
+                                    case UP:
+                                        upLantern.activate();
+                                        if (!blockEntity.lastDownActive) {
+                                            InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "mitsubishi_mp_lantern_1"));
+                                            blockEntity.lastDownActive = true;
+                                            blockEntity.lastUpActive = true;
+                                        }
+                                        break;
+                                }
+                            }
+                        } else {
+                            switch (liftDirection) {
                                 case DOWN:
                                     downLantern.activate();
                                     if (!blockEntity.lastDownActive) {
@@ -158,55 +202,11 @@ public class RenderMitsubishiMPVFScreen1Vertical<T extends LiftButtonsBase.Block
                                     break;
                             }
                         }
+                    }
 
-                        instructionDirections.forEach(liftDirection -> {
-                            if (lift.getDoorValue() != 0 && floorNumber.equals(currentFloorNumber)) {
-                                if (liftDirection == NONE) {
-                                    if (pressedButtonDirection != null) {
-                                        switch (pressedButtonDirection) {
-                                            case DOWN:
-                                                downLantern.activate();
-                                                if (!blockEntity.lastDownActive) {
-                                                    InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "mitsubishi_mp_lantern_1"));
-                                                    blockEntity.lastDownActive = true;
-                                                    blockEntity.lastUpActive = true;
-                                                }
-                                                break;
-                                            case UP:
-                                                upLantern.activate();
-                                                if (!blockEntity.lastDownActive) {
-                                                    InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "mitsubishi_mp_lantern_1"));
-                                                    blockEntity.lastDownActive = true;
-                                                    blockEntity.lastUpActive = true;
-                                                }
-                                                break;
-                                        }
-                                    }
-                                } else {
-                                    switch (liftDirection) {
-                                        case DOWN:
-                                            downLantern.activate();
-                                            if (!blockEntity.lastDownActive) {
-                                                InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "mitsubishi_mp_lantern_1"));
-                                                blockEntity.lastDownActive = true;
-                                                blockEntity.lastUpActive = true;
-                                            }
-                                            break;
-                                        case UP:
-                                            upLantern.activate();
-                                            if (!blockEntity.lastDownActive) {
-                                                InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "mitsubishi_mp_lantern_1"));
-                                                blockEntity.lastDownActive = true;
-                                                blockEntity.lastUpActive = true;
-                                            }
-                                            break;
-                                    }
-                                }
-                            }
-
-                        });
-                    });
                 });
+            });
+        });
 
         sortedPositionsAndLifts.sort(Comparator.comparingInt(sortedPositionAndLift -> blockEntity.getPos2().getManhattanDistance(new Vector3i(sortedPositionAndLift.left().data))));
 

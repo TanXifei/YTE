@@ -23,6 +23,7 @@ public final class PacketLanternSoundInstruction extends PacketHandler {
         this.blockPos = blockPos;
         this.soundInstruction = soundInstruction;
     }
+
     @Override
     public void write(PacketBufferSender packetBufferSender) {
         packetBufferSender.writeLong(blockPos.asLong());

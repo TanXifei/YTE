@@ -13,12 +13,11 @@ import top.xfunny.mod.client.render.*;
 import top.xfunny.mod.client.resource.FontList;
 import top.xfunny.mod.config.ClientConfig;
 import top.xfunny.mod.item.YTEItemBlockClickingBase;
-import top.xfunny.mod.packet.PacketUpdatePATRS01RailwaySignConfig;
 
 
 public final class InitClient {
-    public static RegistryClient REGISTRY_CLIENT = new RegistryClient(Init.REGISTRY);;
     private static final ClientConfig config = new ClientConfig();
+    public static RegistryClient REGISTRY_CLIENT = new RegistryClient(Init.REGISTRY);
     private static long lastMillis = 0;
     private static long gameMillis = 0;
 

@@ -3,6 +3,7 @@ package top.xfunny.mod.client.resource;
 import top.xfunny.mod.client.DynamicTextureCache;
 import top.xfunny.mod.client.FontResourceGenerator;
 import top.xfunny.mod.client.client_data.DynamicResource;
+
 import java.awt.*;
 
 public class TextureList {

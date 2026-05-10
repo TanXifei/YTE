@@ -14,10 +14,7 @@ import org.mtr.mod.block.IBlock;
 import org.mtr.mod.data.IGui;
 import org.mtr.mod.render.StoredMatrixTransformations;
 import top.xfunny.mod.Init;
-import top.xfunny.mod.block.KoneKDS330Button1Touch;
 import top.xfunny.mod.block.KoneKDS330Button1TouchWithoutScreen;
-import top.xfunny.mod.block.KoneKDS330Button1WithoutScreen;
-import top.xfunny.mod.block.SchindlerMSeriesButton;
 import top.xfunny.mod.block.base.LiftButtonsBase;
 import top.xfunny.mod.client.view.*;
 import top.xfunny.mod.client.view.view_group.FrameLayout;
@@ -129,7 +126,7 @@ public class RenderKoneKDS330Button1TouchWithoutScreen extends BlockEntityRender
         ImageView koneLogo = new ImageView();
         koneLogo.setBasicsAttributes(world, blockPos);
         koneLogo.setTexture(LOGO);
-        koneLogo.setDimension(0.5F / 16 ,854,372);
+        koneLogo.setDimension(0.5F / 16, 854, 372);
         koneLogo.setLight(light);
         koneLogo.setMargin(0, 2.11F / 16, 2F / 16, 0);
         koneLogo.setGravity(Gravity.END);
@@ -137,16 +134,16 @@ public class RenderKoneKDS330Button1TouchWithoutScreen extends BlockEntityRender
         ImageView useTipUp = new ImageView();
         useTipUp.setBasicsAttributes(world, blockPos);
         useTipUp.setTexture(TIPS);
-        useTipUp.setDimension(1F / 16 ,256,125);
-        useTipUp.setMargin(0,1.5F / 16,0,0);
+        useTipUp.setDimension(1F / 16, 256, 125);
+        useTipUp.setMargin(0, 1.5F / 16, 0, 0);
         useTipUp.setLight(light);
         useTipUp.setGravity(Gravity.END);
 
         ImageView useTipDown = new ImageView();
         useTipDown.setBasicsAttributes(world, blockPos);
         useTipDown.setTexture(TIPS);
-        useTipDown.setDimension(1F / 16 ,256,125);
-        useTipDown.setMargin(0,1.5F / 16,0,0);
+        useTipDown.setDimension(1F / 16, 256, 125);
+        useTipDown.setMargin(0, 1.5F / 16, 0, 0);
         useTipDown.setLight(light);
         useTipDown.setGravity(Gravity.END);
 

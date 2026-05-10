@@ -4,41 +4,36 @@ import org.mtr.mapping.holder.*;
 import org.mtr.mod.Init;
 import org.mtr.mod.block.IBlock;
 import org.mtr.mod.render.QueuedRenderLayer;
+import top.xfunny.mod.client.InitClient;
 import top.xfunny.mod.keymapping.DefaultButtonsKeyMapping;
 import top.xfunny.mod.packet.PacketLanternSoundInstruction;
-import top.xfunny.mod.client.InitClient;
 import top.xfunny.mod.util.TransformPositionX;
-
-import static org.mtr.mapping.mapper.DirectionHelper.FACING;
 
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static org.mtr.mapping.mapper.DirectionHelper.FACING;
+
 public class ButtonView extends ImageView {
 
+    private static final Map<String, Boolean> LAST_ACTIVE_MAP = new ConcurrentHashMap<>();
+    private static final Map<String, Long> CLICK_TIME_MAP = new ConcurrentHashMap<>();
+    private static final long CLICK_COOLDOWN = 200; // 0.2 秒
     private int hoverColor;
     private int pressedColor;
     private int defaultColor;
-
     private boolean isFocused;
     private boolean isPressed; // 仅由 activate/reset 控制
     private boolean isAlwaysOn;
-
     private DefaultButtonsKeyMapping keyMapping;
-
-    private float[] location, dimension;
-    private float[] uv;
-
-    private static final Map<String, Boolean> LAST_ACTIVE_MAP = new ConcurrentHashMap<>();
 
     // ===============================
     // 🔒 工业级点击冷却系统
     // ===============================
-
-    private static final Map<String, Long> CLICK_TIME_MAP = new ConcurrentHashMap<>();
-    private static final long CLICK_COOLDOWN = 200; // 0.2 秒
-
+    private final float[] location;
+    private final float[] dimension;
+    private final float[] uv;
     private boolean wasUseKeyDown = false; // 边缘检测（实例级）
 
     private String lanternSoundInstruction = null;
@@ -139,8 +134,8 @@ public class ButtonView extends ImageView {
         color = isPressed
                 ? pressedColor
                 : isFocused
-                ? hoverColor
-                : defaultColor;
+                  ? hoverColor
+                  : defaultColor;
 
         super.render();
     }

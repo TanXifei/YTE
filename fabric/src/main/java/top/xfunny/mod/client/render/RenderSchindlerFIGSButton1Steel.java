@@ -15,7 +15,6 @@ import org.mtr.mod.block.IBlock;
 import org.mtr.mod.data.IGui;
 import org.mtr.mod.render.QueuedRenderLayer;
 import org.mtr.mod.render.StoredMatrixTransformations;
-import top.xfunny.mod.block.SchindlerFIGSButton1;
 import top.xfunny.mod.block.SchindlerFIGSButton1Steel;
 import top.xfunny.mod.block.base.LiftButtonsBase;
 import top.xfunny.mod.client.resource.FontList;
@@ -198,7 +197,7 @@ public class RenderSchindlerFIGSButton1Steel extends BlockEntityRenderer<Schindl
                         0xFFFFFFFF);
                 liftFloorDisplayView.setDisplayLength(2, 0.05F);
                 liftFloorDisplayView.setTextureId(String.format("schindler_fi_gs_1_steel_display_%d", i))
-;
+                ;
                 liftFloorDisplayView.setWidth(1.4F / 16);
                 liftFloorDisplayView.setHeight(1.7F / 16);
                 liftFloorDisplayView.setMargin(-0.1F / 16, -0.1F / 16, -0.1F / 16, 0);

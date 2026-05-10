@@ -111,7 +111,7 @@ public class RenderSchindlerLineaButton1BlackWithoutScreen extends BlockEntityRe
         buttonUpLight.setDimension(0.8F / 16);
         buttonUpLight.setGravity(Gravity.CENTER);
         buttonUpLight.setLight(light);
-        buttonUpLight.setDefaultColor(ARGB_WHITE,true);
+        buttonUpLight.setDefaultColor(ARGB_WHITE, true);
         buttonUpLight.setHoverColor(HOVER_COLOR);
         buttonUpLight.setPressedColor(PRESSED_COLOR);
         buttonUpLight.setButtonSound("schindler_linea_button_1");

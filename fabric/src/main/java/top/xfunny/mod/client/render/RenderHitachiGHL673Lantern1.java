@@ -15,12 +15,13 @@ import org.mtr.mod.data.IGui;
 import org.mtr.mod.render.RenderLifts;
 import org.mtr.mod.render.StoredMatrixTransformations;
 import top.xfunny.mod.Init;
-import top.xfunny.mod.block.HitachiGHL668Lantern1Even;
 import top.xfunny.mod.block.HitachiGHL673Lantern1Even;
-import top.xfunny.mod.block.MitsubishiNexWayScreen1Even;
 import top.xfunny.mod.block.base.LiftButtonsBase;
 import top.xfunny.mod.client.InitClient;
-import top.xfunny.mod.client.view.*;
+import top.xfunny.mod.client.view.ButtonView;
+import top.xfunny.mod.client.view.Gravity;
+import top.xfunny.mod.client.view.LayoutSize;
+import top.xfunny.mod.client.view.LineComponent;
 import top.xfunny.mod.client.view.view_group.FrameLayout;
 import top.xfunny.mod.client.view.view_group.LinearLayout;
 import top.xfunny.mod.item.YteGroupLiftButtonsLinker;
@@ -97,7 +98,7 @@ public class RenderHitachiGHL673Lantern1<T extends LiftButtonsBase.BlockEntityBa
         final ButtonView downLanternLeft = new ButtonView();
         downLanternLeft.setBasicsAttributes(world, blockPos);
         downLanternLeft.setTexture(BUTTON_TEXTURE);
-        downLanternLeft.setDimension(1.5F / 16,2,3);
+        downLanternLeft.setDimension(1.5F / 16, 2, 3);
         downLanternLeft.setGravity(Gravity.CENTER);
         downLanternLeft.setLight(light);
         downLanternLeft.setDefaultColor(DEFAULT_COLOR);
@@ -106,7 +107,7 @@ public class RenderHitachiGHL673Lantern1<T extends LiftButtonsBase.BlockEntityBa
         final ButtonView downLanternRight = new ButtonView();
         downLanternRight.setBasicsAttributes(world, blockPos);
         downLanternRight.setTexture(BUTTON_TEXTURE);
-        downLanternRight.setDimension(1.5F / 16,2,3);
+        downLanternRight.setDimension(1.5F / 16, 2, 3);
         downLanternRight.setGravity(Gravity.CENTER);
         downLanternRight.setLight(light);
         downLanternRight.setDefaultColor(DEFAULT_COLOR);
@@ -115,7 +116,7 @@ public class RenderHitachiGHL673Lantern1<T extends LiftButtonsBase.BlockEntityBa
         final ButtonView upLanternLeft = new ButtonView();
         upLanternLeft.setBasicsAttributes(world, blockPos);
         upLanternLeft.setTexture(BUTTON_TEXTURE);
-        upLanternLeft.setDimension(1.5F / 16,2,3);
+        upLanternLeft.setDimension(1.5F / 16, 2, 3);
         upLanternLeft.setGravity(Gravity.CENTER);
         upLanternLeft.setLight(light);
         upLanternLeft.setDefaultColor(DEFAULT_COLOR);
@@ -124,7 +125,7 @@ public class RenderHitachiGHL673Lantern1<T extends LiftButtonsBase.BlockEntityBa
         final ButtonView upLanternRight = new ButtonView();
         upLanternRight.setBasicsAttributes(world, blockPos);
         upLanternRight.setTexture(BUTTON_TEXTURE);
-        upLanternRight.setDimension(1.5F / 16,2,3);
+        upLanternRight.setDimension(1.5F / 16, 2, 3);
         upLanternRight.setGravity(Gravity.CENTER);
         upLanternRight.setLight(light);
         upLanternRight.setDefaultColor(DEFAULT_COLOR);
@@ -167,7 +168,7 @@ public class RenderHitachiGHL673Lantern1<T extends LiftButtonsBase.BlockEntityBa
                                 downLanternLeft.activate();
                                 downLanternRight.activate();
                             }
-                            if(!blockEntity.lastDownActive) {
+                            if (!blockEntity.lastDownActive) {
                                 InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "hitachi_ca_lantern_1"));
                                 blockEntity.lastUpActive = true;
                                 blockEntity.lastDownActive = true;
@@ -178,7 +179,7 @@ public class RenderHitachiGHL673Lantern1<T extends LiftButtonsBase.BlockEntityBa
                                 upLanternLeft.activate();
                                 upLanternRight.activate();
                             }
-                            if(!blockEntity.lastUpActive) {
+                            if (!blockEntity.lastUpActive) {
                                 InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "hitachi_ca_lantern_1"));
                                 blockEntity.lastUpActive = true;
                                 blockEntity.lastDownActive = true;
@@ -197,7 +198,7 @@ public class RenderHitachiGHL673Lantern1<T extends LiftButtonsBase.BlockEntityBa
                                             downLanternLeft.activate();
                                             downLanternRight.activate();
                                         }
-                                        if(!blockEntity.lastDownActive) {
+                                        if (!blockEntity.lastDownActive) {
                                             InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "hitachi_ca_lantern_1"));
                                             blockEntity.lastUpActive = true;
                                             blockEntity.lastDownActive = true;
@@ -208,7 +209,7 @@ public class RenderHitachiGHL673Lantern1<T extends LiftButtonsBase.BlockEntityBa
                                             upLanternLeft.activate();
                                             upLanternRight.activate();
                                         }
-                                        if(!blockEntity.lastUpActive) {
+                                        if (!blockEntity.lastUpActive) {
                                             InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "hitachi_ca_lantern_1"));
                                             blockEntity.lastUpActive = true;
                                             blockEntity.lastDownActive = true;
@@ -223,7 +224,7 @@ public class RenderHitachiGHL673Lantern1<T extends LiftButtonsBase.BlockEntityBa
                                         downLanternLeft.activate();
                                         downLanternRight.activate();
                                     }
-                                    if(!blockEntity.lastDownActive) {
+                                    if (!blockEntity.lastDownActive) {
                                         InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "hitachi_ca_lantern_1"));
                                         blockEntity.lastUpActive = true;
                                         blockEntity.lastDownActive = true;
@@ -234,7 +235,7 @@ public class RenderHitachiGHL673Lantern1<T extends LiftButtonsBase.BlockEntityBa
                                         upLanternLeft.activate();
                                         upLanternRight.activate();
                                     }
-                                    if(!blockEntity.lastUpActive) {
+                                    if (!blockEntity.lastUpActive) {
                                         InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "hitachi_ca_lantern_1"));
                                         blockEntity.lastUpActive = true;
                                         blockEntity.lastDownActive = true;

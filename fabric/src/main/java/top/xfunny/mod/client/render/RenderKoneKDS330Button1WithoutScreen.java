@@ -15,7 +15,6 @@ import org.mtr.mod.data.IGui;
 import org.mtr.mod.render.StoredMatrixTransformations;
 import top.xfunny.mod.Init;
 import top.xfunny.mod.block.KoneKDS330Button1WithoutScreen;
-import top.xfunny.mod.block.SchindlerMSeriesButton;
 import top.xfunny.mod.block.base.LiftButtonsBase;
 import top.xfunny.mod.client.view.*;
 import top.xfunny.mod.client.view.view_group.FrameLayout;
@@ -143,11 +142,10 @@ public class RenderKoneKDS330Button1WithoutScreen extends BlockEntityRenderer<Ko
         ImageView koneLogo = new ImageView();
         koneLogo.setBasicsAttributes(world, blockPos);
         koneLogo.setTexture(LOGO);
-        koneLogo.setDimension(0.5F / 16 ,854,372);
+        koneLogo.setDimension(0.5F / 16, 854, 372);
         koneLogo.setLight(light);
         koneLogo.setMargin(0, 2.11F / 16, 2F / 16, 0);
         koneLogo.setGravity(Gravity.END);
-
 
 
         final LineComponent line = new LineComponent();

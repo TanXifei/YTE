@@ -97,7 +97,7 @@ public class RenderFujitecMIC400Screen1Horizontal<T extends LiftPanelBase.BlockE
                 liftFloorDisplayView.setHeight(2.8F / 16);
                 liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.RIGHT);
                 liftFloorDisplayView.setDisplayLength(2, 0);
-                liftFloorDisplayView.setMargin(1.95F/16, 5.875F / 16, 0, 0);
+                liftFloorDisplayView.setMargin(1.95F / 16, 5.875F / 16, 0, 0);
                 liftFloorDisplayView.addStoredMatrixTransformations(graphicsHolder -> graphicsHolder.translate(0, 0, -SMALL_OFFSET));
 
                 final LiftArrowView liftArrowView = new LiftArrowView();
@@ -105,7 +105,7 @@ public class RenderFujitecMIC400Screen1Horizontal<T extends LiftPanelBase.BlockE
                 liftArrowView.setAnimatedTexture("yte", "textures/block/fujitec_mic400_round_arrow/fujitec_mic400_round_arrow_", 7, 2.85f);
                 liftArrowView.setAnimationScrolling(false, 0.05F);
                 liftArrowView.setDimension(0.8F / 16);
-                liftArrowView.setMargin(-3.2F/16, 6.815F / 16, 0, 0);
+                liftArrowView.setMargin(-3.2F / 16, 6.815F / 16, 0, 0);
                 liftArrowView.setQueuedRenderLayer(QueuedRenderLayer.LIGHT_TRANSLUCENT);
                 liftArrowView.setColor(0xFFFFFFFF);
 

@@ -20,10 +20,10 @@ public class OtisSeries1LanternScreen2HorizontalEven extends LiftButtonsBase {
     public VoxelShape getOutlineShape2(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         switch (IBlock.getStatePropertySafe(state, SIDE)) {
             case LEFT:
-                return IBlock.getVoxelShapeByDirection(13.15, 9.525, 0, 16, 12.025,0.25, IBlock.getStatePropertySafe(state, FACING));
+                return IBlock.getVoxelShapeByDirection(13.15, 9.525, 0, 16, 12.025, 0.25, IBlock.getStatePropertySafe(state, FACING));
 
             case RIGHT:
-                return IBlock.getVoxelShapeByDirection(0, 9.525, 0, 2.85, 12.025,0.25, IBlock.getStatePropertySafe(state, FACING));
+                return IBlock.getVoxelShapeByDirection(0, 9.525, 0, 2.85, 12.025, 0.25, IBlock.getStatePropertySafe(state, FACING));
         }
         return VoxelShapes.empty();
     }

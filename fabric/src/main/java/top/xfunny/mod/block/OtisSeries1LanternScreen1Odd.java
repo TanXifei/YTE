@@ -18,7 +18,7 @@ public class OtisSeries1LanternScreen1Odd extends LiftButtonsBase {
     @Nonnull
     @Override
     public VoxelShape getOutlineShape2(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return IBlock.getVoxelShapeByDirection(6.75, 0.9, 0, 9.25, 7.1,0.25, IBlock.getStatePropertySafe(state, FACING));
+        return IBlock.getVoxelShapeByDirection(6.75, 0.9, 0, 9.25, 7.1, 0.25, IBlock.getStatePropertySafe(state, FACING));
 
     }
 
@@ -34,7 +34,6 @@ public class OtisSeries1LanternScreen1Odd extends LiftButtonsBase {
         properties.add(FACING);
         properties.add(SIDE);
     }
-
 
 
     public static class BlockEntity extends BlockEntityBase {

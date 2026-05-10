@@ -5,7 +5,7 @@ import org.mtr.mapping.holder.MinecraftClient;
 
 import java.nio.file.Path;
 
-public class ClientConfig extends Config{
+public class ClientConfig extends Config {
     private static final Path CONFIG_PATH = MinecraftClient.getInstance().getRunDirectoryMapped().toPath().resolve("config").resolve("yunzhu_transit_extension.json");
 
     //隐藏测试水印
@@ -16,14 +16,14 @@ public class ClientConfig extends Config{
     }
 
     @Override
-    protected void setTempConfigItems(JsonObject jsonObject) {
-        this.hideTestWatermark = jsonObject.get("hideTestWatermark").getAsBoolean();
-    }
-
-    @Override
     protected JsonObject getTempConfigItems() {
         JsonObject jsonObject = new JsonObject();
         jsonObject.addProperty("hideTestWatermark", this.hideTestWatermark);
         return jsonObject;
+    }
+
+    @Override
+    protected void setTempConfigItems(JsonObject jsonObject) {
+        this.hideTestWatermark = jsonObject.get("hideTestWatermark").getAsBoolean();
     }
 }

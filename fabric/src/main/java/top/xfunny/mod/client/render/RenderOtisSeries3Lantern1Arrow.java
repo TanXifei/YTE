@@ -118,7 +118,7 @@ public class RenderOtisSeries3Lantern1Arrow<T extends LiftButtonsBase.BlockEntit
 
                 final ObjectArraySet<LiftDirection> instructionDirections = lift.hasInstruction(floorIndex);
 
-                if(lift.getDoorValue() == 0){
+                if (lift.getDoorValue() == 0) {
                     blockEntity.lastUpActive = false;
                     blockEntity.lastDownActive = false;
                 }
@@ -127,7 +127,7 @@ public class RenderOtisSeries3Lantern1Arrow<T extends LiftButtonsBase.BlockEntit
                     switch (pressedButtonDirection) {
                         case DOWN:
                             downLantern.activate();
-                            if(!blockEntity.lastDownActive){
+                            if (!blockEntity.lastDownActive) {
                                 InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "otis_series_3_lantern_down"));
                                 blockEntity.lastDownActive = true;
                                 blockEntity.lastUpActive = true;
@@ -135,7 +135,7 @@ public class RenderOtisSeries3Lantern1Arrow<T extends LiftButtonsBase.BlockEntit
                             break;
                         case UP:
                             upLantern.activate();
-                            if(!blockEntity.lastDownActive){
+                            if (!blockEntity.lastDownActive) {
                                 InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "otis_series_3_lantern_up"));
                                 blockEntity.lastDownActive = true;
                                 blockEntity.lastUpActive = true;
@@ -151,7 +151,7 @@ public class RenderOtisSeries3Lantern1Arrow<T extends LiftButtonsBase.BlockEntit
                                 switch (pressedButtonDirection) {
                                     case DOWN:
                                         downLantern.activate();
-                                        if(!blockEntity.lastDownActive){
+                                        if (!blockEntity.lastDownActive) {
                                             InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "otis_series_3_lantern_down"));
                                             blockEntity.lastDownActive = true;
                                             blockEntity.lastUpActive = true;
@@ -159,7 +159,7 @@ public class RenderOtisSeries3Lantern1Arrow<T extends LiftButtonsBase.BlockEntit
                                         break;
                                     case UP:
                                         upLantern.activate();
-                                        if(!blockEntity.lastDownActive){
+                                        if (!blockEntity.lastDownActive) {
                                             InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "otis_series_3_lantern_up"));
                                             blockEntity.lastDownActive = true;
                                             blockEntity.lastUpActive = true;
@@ -171,7 +171,7 @@ public class RenderOtisSeries3Lantern1Arrow<T extends LiftButtonsBase.BlockEntit
                             switch (liftDirection) {
                                 case DOWN:
                                     downLantern.activate();
-                                    if(!blockEntity.lastDownActive){
+                                    if (!blockEntity.lastDownActive) {
                                         InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "otis_series_3_lantern_down"));
                                         blockEntity.lastDownActive = true;
                                         blockEntity.lastUpActive = true;
@@ -179,7 +179,7 @@ public class RenderOtisSeries3Lantern1Arrow<T extends LiftButtonsBase.BlockEntit
                                     break;
                                 case UP:
                                     upLantern.activate();
-                                    if(!blockEntity.lastDownActive){
+                                    if (!blockEntity.lastDownActive) {
                                         InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "otis_series_3_lantern_up"));
                                         blockEntity.lastDownActive = true;
                                         blockEntity.lastUpActive = true;

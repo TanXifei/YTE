@@ -16,9 +16,7 @@ import org.mtr.mod.render.RenderLifts;
 import org.mtr.mod.render.StoredMatrixTransformations;
 import top.xfunny.mod.Init;
 import top.xfunny.mod.block.OtisSeries1Lantern1Even;
-import top.xfunny.mod.block.SchindlerMSeriesRoundLantern1Even;
 import top.xfunny.mod.block.base.LiftButtonsBase;
-import top.xfunny.mod.client.InitClient;
 import top.xfunny.mod.client.view.ButtonView;
 import top.xfunny.mod.client.view.Gravity;
 import top.xfunny.mod.client.view.LayoutSize;
@@ -27,18 +25,15 @@ import top.xfunny.mod.client.view.view_group.FrameLayout;
 import top.xfunny.mod.client.view.view_group.LinearLayout;
 import top.xfunny.mod.item.YteGroupLiftButtonsLinker;
 import top.xfunny.mod.item.YteLiftButtonsLinker;
-import top.xfunny.mod.packet.PacketLanternSoundInstruction;
 import top.xfunny.mod.util.ClientGetLiftDetails;
 
-import static org.mtr.core.data.LiftDirection.NONE;
+public class RenderOtisSeries1Lantern1<T extends LiftButtonsBase.BlockEntityBase> extends BlockEntityRenderer<T> implements DirectionHelper, IGui, IBlock {
 
-public class RenderOtisSeries1Lantern1 <T extends LiftButtonsBase.BlockEntityBase> extends BlockEntityRenderer<T> implements DirectionHelper, IGui, IBlock {
-
-    private final boolean isOdd;
     private static final int PRESSED_COLOR = 0xFF1D953F;
     private static final int DEFAULT_COLOR = 0xFF0D441D;
     private static final Identifier ARROW_TEXTURE_END = new Identifier(Init.MOD_ID, "textures/block/otis_series_1_lantern_arrow_end.png");
     private static final Identifier ARROW_TEXTURE_MIDDLE = new Identifier(Init.MOD_ID, "textures/block/otis_series_1_lantern_arrow_middle.png");
+    private final boolean isOdd;
 
     public RenderOtisSeries1Lantern1(Argument dispatcher, Boolean isOdd) {
         super(dispatcher);

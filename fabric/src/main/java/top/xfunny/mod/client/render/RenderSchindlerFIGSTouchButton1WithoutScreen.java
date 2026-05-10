@@ -13,19 +13,18 @@ import org.mtr.mapping.mapper.GraphicsHolder;
 import org.mtr.mapping.mapper.PlayerHelper;
 import org.mtr.mod.block.IBlock;
 import org.mtr.mod.data.IGui;
-import org.mtr.mod.render.QueuedRenderLayer;
 import org.mtr.mod.render.StoredMatrixTransformations;
-import top.xfunny.mod.block.SchindlerFIGSTouchButton1;
 import top.xfunny.mod.block.SchindlerFIGSTouchButton1WithoutScreen;
 import top.xfunny.mod.block.base.LiftButtonsBase;
-import top.xfunny.mod.client.resource.FontList;
-import top.xfunny.mod.client.view.*;
+import top.xfunny.mod.client.view.ButtonView;
+import top.xfunny.mod.client.view.Gravity;
+import top.xfunny.mod.client.view.LayoutSize;
+import top.xfunny.mod.client.view.LineComponent;
 import top.xfunny.mod.client.view.view_group.FrameLayout;
 import top.xfunny.mod.client.view.view_group.LinearLayout;
 import top.xfunny.mod.item.YteGroupLiftButtonsLinker;
 import top.xfunny.mod.item.YteLiftButtonsLinker;
 import top.xfunny.mod.keymapping.DefaultButtonsKeyMapping;
-import top.xfunny.mod.util.ReverseRendering;
 
 import java.util.Comparator;
 
@@ -117,7 +116,7 @@ public class RenderSchindlerFIGSTouchButton1WithoutScreen extends BlockEntityRen
         buttonUpLight.setId("up");
         buttonUpLight.setBasicsAttributes(world, blockPos, keyMapping);
         buttonUpLight.setTexture(BUTTON_LIGHT_TEXTURE);
-        buttonUpLight.setDimension(0.6F / 16,569,395);
+        buttonUpLight.setDimension(0.6F / 16, 569, 395);
         buttonUpLight.setGravity(Gravity.CENTER);
         buttonUpLight.setLight(light);
         buttonUpLight.setDefaultColor(0xFF333333, true);
@@ -127,9 +126,9 @@ public class RenderSchindlerFIGSTouchButton1WithoutScreen extends BlockEntityRen
         ButtonView buttonLine = new ButtonView();
         buttonLine.setBasicsAttributes(world, blockPos);
         buttonLine.setTexture(BUTTON_LINE_TEXTURE);
-        buttonLine.setDefaultColor(0xFF333333,true);
-        buttonLine.setMargin(0,0.325F/16,0,0);
-        buttonLine.setDimension(0.8F / 16,600,325);
+        buttonLine.setDefaultColor(0xFF333333, true);
+        buttonLine.setMargin(0, 0.325F / 16, 0, 0);
+        buttonLine.setDimension(0.8F / 16, 600, 325);
         buttonLine.setLight(light);
         buttonLine.setFlip(false, true);
 
@@ -138,7 +137,7 @@ public class RenderSchindlerFIGSTouchButton1WithoutScreen extends BlockEntityRen
         buttonDownLight.setId("down");
         buttonDownLight.setBasicsAttributes(world, blockPos, keyMapping);
         buttonDownLight.setTexture(BUTTON_LIGHT_TEXTURE);
-        buttonDownLight.setDimension(0.6F / 16,569,395);
+        buttonDownLight.setDimension(0.6F / 16, 569, 395);
         buttonDownLight.setGravity(Gravity.CENTER);
         buttonDownLight.setLight(light);
         buttonDownLight.setDefaultColor(0xFF333333, true);

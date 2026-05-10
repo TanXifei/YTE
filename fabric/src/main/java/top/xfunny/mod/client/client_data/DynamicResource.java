@@ -5,17 +5,17 @@ import org.mtr.mapping.holder.MinecraftClient;
 import org.mtr.mapping.holder.NativeImage;
 import org.mtr.mapping.holder.NativeImageBackedTexture;
 import org.mtr.mod.render.MainRenderer;
+
 import javax.annotation.Nullable;
 
 public class DynamicResource {// 使用AI优化
     public final int width;
     public final int height;
     public final Identifier identifier;
-    public long expiryTime;
-    public boolean needsRefresh;
-
     // 持有引用以便后续释放
     private final NativeImageBackedTexture nativeImageBackedTexture;
+    public long expiryTime;
+    public boolean needsRefresh;
 
     public DynamicResource(Identifier identifier, @Nullable NativeImageBackedTexture nativeImageBackedTexture) {
         this.identifier = identifier;

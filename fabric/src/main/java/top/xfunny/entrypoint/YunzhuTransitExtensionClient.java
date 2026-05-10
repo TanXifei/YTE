@@ -1,7 +1,6 @@
 package top.xfunny.entrypoint;
 
 import net.fabricmc.api.ClientModInitializer;
-import top.xfunny.mod.config.ClientConfig;
 
 public class YunzhuTransitExtensionClient implements ClientModInitializer {
 

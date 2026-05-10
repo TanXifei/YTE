@@ -32,11 +32,11 @@ import java.util.Comparator;
 import static org.mtr.core.data.LiftDirection.NONE;
 
 public class RenderOtisSeries1LanternScreen2<T extends LiftButtonsBase.BlockEntityBase> extends BlockEntityRenderer<T> implements DirectionHelper, IGui, IBlock {
-    private final boolean isOdd;
     private static final int PRESSED_COLOR = 0xFF1D953F;
     private static final int DEFAULT_COLOR = 0xFF0D441D;
     private static final Identifier ARROW_TEXTURE_END = new Identifier(Init.MOD_ID, "textures/block/otis_series_1_lantern_arrow_end.png");
     private static final Identifier ARROW_TEXTURE_MIDDLE = new Identifier(Init.MOD_ID, "textures/block/otis_series_1_lantern_arrow_middle.png");
+    private final boolean isOdd;
 
     public RenderOtisSeries1LanternScreen2(Argument dispatcher, Boolean isOdd) {
         super(dispatcher);
@@ -74,7 +74,7 @@ public class RenderOtisSeries1LanternScreen2<T extends LiftButtonsBase.BlockEnti
         parentLayout.setBasicsAttributes(world, blockPos);
         parentLayout.setStoredMatrixTransformations(storedMatrixTransformations1);
         parentLayout.setParentDimensions(2.5F / 16, 3.75F / 16);
-        parentLayout.setPosition(isOdd ?-2.15F / 16 : -10.15F / 16, 2.55F / 16);
+        parentLayout.setPosition(isOdd ? -2.15F / 16 : -10.15F / 16, 2.55F / 16);
         parentLayout.setWidth(LayoutSize.MATCH_PARENT);
         parentLayout.setHeight(LayoutSize.MATCH_PARENT);
 
@@ -91,7 +91,7 @@ public class RenderOtisSeries1LanternScreen2<T extends LiftButtonsBase.BlockEnti
         backgroundLayout1.setHeight(LayoutSize.WRAP_CONTENT);
         backgroundLayout1.setGravity(Gravity.CENTER);
         backgroundLayout1.setBackgroundColor(0xFF000000);
-        backgroundLayout1.setMargin(0.0F/16, 0.5F/16, 0.0F/16, 0.0F/16);
+        backgroundLayout1.setMargin(0.0F / 16, 0.5F / 16, 0.0F / 16, 0.0F / 16);
 
         ButtonView upLantern = new ButtonView();
         upLantern.setBasicsAttributes(world, blockPos);
@@ -100,7 +100,7 @@ public class RenderOtisSeries1LanternScreen2<T extends LiftButtonsBase.BlockEnti
         upLantern.setLight(light);
         upLantern.setDefaultColor(DEFAULT_COLOR);
         upLantern.setPressedColor(PRESSED_COLOR);
-        upLantern.setMargin(0, 0.1F/16, 0, -1.8F/16); // Changed top and bottom margins
+        upLantern.setMargin(0, 0.1F / 16, 0, -1.8F / 16); // Changed top and bottom margins
 
         ButtonView downLantern = new ButtonView();
         downLantern.setBasicsAttributes(world, blockPos);
@@ -110,7 +110,7 @@ public class RenderOtisSeries1LanternScreen2<T extends LiftButtonsBase.BlockEnti
         downLantern.setDefaultColor(DEFAULT_COLOR);
         downLantern.setPressedColor(PRESSED_COLOR);
         downLantern.setFlip(false, true);
-        downLantern.setMargin(0, -1.8F/16, 0, 0.1F/16); // Changed top and bottom margins
+        downLantern.setMargin(0, -1.8F / 16, 0, 0.1F / 16); // Changed top and bottom margins
 
         ButtonView middleLantern = new ButtonView();
         middleLantern.setBasicsAttributes(world, blockPos);
@@ -144,7 +144,7 @@ public class RenderOtisSeries1LanternScreen2<T extends LiftButtonsBase.BlockEnti
 
                 final ObjectArraySet<LiftDirection> instructionDirections = lift.hasInstruction(floorIndex);
 
-                if(lift.getDoorValue() == 0){
+                if (lift.getDoorValue() == 0) {
                     blockEntity.lastUpActive = false;
                     blockEntity.lastDownActive = false;
                 }
@@ -155,7 +155,7 @@ public class RenderOtisSeries1LanternScreen2<T extends LiftButtonsBase.BlockEnti
                         case DOWN:
                             downLantern.activate();
                             middleLantern.activate();
-                            if(!blockEntity.lastDownActive){
+                            if (!blockEntity.lastDownActive) {
                                 InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "otis_series_1_lantern_down_2"));
                                 blockEntity.lastDownActive = true;
                                 blockEntity.lastUpActive = true;
@@ -165,7 +165,7 @@ public class RenderOtisSeries1LanternScreen2<T extends LiftButtonsBase.BlockEnti
                         case UP:
                             upLantern.activate();
                             middleLantern.activate();
-                            if(!blockEntity.lastUpActive){
+                            if (!blockEntity.lastUpActive) {
                                 InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "otis_series_1_lantern_up_2"));
                                 blockEntity.lastUpActive = true;
                                 blockEntity.lastDownActive = true;
@@ -183,7 +183,7 @@ public class RenderOtisSeries1LanternScreen2<T extends LiftButtonsBase.BlockEnti
                                     case DOWN:
                                         downLantern.activate();
                                         middleLantern.activate();
-                                        if(!blockEntity.lastDownActive){
+                                        if (!blockEntity.lastDownActive) {
                                             InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "otis_series_1_lantern_down_2"));
                                             blockEntity.lastDownActive = true;
                                             blockEntity.lastUpActive = true;
@@ -193,7 +193,7 @@ public class RenderOtisSeries1LanternScreen2<T extends LiftButtonsBase.BlockEnti
                                     case UP:
                                         upLantern.activate();
                                         middleLantern.activate();
-                                        if(!blockEntity.lastUpActive){
+                                        if (!blockEntity.lastUpActive) {
                                             InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "otis_series_1_lantern_up_2"));
                                             blockEntity.lastUpActive = true;
                                             blockEntity.lastDownActive = true;
@@ -207,7 +207,7 @@ public class RenderOtisSeries1LanternScreen2<T extends LiftButtonsBase.BlockEnti
                                 case DOWN:
                                     downLantern.activate();
                                     middleLantern.activate();
-                                    if(!blockEntity.lastDownActive){
+                                    if (!blockEntity.lastDownActive) {
                                         InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "otis_series_1_lantern_down_2"));
                                         blockEntity.lastDownActive = true;
                                         blockEntity.lastUpActive = true;
@@ -217,7 +217,7 @@ public class RenderOtisSeries1LanternScreen2<T extends LiftButtonsBase.BlockEnti
                                 case UP:
                                     upLantern.activate();
                                     middleLantern.activate();
-                                    if(!blockEntity.lastUpActive){
+                                    if (!blockEntity.lastUpActive) {
                                         InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "otis_series_1_lantern_up_2"));
                                         blockEntity.lastUpActive = true;
                                         blockEntity.lastDownActive = true;

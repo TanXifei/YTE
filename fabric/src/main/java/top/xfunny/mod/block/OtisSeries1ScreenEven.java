@@ -6,7 +6,6 @@ import org.mtr.mapping.tool.HolderBase;
 import org.mtr.mod.block.IBlock;
 import top.xfunny.mod.BlockEntityTypes;
 import top.xfunny.mod.block.base.LiftButtonsBase;
-import top.xfunny.mod.block.base.LiftPanelBase;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -20,10 +19,10 @@ public class OtisSeries1ScreenEven extends LiftButtonsBase {
     public VoxelShape getOutlineShape2(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         switch (IBlock.getStatePropertySafe(state, SIDE)) {
             case LEFT:
-                return IBlock.getVoxelShapeByDirection(14.75, 0.9, 0, 16, 4.65,0.25, IBlock.getStatePropertySafe(state, FACING));
+                return IBlock.getVoxelShapeByDirection(14.75, 0.9, 0, 16, 4.65, 0.25, IBlock.getStatePropertySafe(state, FACING));
 
             case RIGHT:
-                return IBlock.getVoxelShapeByDirection(0, 0.9, 0, 1.25, 4.65,0.25, IBlock.getStatePropertySafe(state, FACING));
+                return IBlock.getVoxelShapeByDirection(0, 0.9, 0, 1.25, 4.65, 0.25, IBlock.getStatePropertySafe(state, FACING));
         }
         return VoxelShapes.empty();
     }

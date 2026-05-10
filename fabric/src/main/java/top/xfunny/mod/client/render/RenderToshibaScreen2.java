@@ -12,10 +12,7 @@ import org.mtr.mapping.mapper.GraphicsHolder;
 import org.mtr.mapping.mapper.PlayerHelper;
 import org.mtr.mod.block.IBlock;
 import org.mtr.mod.data.IGui;
-import org.mtr.mod.render.QueuedRenderLayer;
 import org.mtr.mod.render.StoredMatrixTransformations;
-import top.xfunny.mod.Init;
-import top.xfunny.mod.block.SchindlerDSeriesScreen1Even;
 import top.xfunny.mod.block.ToshibaScreen2Even;
 import top.xfunny.mod.block.base.LiftPanelBase;
 import top.xfunny.mod.client.resource.FontList;
@@ -91,7 +88,7 @@ public class RenderToshibaScreen2<T extends LiftPanelBase.BlockEntityBase> exten
                 liftFloorDisplayView.setBasicsAttributes(world,
                         blockPos,
                         sortedPositionsAndLifts.get(i).right(),
-                        FontList.instance.getFont(floorNumber.matches("^(-1|1)$")?"toshiba_segmented_1":"toshiba_segmented"),
+                        FontList.instance.getFont(floorNumber.matches("^(-1|1)$") ? "toshiba_segmented_1" : "toshiba_segmented"),
                         6.5F,
                         0xFFFF0000);
                 liftFloorDisplayView.setTextureId(String.format("toshiba_screen_2_display_%d", i));

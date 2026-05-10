@@ -193,7 +193,7 @@ public class RenderMitsubishiRyodenScreen1<T extends LiftButtonsBase.BlockEntity
 
                 final ObjectArraySet<LiftDirection> instructionDirections = lift.hasInstruction(floorIndex);
 
-                if(lift.getDoorValue() == 0){
+                if (lift.getDoorValue() == 0) {
                     blockEntity.lastUpActive = false;
                     blockEntity.lastDownActive = false;
                 }
@@ -201,22 +201,22 @@ public class RenderMitsubishiRyodenScreen1<T extends LiftButtonsBase.BlockEntity
                 if (instructionDirections.isEmpty() && pressedButtonDirection != null && lift.getDoorValue() != 0 && floorNumber.equals(currentFloorNumber)) {
                     switch (pressedButtonDirection) {
                         case DOWN:
-                            if(flash){
+                            if (flash) {
                                 downLanternLeft.activate();
                                 downLanternRight.activate();
                             }
-                            if(!blockEntity.lastDownActive) {
+                            if (!blockEntity.lastDownActive) {
                                 InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "mitsubishi_nexway_lantern_1_down"));
                                 blockEntity.lastDownActive = true;
                                 blockEntity.lastUpActive = true;
                             }
                             break;
                         case UP:
-                            if(flash){
+                            if (flash) {
                                 upLanternLeft.activate();
                                 upLanternRight.activate();
                             }
-                            if(!blockEntity.lastDownActive) {
+                            if (!blockEntity.lastDownActive) {
                                 InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "mitsubishi_nexway_lantern_1_down"));
                                 blockEntity.lastDownActive = true;
                                 blockEntity.lastUpActive = true;
@@ -231,22 +231,22 @@ public class RenderMitsubishiRyodenScreen1<T extends LiftButtonsBase.BlockEntity
                             if (pressedButtonDirection != null) {
                                 switch (pressedButtonDirection) {
                                     case DOWN:
-                                        if(flash){
+                                        if (flash) {
                                             downLanternLeft.activate();
                                             downLanternRight.activate();
                                         }
-                                        if(!blockEntity.lastDownActive) {
+                                        if (!blockEntity.lastDownActive) {
                                             InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "mitsubishi_nexway_lantern_1_down"));
                                             blockEntity.lastDownActive = true;
                                             blockEntity.lastUpActive = true;
                                         }
                                         break;
                                     case UP:
-                                        if(flash){
+                                        if (flash) {
                                             upLanternLeft.activate();
                                             upLanternRight.activate();
                                         }
-                                        if(!blockEntity.lastDownActive){
+                                        if (!blockEntity.lastDownActive) {
                                             InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "mitsubishi_nexway_lantern_1_down"));
                                             blockEntity.lastDownActive = true;
                                             blockEntity.lastUpActive = true;
@@ -259,7 +259,7 @@ public class RenderMitsubishiRyodenScreen1<T extends LiftButtonsBase.BlockEntity
                                 case DOWN:
                                     downLanternLeft.activate();
                                     downLanternRight.activate();
-                                    if(!blockEntity.lastDownActive){
+                                    if (!blockEntity.lastDownActive) {
                                         InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "mitsubishi_nexway_lantern_1_down"));
                                         blockEntity.lastDownActive = true;
                                         blockEntity.lastUpActive = true;
@@ -268,7 +268,7 @@ public class RenderMitsubishiRyodenScreen1<T extends LiftButtonsBase.BlockEntity
                                 case UP:
                                     upLanternLeft.activate();
                                     upLanternRight.activate();
-                                    if(!blockEntity.lastDownActive){
+                                    if (!blockEntity.lastDownActive) {
                                         InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "mitsubishi_nexway_lantern_1_down"));
                                         blockEntity.lastDownActive = true;
                                         blockEntity.lastUpActive = true;

@@ -152,7 +152,7 @@ public class RenderKoneMScreen1Small<T extends LiftButtonsBase.BlockEntityBase> 
                         case DOWN:
                             downLantern.activate();
                             downLantern1.activate();
-                            if(!blockEntity.lastDownActive){
+                            if (!blockEntity.lastDownActive) {
                                 InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "kone_m_lantern_1_down"));
                                 blockEntity.lastDownActive = true;
                                 blockEntity.lastUpActive = true;
@@ -161,7 +161,7 @@ public class RenderKoneMScreen1Small<T extends LiftButtonsBase.BlockEntityBase> 
                         case UP:
                             upLantern.activate();
                             upLantern1.activate();
-                            if(!blockEntity.lastDownActive) {
+                            if (!blockEntity.lastDownActive) {
                                 InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "kone_m_lantern_1_up"));
                                 blockEntity.lastDownActive = true;
                                 blockEntity.lastUpActive = true;
@@ -178,7 +178,7 @@ public class RenderKoneMScreen1Small<T extends LiftButtonsBase.BlockEntityBase> 
                                     case DOWN:
                                         downLantern.activate();
                                         downLantern1.activate();
-                                        if(!blockEntity.lastDownActive) {
+                                        if (!blockEntity.lastDownActive) {
                                             InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "kone_m_lantern_1_down"));
                                             blockEntity.lastDownActive = true;
                                             blockEntity.lastUpActive = true;
@@ -187,7 +187,7 @@ public class RenderKoneMScreen1Small<T extends LiftButtonsBase.BlockEntityBase> 
                                     case UP:
                                         upLantern.activate();
                                         upLantern1.activate();
-                                        if(!blockEntity.lastDownActive) {
+                                        if (!blockEntity.lastDownActive) {
                                             InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "kone_m_lantern_1_up"));
                                             blockEntity.lastDownActive = true;
                                             blockEntity.lastUpActive = true;
@@ -200,7 +200,7 @@ public class RenderKoneMScreen1Small<T extends LiftButtonsBase.BlockEntityBase> 
                                 case DOWN:
                                     downLantern.activate();
                                     downLantern1.activate();
-                                    if(!blockEntity.lastDownActive) {
+                                    if (!blockEntity.lastDownActive) {
                                         InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "kone_m_lantern_1_down"));
                                         blockEntity.lastDownActive = true;
                                         blockEntity.lastUpActive = true;
@@ -209,7 +209,7 @@ public class RenderKoneMScreen1Small<T extends LiftButtonsBase.BlockEntityBase> 
                                 case UP:
                                     upLantern.activate();
                                     upLantern1.activate();
-                                    if(!blockEntity.lastDownActive) {
+                                    if (!blockEntity.lastDownActive) {
                                         InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "kone_m_lantern_1_up"));
                                         blockEntity.lastDownActive = true;
                                         blockEntity.lastUpActive = true;
@@ -246,7 +246,7 @@ public class RenderKoneMScreen1Small<T extends LiftButtonsBase.BlockEntityBase> 
                 // 3. 设置楼层显示对齐方式为居中
                 liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.RIGHT);
                 // 3. 设置楼层显示左右边距，与两侧箭头留出 3/16 的间隔
-                liftFloorDisplayView.setMargin(-0.65F/16, 0, 0.6F/16, 0);
+                liftFloorDisplayView.setMargin(-0.65F / 16, 0, 0.6F / 16, 0);
             }
         }
 

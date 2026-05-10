@@ -16,7 +16,6 @@ import org.mtr.mod.render.QueuedRenderLayer;
 import org.mtr.mod.render.StoredMatrixTransformations;
 import top.xfunny.mod.Init;
 import top.xfunny.mod.block.HitachiB85Screen1VerticalEven;
-import top.xfunny.mod.block.SchindlerLineaScreen2WhiteVerticalEven;
 import top.xfunny.mod.block.base.LiftPanelBase;
 import top.xfunny.mod.client.resource.FontList;
 import top.xfunny.mod.client.view.*;
@@ -91,17 +90,17 @@ public class RenderHitachiB85Screen1Vertical<T extends LiftPanelBase.BlockEntity
                 liftFloorDisplayView.setBasicsAttributes(world,
                         blockPos,
                         sortedPositionsAndLifts.get(i).right(),
-                        FontList.instance.getFont(floorNumber.matches("^(-1|1)$")?"hitachi_b85_2_left":"hitachi_b85_2"),
+                        FontList.instance.getFont(floorNumber.matches("^(-1|1)$") ? "hitachi_b85_2_left" : "hitachi_b85_2"),
                         5F,
                         0xFFCC0000);
                 liftFloorDisplayView.setTextureId(String.format("hitachi_b85_screen_1_vertical_display_%d", i))
-;
+                ;
                 liftFloorDisplayView.setWidth(2.6F / 16);
                 liftFloorDisplayView.setHeight(2.8F / 16);
                 liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.RIGHT);
                 liftFloorDisplayView.setLetterSpacing(30);
                 liftFloorDisplayView.setDisplayLength(2, 0);
-                liftFloorDisplayView.setMargin(1.25F/16, 5.875F / 16, 0, 0);
+                liftFloorDisplayView.setMargin(1.25F / 16, 5.875F / 16, 0, 0);
                 liftFloorDisplayView.addStoredMatrixTransformations(graphicsHolder -> graphicsHolder.translate(0, 0, -SMALL_OFFSET));
 
                 final LiftArrowView liftArrowView_left = new LiftArrowView();
@@ -109,7 +108,7 @@ public class RenderHitachiB85Screen1Vertical<T extends LiftPanelBase.BlockEntity
                 liftArrowView_left.setTexture(new Identifier(Init.MOD_ID, "textures/block/hitachi_b85_arrow_2.png"));
                 liftArrowView_left.setAnimationScrolling(false, 0.05F);
                 liftArrowView_left.setDimension(1F / 16);
-                liftArrowView_left.setMargin(-1.375F/16, 5.5F / 16, 0, 0);
+                liftArrowView_left.setMargin(-1.375F / 16, 5.5F / 16, 0, 0);
                 liftArrowView_left.setQueuedRenderLayer(QueuedRenderLayer.LIGHT_TRANSLUCENT);
                 liftArrowView_left.setColor(0xFFCC0000);
 

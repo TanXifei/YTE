@@ -84,7 +84,7 @@ public class FloorAutoSetter extends ItemExtension implements DirectionHelper {
 
             if (number == pathFinder.getMark().size()) {
                 if (playerEntity != null) {
-                    playerEntity.sendMessage(Text.cast(TextHelper.translatable("message.floor_auto_setter_status_finished", floorCount+1)), true);
+                    playerEntity.sendMessage(Text.cast(TextHelper.translatable("message.floor_auto_setter_status_finished", floorCount + 1)), true);
                 }
                 break;
             }

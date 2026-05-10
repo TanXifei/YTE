@@ -158,7 +158,7 @@ public class RenderKoneKDS330Button1 extends BlockEntityRenderer<KoneKDS330Butto
         ImageView koneLogo = new ImageView();
         koneLogo.setBasicsAttributes(world, blockPos);
         koneLogo.setTexture(LOGO);
-        koneLogo.setDimension(0.5F / 16 ,854,372);
+        koneLogo.setDimension(0.5F / 16, 854, 372);
         koneLogo.setLight(light);
         koneLogo.setMargin(0, 2.61F / 16, 2F / 16, 0);
         koneLogo.setGravity(Gravity.END);
@@ -224,7 +224,7 @@ public class RenderKoneKDS330Button1 extends BlockEntityRenderer<KoneKDS330Butto
                 liftArrowView.setMargin(0, 0, 0, 0);
                 liftArrowView.setGravity(Gravity.CENTER_HORIZONTAL);
                 liftArrowView.setQueuedRenderLayer(QueuedRenderLayer.LIGHT_TRANSLUCENT);
-                liftArrowView.setFlip(false,true);
+                liftArrowView.setFlip(false, true);
                 // If unlocked, display the arrow.
                 if (unlocked) {
                     liftArrowView.setColor(0xFFFFFFFF);

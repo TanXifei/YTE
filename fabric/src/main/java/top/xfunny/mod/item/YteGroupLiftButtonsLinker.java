@@ -8,7 +8,6 @@ import org.mtr.mod.block.BlockLiftButtons;
 import org.mtr.mod.block.BlockLiftPanelBase;
 import org.mtr.mod.block.BlockLiftTrackBase;
 import org.mtr.mod.block.BlockLiftTrackFloor;
-import org.mtr.mod.item.ItemBlockClickingBase;
 import top.xfunny.mod.ButtonRegistry;
 import top.xfunny.mod.Init;
 import top.xfunny.mod.LiftFloorRegistry;
@@ -42,7 +41,7 @@ public class YteGroupLiftButtonsLinker extends YTEItemBlockClickingBase implemen
                     ((BlockLiftPanelBase.BlockEntityBase) blockEntity1.data).registerFloor(world, blockPos2, isAdd);
                 }
             } else if (blockEntity2.data instanceof LiftButtonsBase.BlockEntityBase || blockEntity2.data instanceof LiftDestinationDispatchTerminalBase.BlockEntityBase) {
-                if(blockEntity1.data instanceof LiftFloorRegistry){
+                if (blockEntity1.data instanceof LiftFloorRegistry) {
                     ((ButtonRegistry) blockEntity1.data).registerButton(world, blockPos2, isAdd);
                 }
             }
@@ -77,12 +76,12 @@ public class YteGroupLiftButtonsLinker extends YTEItemBlockClickingBase implemen
             final boolean isEndTrackBase = endState.getBlock().data instanceof BlockLiftTrackBase;
 
 
-            if(isStartTrackBase && isEndTrackBase) {
+            if (isStartTrackBase && isEndTrackBase) {
                 if (playerEntity != null) {
                     playerEntity.sendMessage(isConnector ? Text.cast(TextHelper.translatable("message.linker_status_failed")) : Text.cast(TextHelper.translatable("message.linker_status_failed_remove")), true);
                 }
                 break;
-            }else if (isStartTrackBase ^ isEndTrackBase) {// 两点之一为楼层轨道
+            } else if (isStartTrackBase ^ isEndTrackBase) {// 两点之一为楼层轨道
                 Init.LOGGER.info(posEnd.toShortString());
                 connect(world, posStart, posEnd, isConnector);
                 connect(world, posEnd, posStart, isConnector);
@@ -92,21 +91,21 @@ public class YteGroupLiftButtonsLinker extends YTEItemBlockClickingBase implemen
 
                 final BlockState newPosEndState = world.getBlockState(posEnd);
                 final BlockState newPosStartState = world.getBlockState(posStart);
-                
-                final boolean isPosEndValid = 
-                    newPosEndState.getBlock().data instanceof LiftButtonsBase ||
-                    newPosEndState.getBlock().data instanceof LiftDestinationDispatchTerminalBase ||
-                    newPosEndState.getBlock().data instanceof LiftPanelBase ||
-                    newPosEndState.getBlock().data instanceof BlockLiftButtons ||
-                    newPosEndState.getBlock().data instanceof BlockLiftPanelBase;
-                    
-                final boolean isPosStartTrackFloor = 
-                    newPosStartState.getBlock().data instanceof BlockLiftTrackFloor;
+
+                final boolean isPosEndValid =
+                        newPosEndState.getBlock().data instanceof LiftButtonsBase ||
+                                newPosEndState.getBlock().data instanceof LiftDestinationDispatchTerminalBase ||
+                                newPosEndState.getBlock().data instanceof LiftPanelBase ||
+                                newPosEndState.getBlock().data instanceof BlockLiftButtons ||
+                                newPosEndState.getBlock().data instanceof BlockLiftPanelBase;
+
+                final boolean isPosStartTrackFloor =
+                        newPosStartState.getBlock().data instanceof BlockLiftTrackFloor;
 
                 if (isPosEndValid && isPosStartTrackFloor) {
                     floorCount++;
                 }
-            }else{
+            } else {
                 if (playerEntity != null) {// 需要第三点
                     playerEntity.sendMessage(Text.cast(TextHelper.translatable("message.floor_auto_setter_status_need_track_floor_position")), true);
                 }
@@ -124,7 +123,7 @@ public class YteGroupLiftButtonsLinker extends YTEItemBlockClickingBase implemen
     }
 
     @Override
-    public void onThirdClick(ItemUsageContext context,BlockPos pos1, BlockPos pos2, BlockPos pos3, CompoundTag compoundTag){
+    public void onThirdClick(ItemUsageContext context, BlockPos pos1, BlockPos pos2, BlockPos pos3, CompoundTag compoundTag) {
         final PlayerEntity playerEntity = context.getPlayer();
         int floorCount = 0;
         final PathFinder pathFinder = new PathFinder();
@@ -132,7 +131,7 @@ public class YteGroupLiftButtonsLinker extends YTEItemBlockClickingBase implemen
         number = 0;
 
         while (true) {
-            if(pos1 != null && pos2 != null && world.getBlockState(pos3).getBlock().data instanceof BlockLiftTrackBase){
+            if (pos1 != null && pos2 != null && world.getBlockState(pos3).getBlock().data instanceof BlockLiftTrackBase) {
                 connect(world, pos1, pos2, isConnector);
                 connect(world, pos2, pos1, isConnector);
                 Object[] pos = pathFinder.findPath(context, pos1, pos2, pos3);
@@ -148,7 +147,7 @@ public class YteGroupLiftButtonsLinker extends YTEItemBlockClickingBase implemen
                 if (isBlockEndValid && isBlockStartValid) {
                     floorCount++;
                 }
-            }else {
+            } else {
                 if (playerEntity != null) {
                     playerEntity.sendMessage(isConnector ? Text.cast(TextHelper.translatable("message.linker_status_failed")) : Text.cast(TextHelper.translatable("message.linker_status_failed_remove")), true);
                 }

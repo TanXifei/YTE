@@ -15,7 +15,6 @@ import org.mtr.mod.data.IGui;
 import org.mtr.mod.render.RenderLifts;
 import org.mtr.mod.render.StoredMatrixTransformations;
 import top.xfunny.mod.Init;
-import top.xfunny.mod.block.MitsubishiNexWayScreen1SegmentedEven;
 import top.xfunny.mod.block.ToshibaScreen1Even;
 import top.xfunny.mod.block.base.LiftButtonsBase;
 import top.xfunny.mod.client.InitClient;
@@ -298,7 +297,7 @@ public class RenderToshibaScreen1<T extends LiftButtonsBase.BlockEntityBase> ext
                 liftFloorDisplayView.setBasicsAttributes(world,
                         blockPos,
                         sortedPositionsAndLifts.get(i).right(),
-                        FontList.instance.getFont(floorNumber.matches("^(-1|1)$")?"toshiba_segmented_1":"toshiba_segmented"),
+                        FontList.instance.getFont(floorNumber.matches("^(-1|1)$") ? "toshiba_segmented_1" : "toshiba_segmented"),
                         10,//字号
                         0xFFFF0000);//字体颜色
                 liftFloorDisplayView.setDisplayLength(2, 0);//true开启滚动，开启滚动时的字数条件(>)，滚动速度

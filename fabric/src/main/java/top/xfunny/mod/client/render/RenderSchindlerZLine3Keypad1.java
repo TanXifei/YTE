@@ -139,7 +139,6 @@ public class RenderSchindlerZLine3Keypad1 extends BlockEntityRenderer<SchindlerZ
             textView.setBasicsAttributes(world, blockPos, FontList.instance.getFont("Arial"), 6, 0xFF212121);
             textView.setDisplayLength(6, 0.005F);
             textView.setTextureId("schindler_z_line_3_keypad_1_display");
-;
             textView.setText(ArrayListToString.arrayListToString(inputNumber));
             textView.setWidth(2F / 16);
             textView.setHeight(2F / 16);

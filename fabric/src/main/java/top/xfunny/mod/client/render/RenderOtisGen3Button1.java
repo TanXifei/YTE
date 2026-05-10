@@ -164,7 +164,7 @@ public class RenderOtisGen3Button1 extends BlockEntityRenderer<OtisGen3Button1.B
         ImageView Logo = new ImageView();
         Logo.setBasicsAttributes(world, blockPos);
         Logo.setTexture(LOGO);
-        Logo.setDimension(0.5F / 16 ,461,151);
+        Logo.setDimension(0.5F / 16, 461, 151);
         Logo.setLight(light);
         Logo.setMargin(0, 2.61F / 16, 2F / 16, 0);
         Logo.setGravity(Gravity.END);

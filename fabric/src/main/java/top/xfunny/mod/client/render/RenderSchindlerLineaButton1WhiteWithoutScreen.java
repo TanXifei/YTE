@@ -13,21 +13,15 @@ import org.mtr.mapping.mapper.GraphicsHolder;
 import org.mtr.mapping.mapper.PlayerHelper;
 import org.mtr.mod.block.IBlock;
 import org.mtr.mod.data.IGui;
-import org.mtr.mod.render.QueuedRenderLayer;
 import org.mtr.mod.render.StoredMatrixTransformations;
-import top.xfunny.mod.block.SchindlerLineaButton1White;
 import top.xfunny.mod.block.SchindlerLineaButton1WhiteWithoutScreen;
 import top.xfunny.mod.block.base.LiftButtonsBase;
-import top.xfunny.mod.client.resource.FontList;
 import top.xfunny.mod.client.view.*;
 import top.xfunny.mod.client.view.view_group.FrameLayout;
 import top.xfunny.mod.client.view.view_group.LinearLayout;
 import top.xfunny.mod.item.YteGroupLiftButtonsLinker;
 import top.xfunny.mod.item.YteLiftButtonsLinker;
 import top.xfunny.mod.keymapping.DefaultButtonsKeyMapping;
-import top.xfunny.mod.util.ReverseRendering;
-
-import java.util.Comparator;
 
 public class RenderSchindlerLineaButton1WhiteWithoutScreen extends BlockEntityRenderer<SchindlerLineaButton1WhiteWithoutScreen.BlockEntity> implements DirectionHelper, IGui, IBlock {
 
@@ -117,7 +111,7 @@ public class RenderSchindlerLineaButton1WhiteWithoutScreen extends BlockEntityRe
         buttonUpLight.setDimension(0.8F / 16);
         buttonUpLight.setGravity(Gravity.CENTER);
         buttonUpLight.setLight(light);
-        buttonUpLight.setDefaultColor(ARGB_WHITE,true);
+        buttonUpLight.setDefaultColor(ARGB_WHITE, true);
         buttonUpLight.setHoverColor(HOVER_COLOR);
         buttonUpLight.setPressedColor(PRESSED_COLOR);
         buttonUpLight.setButtonSound("schindler_linea_button_1");

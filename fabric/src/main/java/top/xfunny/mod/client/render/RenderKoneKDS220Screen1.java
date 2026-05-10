@@ -95,13 +95,13 @@ public class RenderKoneKDS220Screen1<T extends LiftPanelBase.BlockEntityBase> ex
                         5.1F,
                         0xFFFFFFFF);
                 liftFloorDisplayView.setTextureId(String.format("kone_kds_220_screen_lcd_segment_display_%d_%s", i, blockEntity.getPos2().asLong()))
-;
+                ;
                 liftFloorDisplayView.setWidth(2.6F / 16);
                 liftFloorDisplayView.setHeight(2.8F / 16);
                 liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.RIGHT);
                 liftFloorDisplayView.setLetterSpacing(0);
                 liftFloorDisplayView.setDisplayLength(2, 0);
-                liftFloorDisplayView.setMargin(0.3F/16, 6F / 16, 0, 0);
+                liftFloorDisplayView.setMargin(0.3F / 16, 6F / 16, 0, 0);
                 liftFloorDisplayView.addStoredMatrixTransformations(graphicsHolder -> graphicsHolder.translate(0, 0, -SMALL_OFFSET));
 
                 final LiftArrowView liftArrowView_left = new LiftArrowView();
@@ -109,9 +109,9 @@ public class RenderKoneKDS220Screen1<T extends LiftPanelBase.BlockEntityBase> ex
                 liftArrowView_left.setTexture(new Identifier(Init.MOD_ID, "textures/block/kone_kds330_arrow.png"));
                 liftArrowView_left.setAnimationScrolling(false, 0.05F);
                 liftArrowView_left.setDimension(1F / 16);
-                liftArrowView_left.setMargin(0.05F/16 , 6.75F / 16, 0, 0);
+                liftArrowView_left.setMargin(0.05F / 16, 6.75F / 16, 0, 0);
                 liftArrowView_left.setQueuedRenderLayer(QueuedRenderLayer.LIGHT_TRANSLUCENT);
-                liftArrowView_left.setFlip(false,true);
+                liftArrowView_left.setFlip(false, true);
                 liftArrowView_left.setColor(0xFFFFFFFF);
 
                 final LiftArrowView liftArrowView_right = new LiftArrowView();
@@ -119,9 +119,9 @@ public class RenderKoneKDS220Screen1<T extends LiftPanelBase.BlockEntityBase> ex
                 liftArrowView_right.setTexture(new Identifier(Init.MOD_ID, "textures/block/kone_kds330_arrow.png"));
                 liftArrowView_right.setAnimationScrolling(false, 0.05F);
                 liftArrowView_right.setDimension(1F / 16);
-                liftArrowView_right.setMargin(-0.625F/16 , 6.8F / 16, 0, 0);
+                liftArrowView_right.setMargin(-0.625F / 16, 6.8F / 16, 0, 0);
                 liftArrowView_right.setQueuedRenderLayer(QueuedRenderLayer.LIGHT_TRANSLUCENT);
-                liftArrowView_right.setFlip(false,true);
+                liftArrowView_right.setFlip(false, true);
                 liftArrowView_right.setColor(0xFFFFFFFF);
 
 

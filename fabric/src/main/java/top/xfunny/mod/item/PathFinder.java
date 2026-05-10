@@ -14,13 +14,11 @@ import java.util.ArrayList;
 
 public class PathFinder implements DirectionHelper {
     ArrayList<BlockPos> mark = new ArrayList<>();
-    ;
     Object[] array = new Object[3];
-    ;
 
     public Object[] findPath(ItemUsageContext context, BlockPos pos) {
         final World world = context.getWorld();
-        checkPosition(world, pos, new BlockPos(0, 0, 0),new BlockPos(0, 0, 0), facingHelper(context, pos));
+        checkPosition(world, pos, new BlockPos(0, 0, 0), new BlockPos(0, 0, 0), facingHelper(context, pos));
         return array;
     }
 
@@ -46,7 +44,7 @@ public class PathFinder implements DirectionHelper {
                 array[0] = pos.up(1);
                 array[1] = otherPos.up(1);
                 array[2] = thirdPos.up(1);
-                Init.LOGGER.info("上"+array[0]);
+                Init.LOGGER.info("上" + array[0]);
                 mark.add(pos);
                 return;
             }
@@ -56,7 +54,7 @@ public class PathFinder implements DirectionHelper {
                 array[0] = pos.down(1);
                 array[1] = otherPos.down(1);
                 array[2] = thirdPos.down(1);
-                Init.LOGGER.info("下"+array[0]);
+                Init.LOGGER.info("下" + array[0]);
                 mark.add(pos);
                 return;
             }

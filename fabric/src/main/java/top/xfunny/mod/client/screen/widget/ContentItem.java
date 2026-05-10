@@ -41,7 +41,7 @@ public class ContentItem extends BaseListItem {
 
     @Override
     public void positionChanged(int entryX, int entryY) {
-        if(widget != null) {
+        if (widget != null) {
             int offsetY = (height - widget.getHeight2()) / 2;
             widget.setX2(entryX - widget.getWidth2());
             widget.setY2(entryY + offsetY);
@@ -56,10 +56,10 @@ public class ContentItem extends BaseListItem {
     }
 
     private void drawListEntry(GraphicsHolder graphicsHolder, int entryX, int entryY, int mouseX, int mouseY, boolean widgetVisible, float tickDelta) {
-        if(title != null)
+        if (title != null)
             drawListEntryDescription(graphicsHolder, entryX, entryY);
 
-        if(widget != null) {
+        if (widget != null) {
             widget.visible = widgetVisible;
             widget.render(graphicsHolder, mouseX, mouseY, tickDelta);
         }
@@ -74,7 +74,7 @@ public class ContentItem extends BaseListItem {
         graphicsHolder.translate(entryX, entryY, 0);
         graphicsHolder.translate(ENTRY_PADDING, ENTRY_PADDING / 2.0, 0);
 
-        if(hasIcon()) {
+        if (hasIcon()) {
             GuiDrawing guiDrawing = new GuiDrawing(graphicsHolder);
             guiDrawing.beginDrawingTexture(textureResource);
             guiDrawing.drawTexture(0F, 0F, iconSize, iconSize, 0F, 0F, 1F, 1F);
@@ -82,7 +82,7 @@ public class ContentItem extends BaseListItem {
             graphicsHolder.translate(iconSize + ENTRY_PADDING, 0, 0);
         }
 
-        graphicsHolder.drawText(title, 0 , textY, 0xFFFFFFFF,true,GraphicsHolder.getDefaultLight());
+        graphicsHolder.drawText(title, 0, textY, 0xFFFFFFFF, true, GraphicsHolder.getDefaultLight());
         graphicsHolder.pop();
     }
 
@@ -91,11 +91,11 @@ public class ContentItem extends BaseListItem {
         boolean entryHovered = mouseX >= entryX && mouseY >= entryY && mouseX < entryX + width && mouseY < entryY + this.height;
         hoverOpacity = entryHovered ? Math.min(1, hoverOpacity + highlightFadeSpeed) : Math.max(0, hoverOpacity - highlightFadeSpeed);
 
-        if(hoverOpacity > 0) drawListEntryHighlight(guiDrawing, entryX, entryY, width, height);
+        if (hoverOpacity > 0) drawListEntryHighlight(guiDrawing, entryX, entryY, width, height);
     }
 
     private void drawListEntryHighlight(GuiDrawing guiDrawing, int x, int y, int width, int height) {
-        int highlightAlpha = (int)(100 * hoverOpacity);
+        int highlightAlpha = (int) (100 * hoverOpacity);
         int highlightColor = (highlightAlpha << 24) | (150 << 16) | (150 << 8) | 150;
 
         GuiHelper.drawRectangle(guiDrawing, x, y, width, height, highlightColor);

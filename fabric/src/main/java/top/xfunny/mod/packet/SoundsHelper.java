@@ -6,8 +6,8 @@ import org.mtr.mapping.holder.SoundCategory;
 import top.xfunny.mod.SoundEvents;
 
 public final class SoundsHelper {
-    public static void playSound(BlockPos blockPos, ServerPlayerEntity serverPlayerEntity, String soundInstruction){
-        switch (soundInstruction){// 播放声音
+    public static void playSound(BlockPos blockPos, ServerPlayerEntity serverPlayerEntity, String soundInstruction) {
+        switch (soundInstruction) {// 播放声音
             case "hitachi_ca_lantern_1":
                 serverPlayerEntity.getEntityWorld().playSound(
                         null,
@@ -18,7 +18,7 @@ public final class SoundsHelper {
                         1.0F
                 );
                 break;
-                case "hitachi_ca_lantern_2":
+            case "hitachi_ca_lantern_2":
                 serverPlayerEntity.getEntityWorld().playSound(
                         null,
                         blockPos,
@@ -28,7 +28,7 @@ public final class SoundsHelper {
                         1.0F
                 );
                 break;
-                case "otis_series_1_lantern_up":
+            case "otis_series_1_lantern_up":
                 serverPlayerEntity.getEntityWorld().playSound(
                         null,
                         blockPos,
@@ -39,7 +39,7 @@ public final class SoundsHelper {
                 );
                 break;
 
-                case "otis_series_1_lantern_down":
+            case "otis_series_1_lantern_down":
                 serverPlayerEntity.getEntityWorld().playSound(
                         null,
                         blockPos,
@@ -121,7 +121,7 @@ public final class SoundsHelper {
                         1.0F
                 );
                 break;
-                case "schindler_m_series_lantern_1":
+            case "schindler_m_series_lantern_1":
                 serverPlayerEntity.getEntityWorld().playSound(
                         null,
                         blockPos,
@@ -241,7 +241,7 @@ public final class SoundsHelper {
                         1.0F
                 );
                 break;
-                case "mitsubishi_mp_button_1":
+            case "mitsubishi_mp_button_1":
                 serverPlayerEntity.getEntityWorld().playSound(
                         null,
                         blockPos,

@@ -195,7 +195,7 @@ public class RenderOtisSPEC60Button1 extends BlockEntityRenderer<OtisSPEC60Butto
                         0xFFFF0000);
                 liftFloorDisplayView.setDisplayLength(2, 0);
                 liftFloorDisplayView.setTextureId(String.format("otis_spec_60_button_1_display_%d", i))
-;
+                ;
                 liftFloorDisplayView.setWidth(1.5F / 16);
                 liftFloorDisplayView.setLetterSpacing(10);
                 liftFloorDisplayView.setHeight(1.7F / 16);

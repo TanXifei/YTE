@@ -16,20 +16,18 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class CustomSignsManager {
+    private static final Set<String> builtinFileNames;
+    // 内置非图标列表
+    private static final Set<String> NAFileNames;
     // 存储所有标志牌资源的列表
     private static ObjectArrayList<String> allSigns = new ObjectArrayList<>();
     private static ObjectArrayList<String> defaultSigns = new ObjectArrayList<>();
-
-    private static final Set<String> builtinFileNames;
 
     static {
         Set<String> strings = new HashSet<>();
         strings.add("");
         builtinFileNames = new HashSet<>(strings);
     }
-
-    // 内置非图标列表
-    private static final Set<String> NAFileNames;
 
     static {
         NAFileNames = new HashSet<>();
@@ -74,7 +72,7 @@ public class CustomSignsManager {
 
         // 遍历 textures/block/sign 目录，判断是否为内置文件
         ResourceManagerHelper.readDirectory("textures/block/sign", (identifier, inputStream) -> {
-            try{
+            try {
                 if (identifier.getNamespace().equals("mtr") && identifier.getPath().endsWith(".png")) {
                     String fileName = new File(identifier.getPath()).getName();
                     String substring = fileName.substring(0, fileName.length() - 4);
@@ -85,7 +83,9 @@ public class CustomSignsManager {
                         allSigns.add(substring);
                     }
                 }
-            }catch (Exception e){Init.LOGGER.error("Fake MTR", e);}
+            } catch (Exception e) {
+                Init.LOGGER.error("Fake MTR", e);
+            }
         });
 
         defaultSigns = new ObjectArrayList<>(new LinkedHashSet<>(defaultSigns));
@@ -94,11 +94,11 @@ public class CustomSignsManager {
         Init.LOGGER.info("Found {} Icon Files", allSigns.size());
     }
 
-    public static ObjectArrayList<String> getSignList(){
+    public static ObjectArrayList<String> getSignList() {
         return allSigns;
     }
 
-    public static int getDefaultSignListSize(){
+    public static int getDefaultSignListSize() {
         return defaultSigns.size();
     }
 }

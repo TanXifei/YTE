@@ -32,7 +32,7 @@ import java.util.Comparator;
 
 public class RenderTestLiftButtons4 extends BlockEntityRenderer<TestLiftButtons.BlockEntity> implements DirectionHelper, IGui, IBlock {
     private DefaultButtonsKeyMapping keyMapping;
-    private LiftSpeed liftSpeed = new LiftSpeed();
+    private final LiftSpeed liftSpeed = new LiftSpeed();
 
     public RenderTestLiftButtons4(Argument argument) {
         super(argument);

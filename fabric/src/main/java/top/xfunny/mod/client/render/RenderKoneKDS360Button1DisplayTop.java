@@ -174,7 +174,7 @@ public class RenderKoneKDS360Button1DisplayTop extends BlockEntityRenderer<KoneK
         ImageView koneLogo = new ImageView();
         koneLogo.setBasicsAttributes(world, blockPos);
         koneLogo.setTexture(LOGO);
-        koneLogo.setDimension(0.5F / 16 ,854,372);
+        koneLogo.setDimension(0.5F / 16, 854, 372);
         koneLogo.setLight(light);
         koneLogo.setGravity(Gravity.CENTER);
 

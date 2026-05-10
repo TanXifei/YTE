@@ -29,11 +29,11 @@ import top.xfunny.mod.util.ClientGetLiftDetails;
 
 public class RenderOtisSeries1Lantern2Horizontal<T extends LiftButtonsBase.BlockEntityBase> extends BlockEntityRenderer<T> implements DirectionHelper, IGui, IBlock {
 
-    private final boolean isOdd;
     private static final int PRESSED_COLOR = 0xFF1D953F;
     private static final int DEFAULT_COLOR = 0xFF0D441D;
     private static final Identifier ARROW_TEXTURE_END = new Identifier(Init.MOD_ID, "textures/block/otis_series_1_lantern_arrow_end.png");
     private static final Identifier ARROW_TEXTURE_MIDDLE = new Identifier(Init.MOD_ID, "textures/block/otis_series_1_lantern_arrow_middle.png");
+    private final boolean isOdd;
 
     public RenderOtisSeries1Lantern2Horizontal(Argument dispatcher, Boolean isOdd) {
         super(dispatcher);

@@ -246,10 +246,9 @@ public class RenderPATRS01RailwaySign<T extends PATRS01RailwaySign.BlockEntity> 
 
         final BlockPos pos = entity.getPos2();
         final BlockState state = world.getBlockState(pos);
-        if (!(state.getBlock().data instanceof PATRS01RailwaySign)) {
+        if (!(state.getBlock().data instanceof PATRS01RailwaySign block)) {
             return;
         }
-        final PATRS01RailwaySign block = (PATRS01RailwaySign) state.getBlock().data;
         if (entity.getSignIds().length != block.length) {
             return;
         }

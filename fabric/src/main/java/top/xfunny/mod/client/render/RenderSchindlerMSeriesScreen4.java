@@ -159,7 +159,7 @@ public class RenderSchindlerMSeriesScreen4<T extends LiftButtonsBase.BlockEntity
                         3,
                         0xFFFF0000);
                 liftFloorDisplayView.setTextureId(String.format("schindler_m_series_screen_4_%d", i))
-;
+                ;
                 liftFloorDisplayView.setWidth(2.6F / 16);
                 liftFloorDisplayView.setHeight(2.8F / 16);
                 liftFloorDisplayView.setGravity(Gravity.CENTER_VERTICAL);

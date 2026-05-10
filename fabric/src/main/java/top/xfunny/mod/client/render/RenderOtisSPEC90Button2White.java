@@ -195,7 +195,7 @@ public class RenderOtisSPEC90Button2White extends BlockEntityRenderer<OtisSPEC90
                         0xFFC94552);
                 liftFloorDisplayView.setDisplayLength(2, 0);
                 liftFloorDisplayView.setTextureId(String.format("otis_spec_90_button_2_display_%d", i))
-;
+                ;
                 liftFloorDisplayView.setWidth(1.5F / 16);
                 liftFloorDisplayView.setLetterSpacing(10);
                 liftFloorDisplayView.setHeight(1.7F / 16);
@@ -213,8 +213,8 @@ public class RenderOtisSPEC90Button2White extends BlockEntityRenderer<OtisSPEC90
                 liftArrowViewUP.setBasicsAttributes(world, blockPos, sortedPositionsAndLifts.get(i).right(), LiftArrowView.ArrowType.UP);
                 liftArrowViewUP.setTexture(ARROW_TEXTURE);
                 liftArrowViewUP.setQueuedRenderLayer(QueuedRenderLayer.LIGHT_TRANSLUCENT);
-                liftArrowViewUP.setDimension(0.3F / 16,107,128);
-                liftArrowViewUP.setMargin(0.075F/16, 3.77F / 16, 0, 0);
+                liftArrowViewUP.setDimension(0.3F / 16, 107, 128);
+                liftArrowViewUP.setMargin(0.075F / 16, 3.77F / 16, 0, 0);
                 liftArrowViewUP.setAnimationBliking(true, 1F);
                 liftArrowViewUP.setColor(0xFFC94552);
 
@@ -222,8 +222,8 @@ public class RenderOtisSPEC90Button2White extends BlockEntityRenderer<OtisSPEC90
                 liftArrowViewDown.setBasicsAttributes(world, blockPos, sortedPositionsAndLifts.get(i).right(), LiftArrowView.ArrowType.DOWN);
                 liftArrowViewDown.setTexture(ARROW_TEXTURE);
                 liftArrowViewDown.setQueuedRenderLayer(QueuedRenderLayer.LIGHT_TRANSLUCENT);
-                liftArrowViewDown.setDimension(0.3F / 16,107,128);
-                liftArrowViewDown.setMargin(0.075F/16, 3.77F / 16, 0, 0);
+                liftArrowViewDown.setDimension(0.3F / 16, 107, 128);
+                liftArrowViewDown.setMargin(0.075F / 16, 3.77F / 16, 0, 0);
                 liftArrowViewDown.setAnimationBliking(true, 1F);
                 liftArrowViewDown.setColor(0xFFC94552);
 
@@ -257,7 +257,7 @@ public class RenderOtisSPEC90Button2White extends BlockEntityRenderer<OtisSPEC90
         }
 
         if (buttonDescriptor.hasDownButton()) {
-             if (buttonDescriptor.hasUpButton())  {
+            if (buttonDescriptor.hasUpButton()) {
                 downButtonGroup.setMargin(0, 0.8F / 16, 0, 0);
             }
             buttonContainer.addChild(downButtonGroup);

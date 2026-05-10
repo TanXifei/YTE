@@ -116,7 +116,7 @@ public class RenderSchindlerMSeriesRoundLantern1<T extends LiftButtonsBase.Block
 
                 final ObjectArraySet<LiftDirection> instructionDirections = lift.hasInstruction(floorIndex);
 
-                if(lift.getDoorValue() == 0){
+                if (lift.getDoorValue() == 0) {
                     blockEntity.lastUpActive = false;
                     blockEntity.lastDownActive = false;
                 }
@@ -126,7 +126,7 @@ public class RenderSchindlerMSeriesRoundLantern1<T extends LiftButtonsBase.Block
                     switch (pressedButtonDirection) {
                         case DOWN:
                             lanternDown.activate();
-                            if(!blockEntity.lastDownActive){
+                            if (!blockEntity.lastDownActive) {
                                 InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "schindler_m_series_lantern_1"));
                                 blockEntity.lastDownActive = true;
                                 blockEntity.lastUpActive = true;
@@ -134,7 +134,7 @@ public class RenderSchindlerMSeriesRoundLantern1<T extends LiftButtonsBase.Block
                             break;
                         case UP:
                             lanternUp.activate();
-                            if(!blockEntity.lastDownActive){
+                            if (!blockEntity.lastDownActive) {
                                 InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "schindler_m_series_lantern_1"));
                                 blockEntity.lastDownActive = true;
                                 blockEntity.lastUpActive = true;
@@ -150,7 +150,7 @@ public class RenderSchindlerMSeriesRoundLantern1<T extends LiftButtonsBase.Block
                                 switch (pressedButtonDirection) {
                                     case DOWN:
                                         lanternDown.activate();
-                                        if(!blockEntity.lastDownActive){
+                                        if (!blockEntity.lastDownActive) {
                                             InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "schindler_m_series_lantern_1"));
                                             blockEntity.lastDownActive = true;
                                             blockEntity.lastUpActive = true;
@@ -158,7 +158,7 @@ public class RenderSchindlerMSeriesRoundLantern1<T extends LiftButtonsBase.Block
                                         break;
                                     case UP:
                                         lanternUp.activate();
-                                        if(!blockEntity.lastDownActive){
+                                        if (!blockEntity.lastDownActive) {
                                             InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "schindler_m_series_lantern_1"));
                                             blockEntity.lastDownActive = true;
                                             blockEntity.lastUpActive = true;
@@ -170,7 +170,7 @@ public class RenderSchindlerMSeriesRoundLantern1<T extends LiftButtonsBase.Block
                             switch (liftDirection) {
                                 case DOWN:
                                     lanternDown.activate();
-                                    if(!blockEntity.lastDownActive){
+                                    if (!blockEntity.lastDownActive) {
                                         InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "schindler_m_series_lantern_1"));
                                         blockEntity.lastDownActive = true;
                                         blockEntity.lastUpActive = true;
@@ -178,7 +178,7 @@ public class RenderSchindlerMSeriesRoundLantern1<T extends LiftButtonsBase.Block
                                     break;
                                 case UP:
                                     lanternUp.activate();
-                                    if(!blockEntity.lastDownActive){
+                                    if (!blockEntity.lastDownActive) {
                                         InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "schindler_m_series_lantern_1"));
                                         blockEntity.lastDownActive = true;
                                         blockEntity.lastUpActive = true;

@@ -20,8 +20,8 @@ public abstract class BaseConfigScreen extends TitledScreen {
     @Override
     protected void init2() {
         super.init2();
-        int contentWidth = (int)Math.min((width * 0.75), MAX_CONTENT_WIDTH);
-        int listViewHeight = (int)((height - 60) * 0.754);
+        int contentWidth = (int) Math.min((width * 0.75), MAX_CONTENT_WIDTH);
+        int listViewHeight = (int) ((height - 60) * 0.754);
         int startX = (width - contentWidth) / 2;
         int startY = TEXT_PADDING * 5;
 
@@ -32,7 +32,7 @@ public abstract class BaseConfigScreen extends TitledScreen {
         addChild(new ClickableWidget(listViewWidget));
     }
 
-    public MutableText getScreenSubtitle(){
+    public MutableText getScreenSubtitle() {
         return TextHelper.translatable("gui.yte.subtitle", blockPos.getX(), blockPos.getY(), blockPos.getZ());
     }
 

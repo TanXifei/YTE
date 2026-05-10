@@ -147,16 +147,16 @@ public class RenderKoneMScreen1<T extends LiftButtonsBase.BlockEntityBase> exten
                         case DOWN:
                             downLantern.activate();
                             downLantern1.activate();
-                            if(!blockEntity.lastDownActive){
+                            if (!blockEntity.lastDownActive) {
                                 InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "kone_m_lantern_1_down"));
                                 blockEntity.lastDownActive = true;
                                 blockEntity.lastUpActive = true;
-                                }
+                            }
                             break;
                         case UP:
                             upLantern.activate();
                             upLantern1.activate();
-                            if(!blockEntity.lastDownActive) {
+                            if (!blockEntity.lastDownActive) {
                                 InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "kone_m_lantern_1_up"));
                                 blockEntity.lastDownActive = true;
                                 blockEntity.lastUpActive = true;
@@ -173,7 +173,7 @@ public class RenderKoneMScreen1<T extends LiftButtonsBase.BlockEntityBase> exten
                                     case DOWN:
                                         downLantern.activate();
                                         downLantern1.activate();
-                                        if(!blockEntity.lastDownActive) {
+                                        if (!blockEntity.lastDownActive) {
                                             InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "kone_m_lantern_1_down"));
                                             blockEntity.lastDownActive = true;
                                             blockEntity.lastUpActive = true;
@@ -182,7 +182,7 @@ public class RenderKoneMScreen1<T extends LiftButtonsBase.BlockEntityBase> exten
                                     case UP:
                                         upLantern.activate();
                                         upLantern1.activate();
-                                        if(!blockEntity.lastDownActive) {
+                                        if (!blockEntity.lastDownActive) {
                                             InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "kone_m_lantern_1_up"));
                                             blockEntity.lastDownActive = true;
                                             blockEntity.lastUpActive = true;
@@ -195,7 +195,7 @@ public class RenderKoneMScreen1<T extends LiftButtonsBase.BlockEntityBase> exten
                                 case DOWN:
                                     downLantern.activate();
                                     downLantern1.activate();
-                                    if(!blockEntity.lastDownActive) {
+                                    if (!blockEntity.lastDownActive) {
                                         InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "kone_m_lantern_1_down"));
                                         blockEntity.lastDownActive = true;
                                         blockEntity.lastUpActive = true;
@@ -204,7 +204,7 @@ public class RenderKoneMScreen1<T extends LiftButtonsBase.BlockEntityBase> exten
                                 case UP:
                                     upLantern.activate();
                                     upLantern1.activate();
-                                    if(!blockEntity.lastDownActive) {
+                                    if (!blockEntity.lastDownActive) {
                                         InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "kone_m_lantern_1_up"));
                                         blockEntity.lastDownActive = true;
                                         blockEntity.lastUpActive = true;

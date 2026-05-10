@@ -207,7 +207,7 @@ public class RenderShanghaiMitsubishiNexWayCRButton1 extends BlockEntityRenderer
                         0xFFFA7A24);
                 //liftFloorDisplayView.setDisplayLength(2, 0.05F);
                 liftFloorDisplayView.setTextureId(String.format("mitsubishi_nexway_button_2_display_%d", i))
-;
+                ;
                 liftFloorDisplayView.setWidth(1.3F / 16);
                 liftFloorDisplayView.setHeight(1.7F / 16);
                 liftFloorDisplayView.setMargin(0.1F / 16, 0, 0, 0);

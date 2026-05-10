@@ -89,7 +89,7 @@ public class RenderSchindlerDSeriesScreen1<T extends LiftPanelBase.BlockEntityBa
                         10,
                         0xFF001017);
                 liftFloorDisplayView.setTextureId(String.format("schindler_d_series_screen_1_display_%d", i))
-;
+                ;
                 liftFloorDisplayView.setWidth(2.6F / 16);
                 liftFloorDisplayView.setHeight(2.8F / 16);
                 liftFloorDisplayView.setGravity(Gravity.CENTER_VERTICAL);

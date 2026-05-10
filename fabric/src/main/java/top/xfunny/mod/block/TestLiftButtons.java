@@ -55,6 +55,14 @@ public class TestLiftButtons extends LiftButtonsBase {
         properties.add(SINGLE);
     }
 
+    @Nonnull
+    @Override
+    public ActionResult onUse2(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+        return IBlock.checkHoldingBrush(world, player, () -> {
+            Init.REGISTRY.sendPacketToClient(ServerPlayerEntity.cast(player), new PacketYTEOpenBlockEntityScreen(pos));
+        });
+    }
+
     /**
      * 表示一个可追踪位置的方块实体，扩展自BlockEntityExtension
      * 主要功能是通过CompoundTag来读取和写入特定位置集合
@@ -63,14 +71,6 @@ public class TestLiftButtons extends LiftButtonsBase {
         public BlockEntity(BlockPos pos, BlockState state) {
             super(top.xfunny.mod.BlockEntityTypes.TEST_LIFT_BUTTONS.get(), pos, state);
         }
-    }
-
-    @Nonnull
-    @Override
-    public ActionResult onUse2(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
-        return IBlock.checkHoldingBrush(world, player, () -> {
-            Init.REGISTRY.sendPacketToClient(ServerPlayerEntity.cast(player), new PacketYTEOpenBlockEntityScreen(pos));
-        });
     }
 }
 

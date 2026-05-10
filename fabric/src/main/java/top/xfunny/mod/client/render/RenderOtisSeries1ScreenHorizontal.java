@@ -11,7 +11,6 @@ import org.mtr.mapping.mapper.PlayerHelper;
 import org.mtr.mod.block.IBlock;
 import org.mtr.mod.data.IGui;
 import org.mtr.mod.render.StoredMatrixTransformations;
-import top.xfunny.mod.block.OtisSeries1ScreenEven;
 import top.xfunny.mod.block.OtisSeries1ScreenHorizontalEven;
 import top.xfunny.mod.block.base.LiftButtonsBase;
 import top.xfunny.mod.client.resource.FontList;

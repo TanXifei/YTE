@@ -5,7 +5,7 @@ import org.mtr.mapping.mapper.GraphicsHolder;
 import org.mtr.mapping.mapper.GuiDrawing;
 import org.mtr.mapping.mapper.TextFieldWidgetExtension;
 
-public class TextFieldItem extends BaseListItem{
+public class TextFieldItem extends BaseListItem {
     public final MutableText title;
     public final TextFieldWidgetExtension widget;
 
@@ -21,7 +21,7 @@ public class TextFieldItem extends BaseListItem{
 
     @Override
     public void positionChanged(int entryX, int entryY) {
-        if(widget != null) {
+        if (widget != null) {
             int offsetY = (height - widget.getHeight2()) / 2;
             widget.setX2(entryX - widget.getWidth2());
             widget.setY2(entryY + offsetY);

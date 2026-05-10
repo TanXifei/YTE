@@ -140,7 +140,7 @@ public class RenderKoneKSS280Button1 extends BlockEntityRenderer<KoneKSS280Butto
         ImageView koneLogo = new ImageView();
         koneLogo.setBasicsAttributes(world, blockPos);
         koneLogo.setTexture(LOGO);
-        koneLogo.setDimension(0.5F / 16 ,854,372);
+        koneLogo.setDimension(0.5F / 16, 854, 372);
         koneLogo.setLight(light);
         koneLogo.setMargin(0, 2.11F / 16, 1F / 16, 0);
         koneLogo.setGravity(Gravity.END);
@@ -205,7 +205,7 @@ public class RenderKoneKSS280Button1 extends BlockEntityRenderer<KoneKSS280Butto
                 liftArrowView.setDimension(0.6F / 16);
                 liftArrowView.setMargin(0, -1F / 16, 0, 0.5F / 16);
                 liftArrowView.setGravity(Gravity.CENTER_HORIZONTAL);
-                liftArrowView.setFlip(false,true);
+                liftArrowView.setFlip(false, true);
                 liftArrowView.setQueuedRenderLayer(QueuedRenderLayer.LIGHT_TRANSLUCENT);
                 // If unlocked, display the arrow.
                 if (unlocked) {

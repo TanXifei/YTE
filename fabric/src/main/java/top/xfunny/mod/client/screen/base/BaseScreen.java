@@ -7,9 +7,11 @@ import org.mtr.mod.data.IGui;
 
 public abstract class BaseScreen extends ScreenExtension implements IGui {
     private Screen previousScreen = null;
+
     public BaseScreen() {
         super();
     }
+
     public BaseScreen withPreviousScreen(Screen screen) {
         this.previousScreen = screen;
         return this;

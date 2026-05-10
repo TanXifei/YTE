@@ -60,7 +60,7 @@ public class FrameLayout implements RenderView {
         if (backgroundColor != 0) {
             StoredMatrixTransformations storedMatrixTransformations1 = storedMatrixTransformations.copy();
             storedMatrixTransformations1.add(graphicsHolder -> {
-                graphicsHolder.translate(0, 0, -0.6*SMALL_OFFSET);
+                graphicsHolder.translate(0, 0, -0.6 * SMALL_OFFSET);
             });
             MainRenderer.scheduleRender(
                     new Identifier(Init.MOD_ID, "textures/block/white.png"),

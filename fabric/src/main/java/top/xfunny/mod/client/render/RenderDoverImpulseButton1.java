@@ -31,7 +31,10 @@ public class RenderDoverImpulseButton1 extends BlockEntityRenderer<DoverImpulseB
     private static final Identifier BUTTON_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/dover_impulse_button.png");
     private static final Identifier BUTTON_LIGHT_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/dover_impulse_button_light.png");
 
-    public RenderDoverImpulseButton1(Argument dispatcher) {super(dispatcher);}
+    public RenderDoverImpulseButton1(Argument dispatcher) {
+        super(dispatcher);
+    }
+
     @Override
     public void render(DoverImpulseButton1.BlockEntity blockEntity, float tickDelta, GraphicsHolder graphicsHolder1, int light, int overlay) {
         final World world = blockEntity.getWorld2();

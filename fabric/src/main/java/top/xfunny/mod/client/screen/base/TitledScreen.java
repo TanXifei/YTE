@@ -5,7 +5,7 @@ import org.mtr.mapping.holder.MutableText;
 import org.mtr.mapping.mapper.GraphicsHolder;
 import top.xfunny.mod.client.screen.RenderHelper;
 
-public abstract class TitledScreen extends BaseScreen{
+public abstract class TitledScreen extends BaseScreen {
     public static final int TEXT_PADDING = 10;
     public static final int TITLE_SCALE = 2;
 
@@ -22,7 +22,7 @@ public abstract class TitledScreen extends BaseScreen{
         graphicsHolder.push();
         graphicsHolder.translate(width / 2.0, TEXT_PADDING, 0);
         graphicsHolder.scale(TITLE_SCALE, TITLE_SCALE, TITLE_SCALE);
-        RenderHelper.scaleToFit(graphicsHolder, GraphicsHolder.getTextWidth(titleText), width / (float)TITLE_SCALE, true);
+        RenderHelper.scaleToFit(graphicsHolder, GraphicsHolder.getTextWidth(titleText), width / (float) TITLE_SCALE, true);
         graphicsHolder.drawCenteredText(titleText, 0, 0, 0xFFFFFFFF);
         graphicsHolder.pop();
     }
@@ -38,5 +38,6 @@ public abstract class TitledScreen extends BaseScreen{
     }
 
     public abstract MutableText getScreenTitle();
+
     public abstract MutableText getScreenSubtitle();
 }

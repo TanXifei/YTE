@@ -94,7 +94,7 @@ public class RenderSchindlerFIGSScreen1Black<T extends LiftPanelBase.BlockEntity
                 liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.CENTER);
                 liftFloorDisplayView.setLetterSpacing(0);
                 liftFloorDisplayView.setDisplayLength(3, 0);
-                liftFloorDisplayView.setMargin(1F / 16, 1.225F / 16, 0.1F/16, 0);
+                liftFloorDisplayView.setMargin(1F / 16, 1.225F / 16, 0.1F / 16, 0);
                 liftFloorDisplayView.addStoredMatrixTransformations(graphicsHolder -> graphicsHolder.translate(0, 0, -SMALL_OFFSET));
 
                 final LiftArrowView liftArrowView_left = new LiftArrowView();

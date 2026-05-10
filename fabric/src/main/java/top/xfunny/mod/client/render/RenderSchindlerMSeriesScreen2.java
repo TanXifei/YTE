@@ -211,7 +211,7 @@ public class RenderSchindlerMSeriesScreen2<T extends LiftButtonsBase.BlockEntity
                         0xFFFF0000);//字体颜色
                 liftFloorDisplayView.setDisplayLength(2, 0);//true开启滚动，开启滚动时的字数条件(>)，滚动速度
                 liftFloorDisplayView.setTextureId(String.format("schindler_m_series_screen_2_display_%d", i))
-;//字体贴图id，不能与其他显示屏的重复
+                ;//字体贴图id，不能与其他显示屏的重复
                 liftFloorDisplayView.setWidth(2F / 16);//显示屏宽度
                 liftFloorDisplayView.setHeight(2F / 16);//显示屏高度
                 liftFloorDisplayView.setGravity(Gravity.CENTER);

@@ -21,7 +21,7 @@ public class CategoryItem extends BaseListItem {
     @Override
     public void draw(GraphicsHolder graphicsHolder, GuiDrawing guiDrawing, int entryX, int entryY, int width, int height, int mouseX, int mouseY, boolean widgetVisible, float tickDelta) {
         GuiHelper.drawRectangle(guiDrawing, entryX, entryY, width, this.height, 0x99999999);
-        graphicsHolder.drawCenteredText(title, (entryX + width / 2), entryY - (8/2) + (this.height / 2), 0xFFFFFFFF);
+        graphicsHolder.drawCenteredText(title, (entryX + width / 2), entryY - (8 / 2) + (this.height / 2), 0xFFFFFFFF);
     }
 
     @Override

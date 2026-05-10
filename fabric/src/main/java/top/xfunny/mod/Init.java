@@ -7,8 +7,8 @@ import org.mtr.mapping.holder.BlockPos;
 import org.mtr.mapping.holder.Identifier;
 import org.mtr.mapping.registry.Registry;
 import top.xfunny.mod.packet.PacketLanternSoundInstruction;
-import top.xfunny.mod.packet.PacketYTEOpenBlockEntityScreen;
 import top.xfunny.mod.packet.PacketUpdatePATRS01RailwaySignConfig;
+import top.xfunny.mod.packet.PacketYTEOpenBlockEntityScreen;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

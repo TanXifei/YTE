@@ -15,7 +15,6 @@ import org.mtr.mod.data.IGui;
 import org.mtr.mod.render.QueuedRenderLayer;
 import org.mtr.mod.render.StoredMatrixTransformations;
 import top.xfunny.mod.Init;
-import top.xfunny.mod.block.HitachiB85Screen1HorizontalEven;
 import top.xfunny.mod.block.KoneKDS330Screen1Even;
 import top.xfunny.mod.block.base.LiftPanelBase;
 import top.xfunny.mod.client.resource.FontList;
@@ -96,13 +95,13 @@ public class RenderKoneKDS330Screen1<T extends LiftPanelBase.BlockEntityBase> ex
                         5.1F,
                         0xFFFFFFFF);
                 liftFloorDisplayView.setTextureId(String.format("kone_kds_330_screen_lcd_segment_display_%d", i))
-;
+                ;
                 liftFloorDisplayView.setWidth(2.6F / 16);
                 liftFloorDisplayView.setHeight(2.8F / 16);
                 liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.RIGHT);
                 liftFloorDisplayView.setLetterSpacing(0);
                 liftFloorDisplayView.setDisplayLength(2, 0);
-                liftFloorDisplayView.setMargin(1.7F/16, 6F / 16, 0, 0);
+                liftFloorDisplayView.setMargin(1.7F / 16, 6F / 16, 0, 0);
                 liftFloorDisplayView.addStoredMatrixTransformations(graphicsHolder -> graphicsHolder.translate(0, 0, -SMALL_OFFSET));
 
                 final LiftArrowView liftArrowView_left = new LiftArrowView();
@@ -110,9 +109,9 @@ public class RenderKoneKDS330Screen1<T extends LiftPanelBase.BlockEntityBase> ex
                 liftArrowView_left.setTexture(new Identifier(Init.MOD_ID, "textures/block/kone_kds330_arrow.png"));
                 liftArrowView_left.setAnimationScrolling(false, 0.05F);
                 liftArrowView_left.setDimension(1F / 16);
-                liftArrowView_left.setMargin(-2.675F/16 , 6.8F / 16, 0, 0);
+                liftArrowView_left.setMargin(-2.675F / 16, 6.8F / 16, 0, 0);
                 liftArrowView_left.setQueuedRenderLayer(QueuedRenderLayer.LIGHT_TRANSLUCENT);
-                liftArrowView_left.setFlip(false,true);
+                liftArrowView_left.setFlip(false, true);
                 liftArrowView_left.setColor(0xFFFFFFFF);
 
 

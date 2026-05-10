@@ -12,7 +12,6 @@ import org.mtr.mod.render.QueuedRenderLayer;
 import org.mtr.mod.render.StoredMatrixTransformations;
 import top.xfunny.mod.Init;
 import top.xfunny.mod.block.MitsubishiMaxiezScreen2Even;
-import top.xfunny.mod.block.ShanghaiMitsubishiLehy3Screen1Even;
 import top.xfunny.mod.block.base.LiftPanelBase;
 import top.xfunny.mod.client.resource.FontList;
 import top.xfunny.mod.client.view.*;
@@ -23,8 +22,9 @@ import top.xfunny.mod.item.YteLiftButtonsLinker;
 import java.text.SimpleDateFormat;
 import java.util.Comparator;
 import java.util.Date;
-// 确保导入 java.util.Locale 以便设置 SimpleDateFormat 的本地化
 import java.util.Locale;
+
+// 确保导入 java.util.Locale 以便设置 SimpleDateFormat 的本地化
 
 public class RenderMitsubishiMaxiezScreen2<T extends LiftPanelBase.BlockEntityBase> extends BlockEntityRenderer<T> implements DirectionHelper, IGui, IBlock {
     private final boolean isOdd;
@@ -72,7 +72,7 @@ public class RenderMitsubishiMaxiezScreen2<T extends LiftPanelBase.BlockEntityBa
         numberLayout.setBasicsAttributes(world, blockPos);
         numberLayout.setWidth(LayoutSize.WRAP_CONTENT);
         numberLayout.setHeight(LayoutSize.WRAP_CONTENT);
-        numberLayout.setMargin(0.34F / 16, 0.6F / 16, 0, -.2F/16);
+        numberLayout.setMargin(0.34F / 16, 0.6F / 16, 0, -.2F / 16);
 
 
         final LineComponent line = new LineComponent();
@@ -117,7 +117,7 @@ public class RenderMitsubishiMaxiezScreen2<T extends LiftPanelBase.BlockEntityBa
                 liftArrowView.setBasicsAttributes(world, blockPos, sortedPositionsAndLifts.get(i).right(), LiftArrowView.ArrowType.AUTO);
                 liftArrowView.setTexture(new Identifier(Init.MOD_ID, "textures/block/mitsubishi_maxiez_2_lcd_arrow_1.png"));
                 liftArrowView.setDimension(0.875F / 16);
-                liftArrowView.setMargin(0,0.1F / 16,0,0);
+                liftArrowView.setMargin(0, 0.1F / 16, 0, 0);
                 liftArrowView.setGravity(Gravity.CENTER_VERTICAL);
                 liftArrowView.setQueuedRenderLayer(QueuedRenderLayer.LIGHT_TRANSLUCENT);
                 liftArrowView.setColor(0xFFFFFFFF);

@@ -135,7 +135,7 @@ public class RenderThyssenKruppS001Button1WithoutScreen extends BlockEntityRende
         buttonDown.setDimension(0.95F / 16);
         buttonDown.setGravity(Gravity.CENTER);
         buttonDown.setLight(light);
-            buttonDown.setFlip(false, true);
+        buttonDown.setFlip(false, true);
 
         ButtonView buttonDownLight = new ButtonView();
         buttonDownLight.setId("down");

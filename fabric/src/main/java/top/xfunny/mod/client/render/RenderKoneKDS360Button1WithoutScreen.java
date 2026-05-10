@@ -140,11 +140,10 @@ public class RenderKoneKDS360Button1WithoutScreen extends BlockEntityRenderer<Ko
         ImageView koneLogo = new ImageView();
         koneLogo.setBasicsAttributes(world, blockPos);
         koneLogo.setTexture(LOGO);
-        koneLogo.setDimension(0.5F / 16 ,854,372);
+        koneLogo.setDimension(0.5F / 16, 854, 372);
         koneLogo.setLight(light);
         koneLogo.setMargin(0, 2.11F / 16, 2F / 16, 0);
         koneLogo.setGravity(Gravity.END);
-
 
 
         final LineComponent line = new LineComponent();

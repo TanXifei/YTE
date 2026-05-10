@@ -194,7 +194,7 @@ public class RenderHitachiVIB820proButton extends BlockEntityRenderer<HitachiVIB
                 liftFloorDisplayView.setBasicsAttributes(world,
                         blockPos,
                         lift,
-                        FontList.instance.getFont(floorNumber.matches("^(1[0-9]|20|[1-9])$")?"hitachi-led-seg":"hitachi-led-seg-fix"),
+                        FontList.instance.getFont(floorNumber.matches("^(1[0-9]|20|[1-9])$") ? "hitachi-led-seg" : "hitachi-led-seg-fix"),
                         7F,
                         0xFFFFFFFF);
 

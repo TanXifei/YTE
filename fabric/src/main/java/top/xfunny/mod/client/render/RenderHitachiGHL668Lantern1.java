@@ -16,7 +16,6 @@ import org.mtr.mod.render.RenderLifts;
 import org.mtr.mod.render.StoredMatrixTransformations;
 import top.xfunny.mod.Init;
 import top.xfunny.mod.block.HitachiGHL668Lantern1Even;
-import top.xfunny.mod.block.SchindlerMSeriesRoundLantern1Even;
 import top.xfunny.mod.block.base.LiftButtonsBase;
 import top.xfunny.mod.client.InitClient;
 import top.xfunny.mod.client.view.ButtonView;
@@ -130,7 +129,7 @@ public class RenderHitachiGHL668Lantern1<T extends LiftButtonsBase.BlockEntityBa
                             if (flash) {
                                 lanternDown.activate();
                             }
-                            if(!blockEntity.lastDownActive) {
+                            if (!blockEntity.lastDownActive) {
                                 InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "hitachi_ca_lantern_2"));
                                 blockEntity.lastUpActive = true;
                                 blockEntity.lastDownActive = true;
@@ -140,7 +139,7 @@ public class RenderHitachiGHL668Lantern1<T extends LiftButtonsBase.BlockEntityBa
                             if (flash) {
                                 lanternUp.activate();
                             }
-                            if(!blockEntity.lastUpActive) {
+                            if (!blockEntity.lastUpActive) {
                                 InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "hitachi_ca_lantern_2"));
                                 blockEntity.lastUpActive = true;
                                 blockEntity.lastDownActive = true;
@@ -158,7 +157,7 @@ public class RenderHitachiGHL668Lantern1<T extends LiftButtonsBase.BlockEntityBa
                                         if (flash) {
                                             lanternDown.activate();
                                         }
-                                        if(!blockEntity.lastDownActive) {
+                                        if (!blockEntity.lastDownActive) {
                                             InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "hitachi_ca_lantern_2"));
                                             blockEntity.lastUpActive = true;
                                             blockEntity.lastDownActive = true;
@@ -168,7 +167,7 @@ public class RenderHitachiGHL668Lantern1<T extends LiftButtonsBase.BlockEntityBa
                                         if (flash) {
                                             lanternUp.activate();
                                         }
-                                        if(!blockEntity.lastUpActive) {
+                                        if (!blockEntity.lastUpActive) {
                                             InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "hitachi_ca_lantern_2"));
                                             blockEntity.lastUpActive = true;
                                             blockEntity.lastDownActive = true;
@@ -182,7 +181,7 @@ public class RenderHitachiGHL668Lantern1<T extends LiftButtonsBase.BlockEntityBa
                                     if (flash) {
                                         lanternDown.activate();
                                     }
-                                    if(!blockEntity.lastDownActive) {
+                                    if (!blockEntity.lastDownActive) {
                                         InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "hitachi_ca_lantern_2"));
                                         blockEntity.lastUpActive = true;
                                         blockEntity.lastDownActive = true;
@@ -192,7 +191,7 @@ public class RenderHitachiGHL668Lantern1<T extends LiftButtonsBase.BlockEntityBa
                                     if (flash) {
                                         lanternUp.activate();
                                     }
-                                    if(!blockEntity.lastUpActive) {
+                                    if (!blockEntity.lastUpActive) {
                                         InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLanternSoundInstruction(blockPos, "hitachi_ca_lantern_2"));
                                         blockEntity.lastUpActive = true;
                                         blockEntity.lastDownActive = true;

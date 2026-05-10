@@ -89,7 +89,7 @@ public class RenderMitsubishiNexWayScreen3Segmented<T extends LiftPanelBase.Bloc
                         8.5F,
                         0xFFFA7A24);
                 liftFloorDisplayView.setTextureId(String.format("mitsubishi_nexway_screen_3_segmented_display_%d", i))
-;
+                ;
                 liftFloorDisplayView.setWidth(2.6F / 16);
                 liftFloorDisplayView.setHeight(2.8F / 16);
                 liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.RIGHT);

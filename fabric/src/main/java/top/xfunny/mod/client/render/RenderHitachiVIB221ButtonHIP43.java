@@ -200,7 +200,7 @@ public class RenderHitachiVIB221ButtonHIP43 extends BlockEntityRenderer<HitachiV
                         0xFFDEF6FF);
                 liftFloorDisplayView.setWidth(1.5F / 16);
                 liftFloorDisplayView.setHeight(1.7F / 16);
-                liftFloorDisplayView.setMargin(-0.125F/16, 0, 0.125F/16, 0);
+                liftFloorDisplayView.setMargin(-0.125F / 16, 0, 0.125F / 16, 0);
                 liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.RIGHT);
                 liftFloorDisplayView.addStoredMatrixTransformations(graphicsHolder -> graphicsHolder.translate(0, 0, -SMALL_OFFSET));
                 liftFloorDisplayView.setTextureId(String.format("hitachi_vib_221_hip_43_display_%d", i));

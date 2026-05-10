@@ -10,7 +10,6 @@ import org.mtr.mod.block.IBlock;
 import org.mtr.mod.data.IGui;
 import org.mtr.mod.render.QueuedRenderLayer;
 import org.mtr.mod.render.StoredMatrixTransformations;
-import top.xfunny.mod.Init;
 import top.xfunny.mod.block.MitsubishiMaxiezScreen1Even;
 import top.xfunny.mod.block.base.LiftPanelBase;
 import top.xfunny.mod.client.resource.FontList;
@@ -96,7 +95,7 @@ public class RenderMitsubishiMaxiezScreen1<T extends LiftPanelBase.BlockEntityBa
                         16,
                         0xFF000000);
                 liftFloorDisplayView.setTextureId(String.format("mitsubishi_maxiez_screen_1_display_%d", i))
-;
+                ;
                 liftFloorDisplayView.setWidth(1.9F / 16);
                 liftFloorDisplayView.setHeight(1.5F / 16);
                 liftFloorDisplayView.setGravity(Gravity.CENTER_VERTICAL);
@@ -144,7 +143,7 @@ public class RenderMitsubishiMaxiezScreen1<T extends LiftPanelBase.BlockEntityBa
                 textView.setId("textView");
                 textView.setBasicsAttributes(world, blockPos, FontList.instance.getFont("wqy-microhei"), 5, 0xFF000000);
                 textView.setTextureId(String.format("mitsubishi_maxiez_screen_1_date_display_%d", i))
-;
+                ;
                 textView.setText(text);
                 textView.setWidth(4F / 16);
                 textView.setHeight(1F / 16);

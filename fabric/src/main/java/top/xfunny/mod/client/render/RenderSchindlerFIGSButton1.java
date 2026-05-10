@@ -145,7 +145,7 @@ public class RenderSchindlerFIGSButton1 extends BlockEntityRenderer<SchindlerFIG
         buttonDownLight.setDimension(0.8F / 16);
         buttonDownLight.setGravity(Gravity.CENTER);
         buttonDownLight.setLight(light);
-        buttonDownLight.setDefaultColor(0xFF333333,true);
+        buttonDownLight.setDefaultColor(0xFF333333, true);
         buttonDownLight.setHoverColor(HOVER_COLOR);
         buttonDownLight.setPressedColor(PRESSED_COLOR);
         buttonDownLight.setButtonSound("schindler_fi_gs_button_1");
@@ -197,7 +197,7 @@ public class RenderSchindlerFIGSButton1 extends BlockEntityRenderer<SchindlerFIG
                         0xFFFF0000);
                 liftFloorDisplayView.setDisplayLength(2, 0.05F);
                 liftFloorDisplayView.setTextureId(String.format("schindler_fi_gs_1_display_%d", i))
-;
+                ;
                 liftFloorDisplayView.setWidth(1.4F / 16);
                 liftFloorDisplayView.setHeight(1.7F / 16);
                 liftFloorDisplayView.setMargin(-0.1F / 16, -0.1F / 16, -0.1F / 16, 0);

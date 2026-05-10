@@ -12,18 +12,18 @@ import java.nio.file.Path;
 import java.util.Collections;
 
 public abstract class Config {
-    private final Path configFilePath;
     private static final Logger LOGGER = LogManager.getLogger(Config.class);
+    private final Path configFilePath;
 
     public Config(Path configFilePath) {
         this.configFilePath = configFilePath;
     }
 
     public void readConfig() {
-        if(!Files.exists(configFilePath)) {
+        if (!Files.exists(configFilePath)) {
             writeConfig();
             readConfig();// 重新读取
-        }else {
+        } else {
             try {
                 JsonObject jsonObject = new JsonParser().parse(String.join("", Files.readAllLines(configFilePath))).getAsJsonObject();
                 setTempConfigItems(jsonObject);
@@ -43,6 +43,7 @@ public abstract class Config {
         }
     }
 
-    protected abstract void setTempConfigItems(JsonObject jsonObject);
     protected abstract JsonObject getTempConfigItems();
+
+    protected abstract void setTempConfigItems(JsonObject jsonObject);
 }

@@ -15,8 +15,6 @@ import org.mtr.mod.block.IBlock;
 import org.mtr.mod.data.IGui;
 import org.mtr.mod.render.QueuedRenderLayer;
 import org.mtr.mod.render.StoredMatrixTransformations;
-import top.xfunny.mod.Init;
-import top.xfunny.mod.block.FujitecMIC400Button1;
 import top.xfunny.mod.block.FujitecMIC400Button1Old;
 import top.xfunny.mod.block.base.LiftButtonsBase;
 import top.xfunny.mod.client.resource.FontList;
@@ -36,8 +34,8 @@ public class RenderFujitecMIC400Button1Old extends BlockEntityRenderer<FujitecMI
     private static final int PRESSED_COLOR = 0xFFFF8800;
     private static final Identifier BUTTON_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/fujitec_mic400_button_1.png");
     private static final Identifier BUTTON_LIGHT_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/fujitec_mic400_button_1_old_light.png");
-    private static final Identifier ARROW_TEXTURE_UP = new Identifier(top.xfunny.mod.Init.MOD_ID,"textures/block/fujitec_mic400_button_1_old_arrow_up.png");
-    private static final Identifier ARROW_TEXTURE_DOWN = new Identifier(top.xfunny.mod.Init.MOD_ID,"textures/block/fujitec_mic400_button_1_old_arrow_down.png");
+    private static final Identifier ARROW_TEXTURE_UP = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/fujitec_mic400_button_1_old_arrow_up.png");
+    private static final Identifier ARROW_TEXTURE_DOWN = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/fujitec_mic400_button_1_old_arrow_down.png");
 
     public RenderFujitecMIC400Button1Old(Argument dispatcher) {
         super(dispatcher);

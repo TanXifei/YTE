@@ -116,7 +116,7 @@ public class RenderSchindlerFIGSTouchButton1 extends BlockEntityRenderer<Schindl
         buttonUpLight.setId("up");
         buttonUpLight.setBasicsAttributes(world, blockPos, keyMapping);
         buttonUpLight.setTexture(BUTTON_LIGHT_TEXTURE);
-        buttonUpLight.setDimension(0.6F / 16,569,395);
+        buttonUpLight.setDimension(0.6F / 16, 569, 395);
         buttonUpLight.setGravity(Gravity.CENTER);
         buttonUpLight.setLight(light);
         buttonUpLight.setDefaultColor(0xFF333333, true);
@@ -126,9 +126,9 @@ public class RenderSchindlerFIGSTouchButton1 extends BlockEntityRenderer<Schindl
         ButtonView buttonLine = new ButtonView();
         buttonLine.setBasicsAttributes(world, blockPos);
         buttonLine.setTexture(BUTTON_LINE_TEXTURE);
-        buttonLine.setDefaultColor(0xFF333333,true);
-        buttonLine.setMargin(0,0.325F/16,0,0);
-        buttonLine.setDimension(0.8F / 16,600,325);
+        buttonLine.setDefaultColor(0xFF333333, true);
+        buttonLine.setMargin(0, 0.325F / 16, 0, 0);
+        buttonLine.setDimension(0.8F / 16, 600, 325);
         buttonLine.setLight(light);
         buttonLine.setFlip(false, true);
 
@@ -137,7 +137,7 @@ public class RenderSchindlerFIGSTouchButton1 extends BlockEntityRenderer<Schindl
         buttonDownLight.setId("down");
         buttonDownLight.setBasicsAttributes(world, blockPos, keyMapping);
         buttonDownLight.setTexture(BUTTON_LIGHT_TEXTURE);
-        buttonDownLight.setDimension(0.6F / 16,569,395);
+        buttonDownLight.setDimension(0.6F / 16, 569, 395);
         buttonDownLight.setGravity(Gravity.CENTER);
         buttonDownLight.setLight(light);
         buttonDownLight.setDefaultColor(0xFF333333, true);
@@ -192,7 +192,7 @@ public class RenderSchindlerFIGSTouchButton1 extends BlockEntityRenderer<Schindl
                         0xFFFF0000);
                 liftFloorDisplayView.setDisplayLength(2, 0.05F);
                 liftFloorDisplayView.setTextureId(String.format("schindler_fi_gs_touch_1_display_%d", i))
-;
+                ;
                 liftFloorDisplayView.setWidth(1.4F / 16);
                 liftFloorDisplayView.setHeight(1.7F / 16);
                 liftFloorDisplayView.setMargin(-0.1F / 16, -0.1F / 16, -0.1F / 16, 0);

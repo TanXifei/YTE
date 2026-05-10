@@ -9,7 +9,6 @@ import org.mtr.mapping.mapper.DirectionHelper;
 import org.mtr.mapping.tool.HolderBase;
 import org.mtr.mod.block.IBlock;
 import org.mtr.mod.generated.lang.TranslationProvider;
-import org.mtr.mod.packet.PacketOpenBlockEntityScreen;
 import top.xfunny.mod.BlockEntityTypes;
 import top.xfunny.mod.Init;
 import top.xfunny.mod.packet.PacketYTEOpenBlockEntityScreen;

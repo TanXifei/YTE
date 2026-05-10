@@ -94,13 +94,13 @@ public class RenderHitachiB89Screen1Vertical<T extends LiftPanelBase.BlockEntity
                         5F,
                         0xFFCC0000);
                 liftFloorDisplayView.setTextureId(String.format("hitachi_b89_screen_1_vertical_display_%d", i))
-;
+                ;
                 liftFloorDisplayView.setWidth(2.6F / 16);
                 liftFloorDisplayView.setHeight(2.8F / 16);
                 liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.CENTER);
                 liftFloorDisplayView.setLetterSpacing(0);
                 liftFloorDisplayView.setDisplayLength(2, 0);
-                liftFloorDisplayView.setMargin(1.7F/16, 5.875F / 16, 0, 0);
+                liftFloorDisplayView.setMargin(1.7F / 16, 5.875F / 16, 0, 0);
                 liftFloorDisplayView.addStoredMatrixTransformations(graphicsHolder -> graphicsHolder.translate(0, 0, -SMALL_OFFSET));
 
                 final LiftArrowView liftArrowView_left = new LiftArrowView();
@@ -108,7 +108,7 @@ public class RenderHitachiB89Screen1Vertical<T extends LiftPanelBase.BlockEntity
                 liftArrowView_left.setTexture(new Identifier(Init.MOD_ID, "textures/block/hitachi_dot_arrow_1.png"));
                 liftArrowView_left.setAnimationScrolling(false, 0.05F);
                 liftArrowView_left.setDimension(1F / 16);
-                liftArrowView_left.setMargin(-1.875F/16, 5.5F / 16, 0, 0);
+                liftArrowView_left.setMargin(-1.875F / 16, 5.5F / 16, 0, 0);
                 liftArrowView_left.setQueuedRenderLayer(QueuedRenderLayer.LIGHT_TRANSLUCENT);
                 liftArrowView_left.setColor(0xFFCC0000);
 

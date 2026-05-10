@@ -14,7 +14,6 @@ import org.mtr.mod.data.IGui;
 import org.mtr.mod.render.QueuedRenderLayer;
 import org.mtr.mod.render.StoredMatrixTransformations;
 import top.xfunny.mod.Init;
-import top.xfunny.mod.block.ShanghaiMitsubishiLehy3Screen1Even;
 import top.xfunny.mod.block.ShanghaiMitsubishiLehy3Screen1WideEven;
 import top.xfunny.mod.block.base.LiftPanelBase;
 import top.xfunny.mod.client.resource.FontList;
@@ -23,7 +22,6 @@ import top.xfunny.mod.client.view.view_group.LinearLayout;
 import top.xfunny.mod.item.YteGroupLiftButtonsLinker;
 import top.xfunny.mod.item.YteLiftButtonsLinker;
 
-import java.awt.*;
 import java.util.Comparator;
 
 public class RenderShanghaiMitsubishiLehy3Screen1Wide<T extends LiftPanelBase.BlockEntityBase> extends BlockEntityRenderer<T> implements DirectionHelper, IGui, IBlock {
@@ -71,7 +69,7 @@ public class RenderShanghaiMitsubishiLehy3Screen1Wide<T extends LiftPanelBase.Bl
         final ImageView media = new ImageView();
         media.setBasicsAttributes(world, blockEntity.getPos2());
         media.setTexture(new Identifier(Init.MOD_ID, "textures/block/media_1.png"));
-        media.setDimension(3.23F/16, 400,300);
+        media.setDimension(3.23F / 16, 400, 300);
         media.setMargin(0, 0, 0.2F / 16, 0);
         media.setGravity(Gravity.START);
 

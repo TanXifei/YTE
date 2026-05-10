@@ -111,7 +111,7 @@ public class RenderSchindlerFIGSButton1WithoutScreen extends BlockEntityRenderer
         buttonUpLight.setDimension(0.8F / 16);
         buttonUpLight.setGravity(Gravity.CENTER);
         buttonUpLight.setLight(light);
-        buttonUpLight.setDefaultColor(ARGB_WHITE,true);
+        buttonUpLight.setDefaultColor(ARGB_WHITE, true);
         buttonUpLight.setHoverColor(HOVER_COLOR);
         buttonUpLight.setPressedColor(PRESSED_COLOR);
         buttonUpLight.setButtonSound("schindler_fi_gs_button_1");
@@ -131,7 +131,7 @@ public class RenderSchindlerFIGSButton1WithoutScreen extends BlockEntityRenderer
         buttonDownLight.setDimension(0.8F / 16);
         buttonDownLight.setGravity(Gravity.CENTER);
         buttonDownLight.setLight(light);
-        buttonDownLight.setDefaultColor(ARGB_WHITE,true);
+        buttonDownLight.setDefaultColor(ARGB_WHITE, true);
         buttonDownLight.setHoverColor(HOVER_COLOR);
         buttonDownLight.setPressedColor(PRESSED_COLOR);
         buttonDownLight.setButtonSound("schindler_fi_gs_button_1");

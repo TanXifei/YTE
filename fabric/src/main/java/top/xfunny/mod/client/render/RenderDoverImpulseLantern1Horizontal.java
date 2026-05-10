@@ -1,6 +1,5 @@
 package top.xfunny.mod.client.render;
 
-import org.apache.commons.lang3.NotImplementedException;
 import org.mtr.core.data.Lift;
 import org.mtr.core.data.LiftDirection;
 import org.mtr.libraries.it.unimi.dsi.fastutil.objects.ObjectArrayList;
@@ -16,17 +15,13 @@ import org.mtr.mod.data.IGui;
 import org.mtr.mod.render.RenderLifts;
 import org.mtr.mod.render.StoredMatrixTransformations;
 import top.xfunny.mod.Init;
-import top.xfunny.mod.block.KoneMScreen1Even;
 import top.xfunny.mod.block.MitsubishiNexWayScreen1Even;
 import top.xfunny.mod.block.base.LiftButtonsBase;
-import top.xfunny.mod.client.InitClient;
-import top.xfunny.mod.client.resource.FontList;
 import top.xfunny.mod.client.view.*;
 import top.xfunny.mod.client.view.view_group.FrameLayout;
 import top.xfunny.mod.client.view.view_group.LinearLayout;
 import top.xfunny.mod.item.YteGroupLiftButtonsLinker;
 import top.xfunny.mod.item.YteLiftButtonsLinker;
-import top.xfunny.mod.packet.PacketLanternSoundInstruction;
 import top.xfunny.mod.util.ClientGetLiftDetails;
 
 import java.util.Comparator;
@@ -39,6 +34,7 @@ public class RenderDoverImpulseLantern1Horizontal<T extends LiftButtonsBase.Bloc
     private static final Identifier BUTTON_TEXTURE = new Identifier(Init.MOD_ID, "textures/block/dover_impulse_lantern_1.png");
     private static final Identifier ARROW_TEXTURE = new Identifier(Init.MOD_ID, "textures/block/dover_impulse_lantern_1_arrow.png");
     private final boolean isOdd;
+
     public RenderDoverImpulseLantern1Horizontal(Argument dispatcher, Boolean isOdd) {
         super(dispatcher);
         this.isOdd = isOdd;

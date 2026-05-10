@@ -206,7 +206,7 @@ public class RenderMitsubishiMaxiezButton1Gold extends BlockEntityRenderer<Mitsu
                         6,
                         0xFFFA7A24);
                 //liftFloorDisplayView.setDisplayLength(2, 0.05F);
-                liftFloorDisplayView.setTextureId(String.format("mitsubishi_maxiez_button_1_gold_display_%d",i));
+                liftFloorDisplayView.setTextureId(String.format("mitsubishi_maxiez_button_1_gold_display_%d", i));
                 liftFloorDisplayView.setWidth(1.3F / 16);
                 liftFloorDisplayView.setHeight(1.7F / 16);
                 liftFloorDisplayView.setMargin(0, 0, -0.1F / 16, 0);
@@ -217,7 +217,7 @@ public class RenderMitsubishiMaxiezButton1Gold extends BlockEntityRenderer<Mitsu
                     liftFloorDisplayView.setBasicsAttributes(world,
                             blockPos,
                             sortedPositionsAndLifts.get(i).right(),
-                            FontList.instance.getFont(floorNumber.matches(".*[A-Z].*")?"mitsubishi_small_regular":"mitsubishi_small_sht"),
+                            FontList.instance.getFont(floorNumber.matches(".*[A-Z].*") ? "mitsubishi_small_regular" : "mitsubishi_small_sht"),
                             6,
                             0xFFFA7A24);
                     liftFloorDisplayView.setAdaptMode(LiftFloorDisplayView.AdaptMode.FORCE_FIT_WIDTH);

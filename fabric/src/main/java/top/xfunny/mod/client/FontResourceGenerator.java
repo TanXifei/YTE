@@ -1,7 +1,8 @@
 package top.xfunny.mod.client;
 
 import org.mtr.core.tool.Utilities;
-import org.mtr.mapping.holder.*;
+import org.mtr.mapping.holder.NativeImage;
+import org.mtr.mapping.holder.NativeImageFormat;
 import org.mtr.mod.config.Config;
 import org.mtr.mod.data.IGui;
 

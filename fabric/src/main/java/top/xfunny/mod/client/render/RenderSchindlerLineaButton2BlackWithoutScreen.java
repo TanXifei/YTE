@@ -15,7 +15,6 @@ import org.mtr.mod.block.IBlock;
 import org.mtr.mod.data.IGui;
 import org.mtr.mod.render.StoredMatrixTransformations;
 import top.xfunny.mod.block.SchindlerLineaButton2BlackWithoutScreen;
-import top.xfunny.mod.block.SchindlerLineaButton2BlackWithoutScreen;
 import top.xfunny.mod.block.base.LiftButtonsBase;
 import top.xfunny.mod.client.view.*;
 import top.xfunny.mod.client.view.view_group.FrameLayout;
@@ -112,7 +111,7 @@ public class RenderSchindlerLineaButton2BlackWithoutScreen extends BlockEntityRe
         buttonUpLight.setDimension(0.8F / 16);
         buttonUpLight.setGravity(Gravity.CENTER);
         buttonUpLight.setLight(light);
-        buttonUpLight.setDefaultColor(0xFF444444,true);
+        buttonUpLight.setDefaultColor(0xFF444444, true);
         buttonUpLight.setHoverColor(HOVER_COLOR);
         buttonUpLight.setPressedColor(PRESSED_COLOR);
         buttonUpLight.setButtonSound("schindler_fi_gs_button_1");
@@ -132,7 +131,7 @@ public class RenderSchindlerLineaButton2BlackWithoutScreen extends BlockEntityRe
         buttonDownLight.setDimension(0.8F / 16);
         buttonDownLight.setGravity(Gravity.CENTER);
         buttonDownLight.setLight(light);
-        buttonDownLight.setDefaultColor(0xFF444444,true);
+        buttonDownLight.setDefaultColor(0xFF444444, true);
         buttonDownLight.setHoverColor(HOVER_COLOR);
         buttonDownLight.setPressedColor(PRESSED_COLOR);
         buttonDownLight.setButtonSound("schindler_fi_gs_button_1");

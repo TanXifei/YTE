@@ -15,7 +15,6 @@ import org.mtr.mod.data.IGui;
 import org.mtr.mod.render.QueuedRenderLayer;
 import org.mtr.mod.render.StoredMatrixTransformations;
 import top.xfunny.mod.Init;
-import top.xfunny.mod.block.MitsubishiNexWayScreen3Even;
 import top.xfunny.mod.block.MitsubishiNexWayScreen3WideEven;
 import top.xfunny.mod.block.base.LiftPanelBase;
 import top.xfunny.mod.client.resource.FontList;
@@ -98,7 +97,7 @@ public class RenderMitsubishiNexWayScreen3Wide<T extends LiftPanelBase.BlockEnti
                         7,
                         0xFFFA7A24);
                 liftFloorDisplayView.setTextureId(String.format("mitsubishi_nexway_screen_3_display_%d", i))
-;
+                ;
                 liftFloorDisplayView.setWidth(2.6F / 16);
                 liftFloorDisplayView.setHeight(2.8F / 16);
                 liftFloorDisplayView.setGravity(Gravity.CENTER_VERTICAL);

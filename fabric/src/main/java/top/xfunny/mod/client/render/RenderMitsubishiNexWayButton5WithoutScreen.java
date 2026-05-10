@@ -94,7 +94,7 @@ public class RenderMitsubishiNexWayButton5WithoutScreen extends BlockEntityRende
         ImageView buttonUp = new ImageView();
         buttonUp.setBasicsAttributes(world, blockPos);
         buttonUp.setTexture(BUTTON_TEXTURE);
-        buttonUp.setDimension(0.75F / 16,324,279);
+        buttonUp.setDimension(0.75F / 16, 324, 279);
         buttonUp.setGravity(Gravity.CENTER);
         buttonUp.setLight(light);
 
@@ -102,7 +102,7 @@ public class RenderMitsubishiNexWayButton5WithoutScreen extends BlockEntityRende
         buttonUpLight.setId("up");
         buttonUpLight.setBasicsAttributes(world, blockPos, keyMapping);
         buttonUpLight.setTexture(BUTTON_LIGHT_TEXTURE);
-        buttonUpLight.setDimension(0.75F / 16,324,279);
+        buttonUpLight.setDimension(0.75F / 16, 324, 279);
         buttonUpLight.setGravity(Gravity.CENTER);
         buttonUpLight.setLight(light);
         buttonUpLight.setDefaultColor(ARGB_WHITE);
@@ -112,7 +112,7 @@ public class RenderMitsubishiNexWayButton5WithoutScreen extends BlockEntityRende
         ImageView buttonDown = new ImageView();
         buttonDown.setBasicsAttributes(world, blockPos);
         buttonDown.setTexture(BUTTON_TEXTURE);
-        buttonDown.setDimension(0.75F / 16,324,279);
+        buttonDown.setDimension(0.75F / 16, 324, 279);
         buttonDown.setGravity(Gravity.CENTER);
         buttonDown.setLight(light);
         buttonDown.setFlip(false, true);
@@ -121,7 +121,7 @@ public class RenderMitsubishiNexWayButton5WithoutScreen extends BlockEntityRende
         buttonDownLight.setId("down");
         buttonDownLight.setBasicsAttributes(world, blockPos, keyMapping);
         buttonDownLight.setTexture(BUTTON_LIGHT_TEXTURE);
-        buttonDownLight.setDimension(0.75F / 16,324,279);
+        buttonDownLight.setDimension(0.75F / 16, 324, 279);
         buttonDownLight.setGravity(Gravity.CENTER);
         buttonDownLight.setLight(light);
         buttonDownLight.setDefaultColor(ARGB_WHITE);

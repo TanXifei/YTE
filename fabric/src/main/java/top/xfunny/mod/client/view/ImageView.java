@@ -16,6 +16,9 @@ import static org.mtr.mapping.mapper.DirectionHelper.FACING;
 import static org.mtr.mod.data.IGui.ARGB_WHITE;
 
 public class ImageView implements RenderView {
+    // --- 动画相关属性 Start ---
+    private final List<Identifier> animationFrames = new ArrayList<>(); // 存储动画序列帧
+    private final float[] yawRotationResult = new float[2];
     public float y;
     // 基本属性
     protected String id;
@@ -27,20 +30,14 @@ public class ImageView implements RenderView {
     private StoredMatrixTransformations storedMatrixTransformations;
     private float marginLeft, marginTop, marginRight, marginBottom;
     private Gravity gravity;
-
     // 默认静态贴图
     private Identifier texture;
-
-    // --- 动画相关属性 Start ---
-    private final List<Identifier> animationFrames = new ArrayList<>(); // 存储动画序列帧
     private boolean isAnimated = false; // 是否启用动画
-    private float animationInterval = 10.0f; // 动画帧间隔 (tick)，越小越快。10 tick = 0.5秒
     // --- 动画相关属性 End ---
-
+    private float animationInterval = 10.0f; // 动画帧间隔 (tick)，越小越快。10 tick = 0.5秒
     private float scale;
     private int light = GraphicsHolder.getDefaultLight();
     private float[] uv;
-    private final float[] yawRotationResult = new float[2];
     private QueuedRenderLayer queuedRenderLayer = QueuedRenderLayer.EXTERIOR;
     private boolean needBlink;
     private boolean needYawRotate;
@@ -70,7 +67,8 @@ public class ImageView implements RenderView {
 
     /**
      * 设置动画贴图序列 (核心修改)
-     * @param frames 包含所有帧的 Identifier 列表
+     *
+     * @param frames   包含所有帧的 Identifier 列表
      * @param interval 每一帧持续的时间 (Ticks)，20 ticks = 1秒
      */
     public void setAnimatedTexture(List<Identifier> frames, float interval) {
@@ -90,10 +88,10 @@ public class ImageView implements RenderView {
      * 快捷设置动画贴图序列
      * 假设你的贴图命名规则为: namespace:textures/block/my_gif_0.png, my_gif_1.png ...
      *
-     * @param namespace 命名空间 (如 "minecraft" 或 你的mod id)
-     * @param basePath 贴图路径前缀 (不包含序号和后缀)，如 "textures/block/my_gif_"
+     * @param namespace  命名空间 (如 "minecraft" 或 你的mod id)
+     * @param basePath   贴图路径前缀 (不包含序号和后缀)，如 "textures/block/my_gif_"
      * @param frameCount 总帧数
-     * @param interval 每一帧持续的时间 (Ticks)
+     * @param interval   每一帧持续的时间 (Ticks)
      */
     public void setAnimatedTexture(String namespace, String basePath, int frameCount, float interval) {
         List<Identifier> frames = new ArrayList<>();
@@ -201,12 +199,12 @@ public class ImageView implements RenderView {
                     (graphicsHolder, offset) -> {
                         float[] yawRotationResult = new float[2];
 
-                        if(needYawRotate){
+                        if (needYawRotate) {
                             yawRotationResult = scale(gameTick);
                         }
 
-                        float width2 =  yawRotationResult[0] == 0 ? width :  yawRotationResult[0];
-                        float x2 =  yawRotationResult[1] == 0 ? x :  yawRotationResult[1];
+                        float width2 = yawRotationResult[0] == 0 ? width : yawRotationResult[0];
+                        float x2 = yawRotationResult[1] == 0 ? x : yawRotationResult[1];
 
                         // 应用矩阵变换
                         storedMatrixTransformations1.transform(graphicsHolder, offset);
@@ -232,9 +230,9 @@ public class ImageView implements RenderView {
 
     }
 
-    private float[] scale(float gameTick){
+    private float[] scale(float gameTick) {
         float multiplier = (float) Math.sin(gameTick * yawRotationSpeed * 3) * 0.5f + 0.5f;
-        float width2  = width * multiplier;
+        float width2 = width * multiplier;
         float x2 = x + (width - width2) * 0.5f;
         yawRotationResult[0] = width2;
         yawRotationResult[1] = x2;

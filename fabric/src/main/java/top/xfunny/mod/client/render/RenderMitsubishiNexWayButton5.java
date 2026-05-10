@@ -115,7 +115,7 @@ public class RenderMitsubishiNexWayButton5 extends BlockEntityRenderer<Mitsubish
         ImageView buttonUp = new ImageView();
         buttonUp.setBasicsAttributes(world, blockPos);
         buttonUp.setTexture(BUTTON_TEXTURE);
-        buttonUp.setDimension(0.75F / 16,324,279);
+        buttonUp.setDimension(0.75F / 16, 324, 279);
         buttonUp.setGravity(Gravity.CENTER);
         buttonUp.setLight(light);
 
@@ -123,7 +123,7 @@ public class RenderMitsubishiNexWayButton5 extends BlockEntityRenderer<Mitsubish
         buttonUpLight.setId("up");
         buttonUpLight.setBasicsAttributes(world, blockPos, keyMapping);
         buttonUpLight.setTexture(BUTTON_LIGHT_TEXTURE);
-        buttonUpLight.setDimension(0.75F / 16,324,279);
+        buttonUpLight.setDimension(0.75F / 16, 324, 279);
         buttonUpLight.setGravity(Gravity.CENTER);
         buttonUpLight.setLight(light);
         buttonUpLight.setDefaultColor(ARGB_WHITE);
@@ -133,7 +133,7 @@ public class RenderMitsubishiNexWayButton5 extends BlockEntityRenderer<Mitsubish
         ImageView buttonDown = new ImageView();
         buttonDown.setBasicsAttributes(world, blockPos);
         buttonDown.setTexture(BUTTON_TEXTURE);
-        buttonDown.setDimension(0.75F / 16,324,279);
+        buttonDown.setDimension(0.75F / 16, 324, 279);
         buttonDown.setGravity(Gravity.CENTER);
         buttonDown.setLight(light);
         buttonDown.setFlip(false, true);
@@ -142,7 +142,7 @@ public class RenderMitsubishiNexWayButton5 extends BlockEntityRenderer<Mitsubish
         buttonDownLight.setId("down");
         buttonDownLight.setBasicsAttributes(world, blockPos, keyMapping);
         buttonDownLight.setTexture(BUTTON_LIGHT_TEXTURE);
-        buttonDownLight.setDimension(0.75F / 16,324,279);
+        buttonDownLight.setDimension(0.75F / 16, 324, 279);
         buttonDownLight.setGravity(Gravity.CENTER);
         buttonDownLight.setLight(light);
         buttonDownLight.setDefaultColor(ARGB_WHITE);
@@ -205,7 +205,7 @@ public class RenderMitsubishiNexWayButton5 extends BlockEntityRenderer<Mitsubish
                         0xFFFA7A24);
                 //liftFloorDisplayView.setDisplayLength(2, 0.05F);
                 liftFloorDisplayView.setTextureId(String.format("mitsubishi_nexway_button_4_display_%d", i))
-;
+                ;
                 liftFloorDisplayView.setWidth((float) 1.5 / 16);
                 liftFloorDisplayView.setHeight((float) 1.7 / 16);
                 liftFloorDisplayView.setMargin(0, 0, (float) -0.1 / 16, 0);
@@ -216,7 +216,7 @@ public class RenderMitsubishiNexWayButton5 extends BlockEntityRenderer<Mitsubish
                     liftFloorDisplayView.setBasicsAttributes(world,
                             blockPos,
                             sortedPositionsAndLifts.get(i).right(),
-                            FontList.instance.getFont(floorNumber.matches(".*[A-Z].*")?"mitsubishi_small_regular":"mitsubishi_small_sht"),
+                            FontList.instance.getFont(floorNumber.matches(".*[A-Z].*") ? "mitsubishi_small_regular" : "mitsubishi_small_sht"),
                             6,
                             0xFFFA7A24);
                     liftFloorDisplayView.setAdaptMode(LiftFloorDisplayView.AdaptMode.FORCE_FIT_WIDTH);

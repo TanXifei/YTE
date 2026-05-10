@@ -218,7 +218,7 @@ public class RenderMitsubishiNexWayButton2 extends BlockEntityRenderer<Mitsubish
                     liftFloorDisplayView.setBasicsAttributes(world,
                             blockPos,
                             sortedPositionsAndLifts.get(i).right(),
-                            FontList.instance.getFont(floorNumber.matches(".*[A-Z].*")?"mitsubishi_small_regular":"mitsubishi_small_sht"),
+                            FontList.instance.getFont(floorNumber.matches(".*[A-Z].*") ? "mitsubishi_small_regular" : "mitsubishi_small_sht"),
                             5.5F,
                             0xFFFA7A24);
                     liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.LEFT);

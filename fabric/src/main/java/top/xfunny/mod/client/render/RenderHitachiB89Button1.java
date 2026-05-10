@@ -190,7 +190,7 @@ public class RenderHitachiB89Button1 extends BlockEntityRenderer<HitachiB89Butto
                 liftFloorDisplayView.setBasicsAttributes(world,
                         blockPos,
                         sortedPositionsAndLifts.get(i).right(),
-                        FontList.instance.getFont(floorNumber.matches("^(-1|1)$")?"hitachi_b85_left":"hitachi_b85"),
+                        FontList.instance.getFont(floorNumber.matches("^(-1|1)$") ? "hitachi_b85_left" : "hitachi_b85"),
                         8.375F,
                         0xFFFF0000);
                 liftFloorDisplayView.setDisplayLength(2, 0.05F);

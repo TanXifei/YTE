@@ -123,7 +123,7 @@ public class RenderHitachiVIB192Button extends BlockEntityRenderer<HitachiVIB192
         buttonUpLight.setId("up");
         buttonUpLight.setBasicsAttributes(world, blockPos, keyMapping);
         buttonUpLight.setTexture(LIGHT_UP_TEXTURE);
-        buttonUpLight.setDimension(0.8F / 16,569,395);
+        buttonUpLight.setDimension(0.8F / 16, 569, 395);
         buttonUpLight.setGravity(Gravity.CENTER);
         buttonUpLight.setLight(light);
         buttonUpLight.setDefaultColor(DEFAULT_COLOR);
@@ -134,7 +134,7 @@ public class RenderHitachiVIB192Button extends BlockEntityRenderer<HitachiVIB192
         buttonDownLight.setId("down");
         buttonDownLight.setBasicsAttributes(world, blockPos, keyMapping);
         buttonDownLight.setTexture(LIGHT_DOWN_TEXTURE);
-        buttonDownLight.setDimension(0.8F / 16,569,395);
+        buttonDownLight.setDimension(0.8F / 16, 569, 395);
         buttonDownLight.setGravity(Gravity.CENTER);
         buttonDownLight.setLight(light);
         buttonDownLight.setDefaultColor(DEFAULT_COLOR);

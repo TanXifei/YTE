@@ -207,7 +207,7 @@ public class RenderMitsubishiMaxiezButton3LCD extends BlockEntityRenderer<Mitsub
                 liftFloorDisplayView.setTextureId(String.format("mitsubishi_maxiez_button_3_lcd_display_%d", i));
                 liftFloorDisplayView.setWidth(1.25F / 16);
                 liftFloorDisplayView.setHeight(1.7F / 16);
-                liftFloorDisplayView.setMargin(0.1F/16, 0, 0.1F/16, 0);
+                liftFloorDisplayView.setMargin(0.1F / 16, 0, 0.1F / 16, 0);
                 liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.CENTER);
                 liftFloorDisplayView.addStoredMatrixTransformations(graphicsHolder -> graphicsHolder.translate(0, 0, -SMALL_OFFSET));
                 if (liftFloorDisplayView.getTextLength() >= 3) {

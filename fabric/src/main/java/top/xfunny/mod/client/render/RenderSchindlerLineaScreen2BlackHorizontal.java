@@ -14,7 +14,6 @@ import org.mtr.mod.data.IGui;
 import org.mtr.mod.render.QueuedRenderLayer;
 import org.mtr.mod.render.StoredMatrixTransformations;
 import top.xfunny.mod.Init;
-import top.xfunny.mod.block.SchindlerLineaScreen1WhiteHorizontalEven;
 import top.xfunny.mod.block.SchindlerLineaScreen2BlackHorizontalEven;
 import top.xfunny.mod.block.base.LiftPanelBase;
 import top.xfunny.mod.client.resource.FontList;
@@ -90,13 +89,13 @@ public class RenderSchindlerLineaScreen2BlackHorizontal<T extends LiftPanelBase.
                         3.5F,
                         0xFFFF0000);
                 liftFloorDisplayView.setTextureId(String.format("schindler_linea_100_screen_display_%d", i))
-;
+                ;
                 liftFloorDisplayView.setWidth(2.6F / 16);
                 liftFloorDisplayView.setHeight(2.8F / 16);
                 liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.RIGHT);
                 liftFloorDisplayView.setLetterSpacing(0);
                 liftFloorDisplayView.setDisplayLength(2, 0);
-                liftFloorDisplayView.setMargin(0.6F / 16, 1.125F / 16, 0.1F/16, 0);
+                liftFloorDisplayView.setMargin(0.6F / 16, 1.125F / 16, 0.1F / 16, 0);
                 liftFloorDisplayView.addStoredMatrixTransformations(graphicsHolder -> graphicsHolder.translate(0, 0, -SMALL_OFFSET));
 
                 final LiftArrowView liftArrowView_left = new LiftArrowView();

@@ -1,4 +1,4 @@
- package top.xfunny.mod.block;
+package top.xfunny.mod.block;
 
 import org.mtr.mapping.holder.*;
 import org.mtr.mapping.mapper.BlockEntityExtension;

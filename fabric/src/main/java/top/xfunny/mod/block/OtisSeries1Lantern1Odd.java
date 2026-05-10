@@ -6,7 +6,6 @@ import org.mtr.mapping.tool.HolderBase;
 import org.mtr.mod.block.IBlock;
 import top.xfunny.mod.BlockEntityTypes;
 import top.xfunny.mod.block.base.LiftButtonsBase;
-import top.xfunny.mod.SoundEvents;
 
 import javax.annotation.Nonnull;
 import java.util.List;
@@ -19,7 +18,7 @@ public class OtisSeries1Lantern1Odd extends LiftButtonsBase {
     @Nonnull
     @Override
     public VoxelShape getOutlineShape2(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return IBlock.getVoxelShapeByDirection(6.75, 0.9, 0, 9.25, 4.65,0.25, IBlock.getStatePropertySafe(state, FACING));
+        return IBlock.getVoxelShapeByDirection(6.75, 0.9, 0, 9.25, 4.65, 0.25, IBlock.getStatePropertySafe(state, FACING));
 
     }
 
@@ -35,7 +34,6 @@ public class OtisSeries1Lantern1Odd extends LiftButtonsBase {
         properties.add(FACING);
         properties.add(SIDE);
     }
-
 
 
     public static class BlockEntity extends BlockEntityBase {

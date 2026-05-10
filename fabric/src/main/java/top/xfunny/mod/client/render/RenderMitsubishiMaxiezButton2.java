@@ -218,7 +218,7 @@ public class RenderMitsubishiMaxiezButton2 extends BlockEntityRenderer<Mitsubish
                     liftFloorDisplayView.setBasicsAttributes(world,
                             blockPos,
                             sortedPositionsAndLifts.get(i).right(),
-                            FontList.instance.getFont(floorNumber.matches(".*[A-Z].*")?"mitsubishi_small_regular":"mitsubishi_small_sht"),
+                            FontList.instance.getFont(floorNumber.matches(".*[A-Z].*") ? "mitsubishi_small_regular" : "mitsubishi_small_sht"),
                             6,
                             0xFFFA7A24);
                     liftFloorDisplayView.setAdaptMode(LiftFloorDisplayView.AdaptMode.FORCE_FIT_WIDTH);

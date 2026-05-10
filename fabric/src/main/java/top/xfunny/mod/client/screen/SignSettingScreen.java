@@ -16,11 +16,10 @@ import java.util.function.Consumer;
 import static top.xfunny.mod.client.screen.widget.CustomSignsManager.getDefaultSignListSize;
 
 public class SignSettingScreen extends BaseConfigScreen {
-    private String selectedSignId;
     private final ObjectArrayList<String> allSignIds = CustomSignsManager.getSignList();
-
     private final ButtonWidgetExtension[] chooseSignButton;
     private final Consumer<String> callback;
+    private String selectedSignId;
 
     public SignSettingScreen(BlockPos blockPos, String selectedSignId, Consumer<String> callback) {
         super(blockPos);
@@ -73,9 +72,9 @@ public class SignSettingScreen extends BaseConfigScreen {
             }
 
             Identifier SIGN_ICON = new Identifier("mtr:textures/block/sign/" + signId + ".png");
-            String displaySignId = signId.replace("_"," ");
+            String displaySignId = signId.replace("_", " ");
 
-            if (i == getDefaultSignListSize()){
+            if (i == getDefaultSignListSize()) {
                 listViewWidget.addCategory(TextHelper.translatable("gui.yte.extended_style"));
             }
 
@@ -86,10 +85,11 @@ public class SignSettingScreen extends BaseConfigScreen {
         }
     }
 
-    public MutableText getScreenTitle(){
+    public MutableText getScreenTitle() {
         return TextHelper.translatable("gui.yte.signs.list.signs_setting");
     }
-    public MutableText getScreenSubtitle(){
+
+    public MutableText getScreenSubtitle() {
         return TextHelper.translatable("gui.yte.signs.subtitle", selectedSignId);
     }
 
@@ -99,10 +99,10 @@ public class SignSettingScreen extends BaseConfigScreen {
         listViewWidget.addCategory(TextHelper.translatable("更多设置"));
     }
 
-    public void setSelectedSign(String signId){
+    public void setSelectedSign(String signId) {
         callback.accept(signId);
         selectedSignId = signId;
-        for (int i = 0; i < allSignIds.size(); i++){
+        for (int i = 0; i < allSignIds.size(); i++) {
             if (allSignIds.get(i).equals(selectedSignId)) {
                 chooseSignButton[i].setMessage2(Text.cast(TextHelper.translatable("gui.yte.selected")));
                 chooseSignButton[i].active = false;

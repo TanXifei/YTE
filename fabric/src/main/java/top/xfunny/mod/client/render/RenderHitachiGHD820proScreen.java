@@ -23,7 +23,6 @@ import top.xfunny.mod.client.view.view_group.LinearLayout;
 import top.xfunny.mod.item.YteGroupLiftButtonsLinker;
 import top.xfunny.mod.item.YteLiftButtonsLinker;
 import top.xfunny.mod.util.ClientGetLiftDetails;
-import top.xfunny.mod.util.ReverseRendering;
 
 import java.util.Comparator;
 
@@ -93,7 +92,7 @@ public class RenderHitachiGHD820proScreen<T extends LiftPanelBase.BlockEntityBas
                 liftFloorDisplayView.setBasicsAttributes(world,
                         blockPos,
                         lift,
-                        FontList.instance.getFont(floorNumber.matches("^(1[0-9]|20|[1-9])$")?"hitachi-led-seg":"hitachi-led-seg-fix"),
+                        FontList.instance.getFont(floorNumber.matches("^(1[0-9]|20|[1-9])$") ? "hitachi-led-seg" : "hitachi-led-seg-fix"),
                         8.5F,
                         0xFFFFFFFF);
                 liftFloorDisplayView.setTextureId(String.format("hitachi_ghd820_screen_display_%d", i));
