@@ -211,12 +211,12 @@ public class ButtonView extends ImageView {
     }
 
     public void setFlip(boolean flipVertical, boolean flipHorizontal) {
-        if (flipVertical) {
+        if (flipVertical) {// 垂直翻转
             final float tempV = uv[0];
             uv[0] = uv[2];
             uv[2] = tempV;
         }
-        if (flipHorizontal) {
+        if (flipHorizontal) {// 水平反转
             final float tempU = uv[1];
             uv[1] = uv[3];
             uv[3] = tempU;
