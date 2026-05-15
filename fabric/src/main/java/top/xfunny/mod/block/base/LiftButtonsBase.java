@@ -95,7 +95,8 @@ public abstract class LiftButtonsBase extends BlockExtension implements Directio
 
                         connectedLanternPositions.forEach(lanternPos -> {
                             BlockEntity lanternBlockEntity = world.getBlockEntity(lanternPos);
-                            if (lanternBlockEntity != null && lanternBlockEntity.data instanceof BlockEntityBase lanternData) {
+                            if (lanternBlockEntity != null && lanternBlockEntity.data instanceof BlockEntityBase) {
+                                BlockEntityBase lanternData = (BlockEntityBase) lanternBlockEntity.data;
                                 if (descriptor.hasDownButton() && descriptor.hasUpButton()) {
                                     if (focusButton.equals("down")) {
                                         lanternData.setPressedButtonDirection(LiftDirection.DOWN);

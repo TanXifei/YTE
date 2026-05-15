@@ -362,9 +362,10 @@ public abstract class LiftDestinationDispatchTerminalBase extends BlockExtension
 
 
                 scheduler.schedule(() -> {
-                    liftButtonPositions.forEach(lanternPos -> {// 传递乘客方向至到站灯
+                    liftButtonPositions.forEach(lanternPos -> {
                         BlockEntity lanternBlockEntity = world.getBlockEntity(lanternPos);
-                        if (lanternBlockEntity != null && lanternBlockEntity.data instanceof LiftButtonsBase.BlockEntityBase lanternData) {
+                        if (lanternBlockEntity != null && lanternBlockEntity.data instanceof LiftButtonsBase.BlockEntityBase) {
+                            LiftButtonsBase.BlockEntityBase lanternData = (LiftButtonsBase.BlockEntityBase) lanternBlockEntity.data;
                             lanternData.setPressedButtonDirection(data.liftDirection);
                         }
                     });

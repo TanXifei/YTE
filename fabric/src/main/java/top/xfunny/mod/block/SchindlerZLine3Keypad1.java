@@ -56,13 +56,16 @@ public class SchindlerZLine3Keypad1 extends LiftDestinationDispatchTerminalBase 
         final double hitY = MathHelper.fractionalPart(hit.getPos().getYMapped());
 
         final org.mtr.mapping.holder.BlockEntity blockEntity = world.getBlockEntity(pos);
-        if (blockEntity == null || !(blockEntity.data instanceof BlockEntityBase data)) {
+        if (blockEntity == null || !(blockEntity.data instanceof BlockEntityBase)) {
             return ActionResult.FAIL;
         }
+        BlockEntityBase data = (BlockEntityBase) blockEntity.data;
 
-        if (!(blockEntity.data instanceof BlockEntity data1)) {
+        if (!(blockEntity.data instanceof BlockEntity)) {
             return ActionResult.FAIL;
         }
+        BlockEntity data1 = (BlockEntity) blockEntity.data;
+
 
         // 获取按键映射
         final DefaultButtonsKeyMapping keyMapping = data.getKeyMapping();
