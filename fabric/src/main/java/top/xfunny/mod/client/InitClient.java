@@ -11,6 +11,7 @@ import top.xfunny.mod.Init;
 import top.xfunny.mod.Items;
 import top.xfunny.mod.client.render.*;
 import top.xfunny.mod.client.resource.FontList;
+import top.xfunny.mod.client.sound.SoundPlaybackManager;
 import top.xfunny.mod.config.ClientConfig;
 import top.xfunny.mod.item.YTEItemBlockClickingBase;
 
@@ -396,10 +397,12 @@ public final class InitClient {
 
             DynamicTextureCache.instance.reload();
             FontList.instance.FontReload();
+
+            SoundPlaybackManager.clearCache();
         });
 
         // TODO: 发布前请注释此行代码。
-        REGISTRY_CLIENT.eventRegistryClient.registerGuiRendering(RenderWatermark::render);
+        //REGISTRY_CLIENT.eventRegistryClient.registerGuiRendering(RenderWatermark::render);
         REGISTRY_CLIENT.init();
     }
 

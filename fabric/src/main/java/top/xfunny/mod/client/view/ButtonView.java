@@ -5,6 +5,7 @@ import org.mtr.mod.Init;
 import org.mtr.mod.block.IBlock;
 import org.mtr.mod.render.QueuedRenderLayer;
 import top.xfunny.mod.client.InitClient;
+import top.xfunny.mod.client.sound.SoundPlaybackManager;
 import top.xfunny.mod.keymapping.DefaultButtonsKeyMapping;
 import top.xfunny.mod.packet.PacketLanternSoundInstruction;
 import top.xfunny.mod.util.TransformPositionX;
@@ -17,8 +18,8 @@ import static org.mtr.mapping.mapper.DirectionHelper.FACING;
 
 public class ButtonView extends ImageView {
 
-    private static final Map<String, Boolean> LAST_ACTIVE_MAP = new ConcurrentHashMap<>();
-    private static final Map<String, Long> CLICK_TIME_MAP = new ConcurrentHashMap<>();
+
+    private static final Map<ButtonKey, Long> CLICK_TIME_MAP = new ConcurrentHashMap<>();
     private static final long CLICK_COOLDOWN = 200; // 0.2 秒
     private int hoverColor;
     private int pressedColor;
@@ -28,9 +29,6 @@ public class ButtonView extends ImageView {
     private boolean isAlwaysOn;
     private DefaultButtonsKeyMapping keyMapping;
 
-    // ===============================
-    // 🔒 工业级点击冷却系统
-    // ===============================
     private final float[] location;
     private final float[] dimension;
     private final float[] uv;
@@ -53,6 +51,8 @@ public class ButtonView extends ImageView {
     public void setBasicsAttributes(World world, BlockPos blockPos) {
         super.setBasicsAttributes(world, blockPos);
     }
+
+    private ButtonKey currentButtonKey = null;
 
     @Override
     public void render() {
@@ -91,39 +91,31 @@ public class ButtonView extends ImageView {
 
             isFocused = inBlock && Objects.equals(inButton, id);
 
-            // ============================================
-            // 🔊 稳定物理点击系统（防机关枪 + 防实例重建）
-            // ============================================
+
 
             boolean isUseKeyDown = client.getOptionsMapped().getKeyUseMapped().isPressed();
-            long now = System.currentTimeMillis();
 
             if (isFocused && isUseKeyDown && !wasUseKeyDown) {
 
-                String clickKey = blockPos.getX() + "_" +
-                        blockPos.getY() + "_" +
-                        blockPos.getZ();
+                // 只有在真正需要比对或写入冷却时，才延迟初始化这个 Key（或者在 setId 时初始化）
+                if (currentButtonKey == null) {
+                    currentButtonKey = new ButtonKey(blockPos, id);
+                }
 
-                Long lastTime = CLICK_TIME_MAP.get(clickKey);
+                long now = System.currentTimeMillis();
+                Long lastTime = CLICK_TIME_MAP.get(currentButtonKey);
 
                 if (lastTime == null || now - lastTime > CLICK_COOLDOWN) {
-
-                    if (buttonSound != null) {
-                        InitClient.REGISTRY_CLIENT.sendPacketToServer(
-                                new PacketLanternSoundInstruction(blockPos, buttonSound)
-                        );
+                    if (onClickListener != null) {
+                        onClickListener.onClick(blockPos);
                     }
-
-                    CLICK_TIME_MAP.put(clickKey, now);
+                    CLICK_TIME_MAP.put(currentButtonKey, now);
                 }
             }
-
             wasUseKeyDown = isUseKeyDown;
         }
 
-        // ============================================
-        // 🛗 到站灯逻辑（完全保持原结构）
-        // ============================================
+
 
         if (isFocused || isPressed || isAlwaysOn) {
             setQueuedRenderLayer(QueuedRenderLayer.LIGHT_TRANSLUCENT);
@@ -140,37 +132,20 @@ public class ButtonView extends ImageView {
         super.render();
     }
 
-    // ============================================
-    // 🛗 电梯逻辑控制（服务器调用）
-    // ============================================
+
 
     public void activate() {
         isPressed = true;
-
-        if (lanternSoundInstruction == null || world == null || blockPos == null) {
-            return;
+        if (onStateChangeListener != null) {
+            onStateChangeListener.onActivate(blockPos);
         }
-
-        final String key = makeSoundKey();
-        if (key == null) return;
-
-        Boolean already = LAST_ACTIVE_MAP.get(key);
-        if (already != null && already) return;
-
-        InitClient.REGISTRY_CLIENT.sendPacketToServer(
-                new PacketLanternSoundInstruction(blockPos, lanternSoundInstruction)
-        );
-
-        LAST_ACTIVE_MAP.put(key, true);
     }
 
     public void resetLanternSound() {
         isPressed = false;
-
-        final String key = makeSoundKey();
-        if (key == null) return;
-
-        LAST_ACTIVE_MAP.put(key, false);
+        if (onStateChangeListener != null) {
+            onStateChangeListener.onReset(blockPos);
+        }
     }
 
     private String makeSoundKey() {
@@ -181,16 +156,24 @@ public class ButtonView extends ImageView {
                 lanternSoundInstruction;
     }
 
-    // ============================================
-    // setter 区
-    // ============================================
 
-    public void setLanternSound(String soundInstruction) {
-        this.lanternSoundInstruction = soundInstruction;
+    @Deprecated
+    public void setButtonSound(String sound) {
+        // 临时保留，或者直接重定向到新的声音管理器
+        SoundPlaybackManager.registerButtonSound(this, sound);
     }
 
-    public void setButtonSound(String sound) {
-        this.buttonSound = sound;
+    @Deprecated
+    public void setLanternSound(String soundInstruction) {
+        SoundPlaybackManager.registerLanternSound(this, soundInstruction);
+    }
+
+    public void setOnClickListener(OnClickListener listener) {
+        this.onClickListener = listener;
+    }
+
+    public void setOnStateChangeListener(OnStateChangeListener listener) {
+        this.onStateChangeListener = listener;
     }
 
     public void setDefaultColor(int defaultColor, boolean isAlwaysOn) {
@@ -220,6 +203,47 @@ public class ButtonView extends ImageView {
             final float tempU = uv[1];
             uv[1] = uv[3];
             uv[3] = tempU;
+        }
+    }
+
+    public interface OnClickListener {
+        void onClick(BlockPos pos);
+    }
+    public interface OnStateChangeListener {
+        void onActivate(BlockPos pos);
+        void onReset(BlockPos pos);
+    }
+
+    private OnClickListener onClickListener;
+    private OnStateChangeListener onStateChangeListener;
+
+    private static class ButtonKey {
+        private final int x, y, z;
+        private final String buttonId; // 区分同一个方块上的不同按钮（如 "up", "down"）
+
+        public ButtonKey(BlockPos pos, String buttonId) {
+            this.x = pos.getX();
+            this.y = pos.getY();
+            this.z = pos.getZ();
+            this.buttonId = buttonId != null ? buttonId : "";
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            ButtonKey buttonKey = (ButtonKey) o;
+            return x == buttonKey.x && y == buttonKey.y && z == buttonKey.z && buttonId.equals(buttonKey.buttonId);
+        }
+
+        @Override
+        public int hashCode() {
+            // 工业级高效 Hash 算法，避免任何装箱和字符串开销
+            int result = x;
+            result = 31 * result + y;
+            result = 31 * result + z;
+            result = 31 * result + buttonId.hashCode();
+            return result;
         }
     }
 }

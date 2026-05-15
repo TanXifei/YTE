@@ -41,7 +41,7 @@ public class YteGroupLiftButtonsLinker extends YTEItemBlockClickingBase implemen
                     ((BlockLiftPanelBase.BlockEntityBase) blockEntity1.data).registerFloor(world, blockPos2, isAdd);
                 }
             } else if (blockEntity2.data instanceof LiftButtonsBase.BlockEntityBase || blockEntity2.data instanceof LiftDestinationDispatchTerminalBase.BlockEntityBase) {
-                if (blockEntity1.data instanceof LiftFloorRegistry) {
+                if (blockEntity1.data instanceof ButtonRegistry) {
                     ((ButtonRegistry) blockEntity1.data).registerButton(world, blockPos2, isAdd);
                 }
             }
@@ -75,17 +75,32 @@ public class YteGroupLiftButtonsLinker extends YTEItemBlockClickingBase implemen
             final boolean isStartTrackBase = startState.getBlock().data instanceof BlockLiftTrackBase;
             final boolean isEndTrackBase = endState.getBlock().data instanceof BlockLiftTrackBase;
 
-
             if (isStartTrackBase && isEndTrackBase) {
                 if (playerEntity != null) {
                     playerEntity.sendMessage(isConnector ? Text.cast(TextHelper.translatable("message.linker_status_failed")) : Text.cast(TextHelper.translatable("message.linker_status_failed_remove")), true);
                 }
                 break;
-            } else if (isStartTrackBase ^ isEndTrackBase) {// 两点之一为楼层轨道
+            } else if (isStartTrackBase ^ isEndTrackBase) {
                 Init.LOGGER.info(posEnd.toShortString());
+
                 connect(world, posStart, posEnd, isConnector);
                 connect(world, posEnd, posStart, isConnector);
-                Object[] pos = pathFinder.findPath(context, posStart, posEnd);
+
+                Object[] pos = null;
+                try {
+                    pos = pathFinder.findPath(context, posStart, posEnd);
+                } catch (Exception e) {
+                    Init.LOGGER.error("PathFinder error during single connection", e);
+                }
+
+                if (pos == null || pos.length < 2) {
+                    if (playerEntity != null) {
+                        int displayCount = Math.max(1, floorCount);
+                        playerEntity.sendMessage(isConnector ? Text.cast(TextHelper.translatable("message.linker_status_finished", displayCount)) : Text.cast(TextHelper.translatable("message.linker_status_finished_remove", displayCount)), true);
+                    }
+                    break;
+                }
+
                 posStart = (BlockPos) pos[0];
                 posEnd = (BlockPos) pos[1];
 
@@ -106,13 +121,13 @@ public class YteGroupLiftButtonsLinker extends YTEItemBlockClickingBase implemen
                     floorCount++;
                 }
             } else {
-                if (playerEntity != null) {// 需要第三点
-                    playerEntity.sendMessage(Text.cast(TextHelper.translatable("message.floor_auto_setter_status_need_track_floor_position")), true);
+                if (playerEntity != null) {
+                    playerEntity.sendMessage(isConnector ? Text.cast(TextHelper.translatable("message.linker_status_failed")) : Text.cast(TextHelper.translatable("message.linker_status_failed_remove")), true);
                 }
                 break;
             }
 
-            if (number == pathFinder.getMark().size()) {// 防止无限循环
+            if (number == pathFinder.getMark().size() || number > 1000) {
                 if (playerEntity != null) {
                     playerEntity.sendMessage(isConnector ? Text.cast(TextHelper.translatable("message.linker_status_finished", floorCount)) : Text.cast(TextHelper.translatable("message.linker_status_finished_remove", floorCount)), true);
                 }
@@ -132,19 +147,43 @@ public class YteGroupLiftButtonsLinker extends YTEItemBlockClickingBase implemen
 
         while (true) {
             if (pos1 != null && pos2 != null && world.getBlockState(pos3).getBlock().data instanceof BlockLiftTrackBase) {
+
                 connect(world, pos1, pos2, isConnector);
                 connect(world, pos2, pos1, isConnector);
-                Object[] pos = pathFinder.findPath(context, pos1, pos2, pos3);
+
+                Object[] pos = null;
+                try {
+                    pos = pathFinder.findPath(context, pos1, pos2, pos3);
+                } catch (Exception e) {
+                    Init.LOGGER.error("PathFinder error during third click connection", e);
+                }
+
+                if (pos == null || pos.length < 3) {
+                    if (playerEntity != null) {
+                        int displayCount = Math.max(1, floorCount);
+                        playerEntity.sendMessage(isConnector ? Text.cast(TextHelper.translatable("message.linker_status_finished", displayCount)) : Text.cast(TextHelper.translatable("message.linker_status_finished_remove", displayCount)), true);
+                    }
+                    break;
+                }
+
                 pos1 = (BlockPos) pos[1];
                 pos2 = (BlockPos) pos[2];
                 pos3 = (BlockPos) pos[0];//轨道
 
                 final Block blockEnd = world.getBlockState(pos2).getBlock();
                 final Block blockStart = world.getBlockState(pos1).getBlock();
-                final boolean isBlockEndValid = blockEnd.data instanceof LiftButtonsBase || blockEnd.data instanceof LiftDestinationDispatchTerminalBase || blockEnd.data instanceof LiftPanelBase;
-                final boolean isBlockStartValid = blockStart.data instanceof LiftButtonsBase || blockStart.data instanceof LiftDestinationDispatchTerminalBase || blockStart.data instanceof LiftPanelBase;
 
-                if (isBlockEndValid && isBlockStartValid) {
+                // [修复] 同样严格判断两个点是否都是 LiftButtonsBase 且 allowPress 相反
+                boolean isValidPair = false;
+                if (blockEnd.data instanceof LiftButtonsBase && blockStart.data instanceof LiftButtonsBase) {
+                    boolean endAllowPress = ((LiftButtonsBase) blockEnd.data).allowPress;
+                    boolean startAllowPress = ((LiftButtonsBase) blockStart.data).allowPress;
+                    if (endAllowPress != startAllowPress) {
+                        isValidPair = true;
+                    }
+                }
+
+                if (isValidPair) {
                     floorCount++;
                 }
             } else {
@@ -153,7 +192,8 @@ public class YteGroupLiftButtonsLinker extends YTEItemBlockClickingBase implemen
                 }
                 break;
             }
-            if (number == pathFinder.getMark().size()) {
+
+            if (number == pathFinder.getMark().size() || number > 1000) {
                 if (playerEntity != null) {
                     playerEntity.sendMessage(isConnector ? Text.cast(TextHelper.translatable("message.linker_status_finished", floorCount)) : Text.cast(TextHelper.translatable("message.linker_status_finished_remove", floorCount)), true);
                 }

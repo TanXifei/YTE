@@ -9,7 +9,6 @@ import org.mtr.mod.block.BlockLiftTrackFloor;
 
 import javax.annotation.Nonnull;
 
-
 public class FloorAutoSetter extends ItemExtension implements DirectionHelper {
     public FloorAutoSetter(ItemSettings itemSettings) {
         super(itemSettings.maxCount(1));
@@ -38,41 +37,55 @@ public class FloorAutoSetter extends ItemExtension implements DirectionHelper {
         final World world = context.getWorld();
         BlockPos pos = context.getBlockPos();
         int number = 0;
-        int floorCount = 0;
+        int floorCount = 0; // 记录实际成功设置的楼层数量
         int floorNumber = 0;
         boolean ding = false;
         String floorNumber2 = "";
         final BlockEntity floorEntity = world.getBlockEntity(pos);
 
-        //todo：后续改为gui操作，提供更多楼层填充策略
-        //确定初始楼层
+        // 确定初始楼层
         if (floorEntity != null && floorEntity.data instanceof BlockLiftTrackFloor.BlockEntity) {
             String checkFloorNumber = ((BlockLiftTrackFloor.BlockEntity) floorEntity.data).getFloorNumber();
-            if (checkFloorNumber != null) {
-                floorNumber2 = ((BlockLiftTrackFloor.BlockEntity) floorEntity.data).getFloorNumber();
+            if (checkFloorNumber != null && !checkFloorNumber.isEmpty()) {
+                floorNumber2 = checkFloorNumber;
             } else {
                 floorNumber2 = "1";
             }
             ding = ((BlockLiftTrackFloor.BlockEntity) floorEntity.data).getShouldDing();
         }
-        //判断初始楼层是否为整数
+
+        // 判断初始楼层是否为整数
         if (floorNumber2.matches("\\d+")) {
             floorNumber = Integer.parseInt(floorNumber2);
         }
 
-
         while (floorNumber2.matches("\\d+")) {
             if (world.getBlockState(pos).getBlock().data instanceof BlockLiftTrackBase) {
-                final BlockEntity floorEntity1 = world.getBlockEntity(pos);
-                if (floorEntity1 != null && floorEntity1.data instanceof BlockLiftTrackFloor.BlockEntity) {
-                    ((BlockLiftTrackFloor.BlockEntity) floorEntity1.data).setData(String.valueOf(floorNumber), "", ding);
+                final BlockEntity currentEntity = world.getBlockEntity(pos);
+
+                // 1. 如果当前位置是楼层，设置数据并增加成功计数
+                if (currentEntity != null && currentEntity.data instanceof BlockLiftTrackFloor.BlockEntity) {
+                    ((BlockLiftTrackFloor.BlockEntity) currentEntity.data).setData(String.valueOf(floorNumber), "", ding);
+                    floorCount++; // 成功设置一个楼层，计数+1
                 }
 
+                // 2. 寻路获取下一个位置
                 Object[] apos = pathFinder.findPath(context, pos);
+                if (apos == null || apos.length == 0) break; // 安全校验
                 pos = (BlockPos) apos[0];
 
+                // 3. 判断是否到达终点
+                if (number == pathFinder.getMark().size()) {
+                    if (playerEntity != null) {
+                        // 直接输出 floorCount，不需要再 +1
+                        playerEntity.sendMessage(Text.cast(TextHelper.translatable("message.floor_auto_setter_status_finished", floorCount)), true);
+                    }
+                    break;
+                }
+
+                // 4. [修复核心] 如果下一个位置是楼层，说明即将进入新楼层，编号+1
                 if (world.getBlockState(pos).getBlock().data instanceof BlockLiftTrackFloor) {
-                    floorCount++;
+                    floorNumber++;
                 }
 
             } else {
@@ -82,25 +95,7 @@ public class FloorAutoSetter extends ItemExtension implements DirectionHelper {
                 break;
             }
 
-            if (number == pathFinder.getMark().size()) {
-                if (playerEntity != null) {
-                    playerEntity.sendMessage(Text.cast(TextHelper.translatable("message.floor_auto_setter_status_finished", floorCount + 1)), true);
-                }
-                break;
-            }
-            number++;//循环计数器
-
-            if (world.getBlockState(pos.up(1)).getBlock().data instanceof BlockLiftTrackFloor) {
-                floorNumber++;
-            } else if (world.getBlockState(pos.west(1)).getBlock().data instanceof BlockLiftTrackFloor) {
-                floorNumber++;
-            } else if (world.getBlockState(pos.east(1)).getBlock().data instanceof BlockLiftTrackFloor) {
-                floorNumber++;
-            } else if (world.getBlockState(pos.north(1)).getBlock().data instanceof BlockLiftTrackFloor) {
-                floorNumber++;
-            } else if (world.getBlockState(pos.south(1)).getBlock().data instanceof BlockLiftTrackFloor) {
-                floorNumber++;
-            }
+            number++; // 循环计数器
         }
     }
 
