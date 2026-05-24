@@ -17,116 +17,104 @@ public class ModUpload {
 
 
 	public static void main(String[] args) throws IOException {
-		String changelog = "## **更新日志**\n" +
+		String changelog = "# 更新日志\n" +
 				"\n" +
-				"> **\uD83E\uDDE8 新春快乐，万事如意！**\n" +
-				"> 本 Mod 依赖 **Minecraft Transit Railway 4.0.0 及以上**\n" +
+				"本 Mod 依赖 Minecraft Transit Railway 4.0.0 及以上\n" +
 				"\n" +
-				"---\n" +
+				"## 新增方块\n" +
 				"\n" +
-				"### **新增方块**\n" +
+				"### 奥的斯 (Otis) 系列\n" +
+				"- 奥的斯 Series 1 候梯楼层显示器（类型 1，横向，占一格）\n" +
+				"- 奥的斯 Series 1 候梯楼层显示器（类型 1，横向，占两格）\n" +
+				"- 奥的斯 Series 1 到站灯（类型 1，横向，占一格）\n" +
+				"- 奥的斯 Series 1 到站灯（类型 1，横向，占两格）\n" +
+				"- 奥的斯 Series 1 到站灯（类型 1，带屏幕，横向，占一格）\n" +
+				"- 奥的斯 Series 1 到站灯（类型 1，带屏幕，横向，占两格）\n" +
+				"- 奥的斯 Series 1 候梯楼层显示器（类型 2，纵向，占一格）\n" +
+				"- 奥的斯 Series 1 候梯楼层显示器（类型 2，纵向，占两格）\n" +
+				"- 奥的斯 Series 1 候梯楼层显示器（类型 2，横向，占一格）\n" +
+				"- 奥的斯 Series 1 候梯楼层显示器（类型 2，横向，占两格）\n" +
+				"- 奥的斯 Series 1 到站灯（类型 2，纵向，占一格）\n" +
+				"- 奥的斯 Series 1 到站灯（类型 2，纵向，占两格）\n" +
+				"- 奥的斯 Series 1 到站灯（类型 2，带屏幕，纵向，占一格）\n" +
+				"- 奥的斯 Series 1 到站灯（类型 2，带屏幕，纵向，占两格）\n" +
+				"- 奥的斯 Series 1 到站灯（类型 2，横向，占一格）\n" +
+				"- 奥的斯 Series 1 到站灯（类型 2，横向，占两格）\n" +
+				"- 奥的斯 Series 1 到站灯（类型 2，带屏幕，横向，占一格）\n" +
+				"- 奥的斯 Series 1 到站灯（类型 2，带屏幕，横向，占两格）\n" +
 				"\n" +
-				"#### **通力 (KONE) 系列**\n" +
-				"* 通力 KDS330 系列呼梯面板（类型 1，外挂式，带屏幕，**支持触摸款式**）\n" +
-				"* 通力 KDS330 系列呼梯面板（类型 1，外挂式，无屏幕，**支持触摸款式**）\n" +
-				"* 通力 KDS330 系列候梯楼层显示器（类型 1，外挂式，占一格/两格）\n" +
-				"* 通力 KDS360 系列呼梯面板（类型 1，外挂式，带屏幕）\n" +
-				"* 通力 KDS360 系列呼梯面板（类型 1，外挂式，带屏幕，**屏幕上置款式**）\n" +
-				"* 通力 KDS360 系列呼梯面板（类型 1，外挂式，无屏幕）\n" +
-				"* 通力 KDS220 系列呼梯面板（类型 1，外挂式，带屏幕）\n" +
-				"* 通力 KDS220 系列呼梯面板（类型 1，外挂式，无屏幕）\n" +
-				"* 通力 KDS220 系列候梯楼层显示器（类型 1，外挂式，占一格/两格）\n" +
+				"### 迅达 (Schindler) 系列\n" +
+				"- 迅达 M 系列候梯楼层显示器（类型 5，占一格）\n" +
+				"- 迅达 M 系列候梯楼层显示器（类型 5，占两格）\n" +
 				"\n" +
-				"#### **奥的斯 (Otis) 系列**\n" +
-				"* 奥的斯 HF023 呼梯面板\n" +
+				"## 新增功能\n" +
+				"- 电梯门纹理升级：为日立 B85、通力 M 系列、三菱 NexWay、奥的斯 E411 US、迅达 QKS9 电梯门添加侧面及背面贴图，视觉效果更加完整。\n" +
+				"- 按钮音效：为部分呼梯面板新增点击音效，提升交互反馈。\n" +
 				"\n" +
-				"---\n" +
+				"## 新增翻译\n" +
+				"- 补全了迅达 M 系列类型 5 楼层显示器的中英文翻译。\n" +
+				"- 优化部分原有方块的描述文本，增加方向性标识。\n" +
 				"\n" +
-				"### **新增功能**\n" +
-				"* **材质升级**：为 `mitsubishi_nexway_button_1` 添加了 **PBR 材质**支持。\n" +
+				"## 优化内容\n" +
+				"- 贴图性能优化：自动将尺寸超过 256 像素的贴图缩放至 256 像素以内，减少资源占用。\n" +
+				"- 日立系列显示优化：调整多款呼梯面板的字体与渲染逻辑。\n" +
+				"- 蒂森克虏伯字体更新：替换为优化后的点阵字体文件。\n" +
 				"\n" +
-				"---\n" +
+				"## 修复内容\n" +
+				"- 修复 PAT RS01 指示牌退出游戏无法保存的问题，现在退出重进后设置内容不再丢失。\n" +
+				"- 修复 YTE 连接器导致到站灯与按钮状态串扰的问题；重构按钮声音播放机制。\n" +
+				"- 修复楼层自动设置器在特定场景下陷入死循环的问题。\n" +
+				"- 修复迅达 M 系列楼层显示器（类型 5）的渲染异常。\n" +
+				"- 修复日立 VIB-181A 等面板的字体错误。\n" +
 				"\n" +
-				"### **新增翻译**\n" +
-				"* 补全 `en_us` 和 `zh_hk` 的翻译。\n" +
+				"# Changelog\n" +
 				"\n" +
-				"---\n" +
+				"This Mod requires Minecraft Transit Railway 4.0.0 or above.\n" +
 				"\n" +
-				"### **优化内容**\n" +
-				"* **字体渲染系统优化**：\n" +
-				"    * **防止“砍头”**：增大了字体渲染缓冲值，防止溢出导致的字体显示不全。\n" +
-				"    * **排版微调**：将 `TextView` 的字符间距设置方法修改为浮点型，提升显示精度。\n" +
-				"    * **重构逻辑**：重构了自定义字体纹理创建系统，并限制了最大生成资源数量。\n" +
-				"* **渲染表现改进**：\n" +
-				"    * 优化了日立点阵显示器、三菱显示器的渲染逻辑。\n" +
-				"    * 改进了三菱点阵外呼面板的显示方法。\n" +
-				"    * 优化自定义字体缓存，当电梯楼层切换时，显示屏不再闪烁。\n" +
-				"* **系统与资源重构**：\n" +
-				"    * 重构动态纹理与字体资源处理系统。\n" +
-				"    * 移除 `ThyssenKrupp TE-GL1` 呼梯面板的相关遗留文件。\n" +
+				"## New Blocks\n" +
 				"\n" +
-				"---\n" +
+				"### Otis Series\n" +
+				"- OTIS Series 1 Hall Floor Indicator (Type 1, Horizontal) Odd\n" +
+				"- OTIS Series 1 Hall Floor Indicator (Type 1, Horizontal) Even\n" +
+				"- OTIS Series 1 Hall Lantern (Type 1, Horizontal) Odd\n" +
+				"- OTIS Series 1 Hall Lantern (Type 1, Horizontal) Even\n" +
+				"- OTIS Series 1 Hall Lantern (Type 1, Horizontal, With Screen) Odd\n" +
+				"- OTIS Series 1 Hall Lantern (Type 1, Horizontal, With Screen) Even\n" +
+				"- OTIS Series 1 Hall Floor Indicator (Type 2, Vertical) Odd\n" +
+				"- OTIS Series 1 Hall Floor Indicator (Type 2, Vertical) Even\n" +
+				"- OTIS Series 1 Hall Floor Indicator (Type 2, Horizontal) Odd\n" +
+				"- OTIS Series 1 Hall Floor Indicator (Type 2, Horizontal) Even\n" +
+				"- OTIS Series 1 Hall Lantern (Type 2, Vertical) Odd\n" +
+				"- OTIS Series 1 Hall Lantern (Type 2, Vertical) Even\n" +
+				"- OTIS Series 1 Hall Lantern (Type 2, Vertical, With Screen) Odd\n" +
+				"- OTIS Series 1 Hall Lantern (Type 2, Vertical, With Screen) Even\n" +
+				"- OTIS Series 1 Hall Lantern (Type 2, Horizontal) Odd\n" +
+				"- OTIS Series 1 Hall Lantern (Type 2, Horizontal) Even\n" +
+				"- OTIS Series 1 Hall Lantern (Type 2, Horizontal, With Screen) Odd\n" +
+				"- OTIS Series 1 Hall Lantern (Type 2, Horizontal, With Screen) Even\n" +
 				"\n" +
-				"### **修复内容**\n" +
-				"* **显示修复**：修复了日立 VIB-221 点阵款式中箭头位置偏移的问题。\n" +
-				"* **逻辑修正**：修正了奥的斯 Series 3 ELD 的显示布局。\n" +
+				"### Schindler Series\n" +
+				"- Schindler M-Series Hall Floor Indicator (Type 5) Odd\n" +
+				"- Schindler M-Series Hall Floor Indicator (Type 5) Even\n" +
 				"\n" +
-				"---\n" +
-				"---\n" +
+				"## New Features\n" +
+				"- Elevator Door Texture Upgrade: Added side and back textures for Hitachi B85, Kone M, Mitsubishi NexWay, Otis E411 US, and Schindler QKS9 doors.\n" +
+				"- Button Sounds: Added click sound effects for certain call panels.\n" +
 				"\n" +
-				"## **Update Log**\n" +
+				"## New Translations\n" +
+				"- Improved descriptions for existing blocks by adding directional labels (e.g., Vertical, Horizontal).\n" +
 				"\n" +
-				"> **\uD83E\uDDE8 Happy Chinese New Year and Best Wishes!**\n" +
-				"> This Mod requires **Minecraft Transit Railway 4.0.0 or above.**\n" +
+				"## Optimizations\n" +
+				"- Texture Performance: Textures larger than 256px are now automatically scaled down to reduce resource usage.\n" +
+				"- Hitachi Display Improvements: Adjusted fonts and rendering for multiple Hitachi panel models.\n" +
+				"- Thyssenkrupp Font Update: Replaced with an optimized dot-matrix font file.\n" +
 				"\n" +
-				"---\n" +
-				"\n" +
-				"### **New Blocks**\n" +
-				"\n" +
-				"#### **KONE Series**\n" +
-				"* KONE KDS330 Series Call Panels (Type 1, Surface Mounted, with Screen, **Touch Model supported**)\n" +
-				"* KONE KDS330 Series Call Panels (Type 1, Surface Mounted, without Screen, **Touch Model supported**)\n" +
-				"* KONE KDS330 Series Hall Lanterns (Type 1, Surface Mounted, 1-block/2-block wide)\n" +
-				"* KONE KDS360 Series Call Panels (Type 1, Surface Mounted, with Screen)\n" +
-				"* KONE KDS360 Series Call Panels (Type 1, Surface Mounted, with Screen, **Top-mounted Screen model**)\n" +
-				"* KONE KDS360 Series Call Panels (Type 1, Surface Mounted, without Screen)\n" +
-				"* KONE KDS220 Series Call Panels (Type 1, Surface Mounted, with Screen)\n" +
-				"* KONE KDS220 Series Call Panels (Type 1, Surface Mounted, without Screen)\n" +
-				"* KONE KDS220 Series Hall Lanterns (Type 1, Surface Mounted, 1-block/2-block wide)\n" +
-				"\n" +
-				"#### **Otis Series**\n" +
-				"* Otis HF023 Call Panel\n" +
-				"\n" +
-				"---\n" +
-				"\n" +
-				"### **New Features**\n" +
-				"* **Texture Upgrade**: Added **PBR texture** support for `mitsubishi_nexway_button_1`.\n" +
-				"\n" +
-				"---\n" +
-				"\n" +
-				"### **New Translations**\n" +
-				"* Completed translations for `en_us` and `zh_hk`.\n" +
-				"\n" +
-				"---\n" +
-				"\n" +
-				"### **Optimizations**\n" +
-				"* **Font Rendering System Optimization**:\n" +
-				"    * **Overflow Prevention**: Increased font rendering buffer values to prevent text clipping caused by overflow.\n" +
-				"    * **Layout Fine-tuning**: Changed the `TextView` character spacing method to float for improved display precision.\n" +
-				"    * **Logic Refactor**: Refactored the custom font texture creation system and limited the maximum number of generated resources.\n" +
-				"* **Rendering Performance Improvements**:\n" +
-				"    * Optimized rendering logic for Hitachi dot-matrix and Mitsubishi displays.\n" +
-				"    * Improved the display method for Mitsubishi dot-matrix call panels.\n" +
-				"    * Optimized custom font caching; displays no longer flicker when elevator floors change.\n" +
-				"* **System & Resource Refactoring**:\n" +
-				"    * Refactored dynamic texture and font resource handling systems.\n" +
-				"    * Removed legacy files related to the `ThyssenKrupp TE-GL1` call panel.\n" +
-				"\n" +
-				"---\n" +
-				"\n" +
-				"### **Bug Fixes**\n" +
-				"* **Display Fixes**: Fixed arrow position offset in the Hitachi VIB-221 dot-matrix model.\n" +
-				"* **Logic Correction**: Corrected the display layout for the Otis Series 3 ELD.";
+				"## Bug Fixes\n" +
+				"- Fixed PAT RS01 Railway Sign not saving its configuration after world reload.\n" +
+				"- Fixed YTE Connector causing state crosstalk between hall lanterns and buttons; refactored sound playback mechanism.\n" +
+				"- Fixed Floor Auto Setter occasionally entering an infinite loop.\n" +
+				"- Fixed rendering issue with Schindler M-Series Screen (Type 5).\n" +
+				"- Fixed font errors on certain Hitachi panels such as VIB-181A.";
 
 
 
@@ -143,22 +131,22 @@ public class ModUpload {
 
 
 					// Modrinth
-					/*final Map<String, DependencyType> dependenciesModrinth = new HashMap<String, DependencyType>();
-					dependenciesModrinth.put("XKPAmI6u", DependencyType.REQUIRED);
-					do {
-					} while (!new ModId("nqMdKn6A", ModProvider.MODRINTH).uploadFile(
-							modVersionUpperCase,
-							modVersionUpperCase,
-							changelog,
-							dependenciesModrinth,
-							ReleaseStatus.BETA,
-							Collections.singleton(minecraftVersion),
-							Collections.singleton(modLoader),
-							false,
-							Files.newInputStream(filePath),
-							fileName,
-							args[1]
-					));*/
+//					final Map<String, DependencyType> dependenciesModrinth = new HashMap<String, DependencyType>();
+//					dependenciesModrinth.put("XKPAmI6u", DependencyType.REQUIRED);
+//					do {
+//					} while (!new ModId("nqMdKn6A", ModProvider.MODRINTH).uploadFile(
+//							modVersionUpperCase,
+//							modVersionUpperCase,
+//							changelog,
+//							dependenciesModrinth,
+//							ReleaseStatus.BETA,
+//							Collections.singleton(minecraftVersion),
+//							Collections.singleton(modLoader),
+//							false,
+//							Files.newInputStream(filePath),
+//							fileName,
+//							args[1]
+//					));
 
 					// CurseForge
 					final Map<String, DependencyType> dependenciesCurseForge = new HashMap<>();

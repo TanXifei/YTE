@@ -34,8 +34,8 @@ dependencies {
 }
 
 mixin {
-    add sourceSets.main, "mtr.refmap.json"
-    config "mtr.mixins.json"
+    add sourceSets.main, "yte.refmap.json"
+    config "yte.mixins.json"
     debug.verbose = true
     debug.export = true
 }
