@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import top.xfunny.mod.client.DynamicTextureCache;
 
-@Mixin(org.mtr.mod.client.DynamicTextureCache.class)
+@Mixin(value = org.mtr.mod.client.DynamicTextureCache.class, remap = false)
 public abstract class MixinDynamicTextureCache {
     @Inject(at = @At("TAIL"),
             method = "tick",
