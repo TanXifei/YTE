@@ -86,22 +86,22 @@ public class RenderHitachiGHI675Screen<T extends LiftPanelBase.BlockEntityBase> 
                         blockPos,
                         sortedPositionsAndLifts.get(i).right(),
                         FontList.instance.getFont("hitachi-bxsclc5"),
-                        5.5F,
+                        7F,
                         0xFFFF4800);
                 liftFloorDisplayView.setTextureId(String.format("hitachi_ghi675_screen_display_%d", i));
-                liftFloorDisplayView.setWidth(2.32F / 16);
+                liftFloorDisplayView.setWidth(2.21F / 16);
                 liftFloorDisplayView.setHeight(2.8F / 16);
                 liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.CENTER);
                 liftFloorDisplayView.setLetterSpacing(0);
                 liftFloorDisplayView.setDisplayLength(2, 0);
-                liftFloorDisplayView.setMargin(2.4F / 16, 1.225F / 16, 0.1F / 16, 0);
+                liftFloorDisplayView.setMargin(2.4F / 16, 1.4F / 16, 0.1F / 16, 0);
                 liftFloorDisplayView.addStoredMatrixTransformations(graphicsHolder -> graphicsHolder.translate(0, 0, -SMALL_OFFSET));
                 if (liftFloorDisplayView.getTextLength() >= 3) {
                     liftFloorDisplayView.setBasicsAttributes(world,
                             blockPos,
                             sortedPositionsAndLifts.get(i).right(),
                             FontList.instance.getFont("hitachi-bxsclc5-compact"),
-                            5.5F,
+                            7F,
                             0xFFFF4800);
                     liftFloorDisplayView.setAdaptMode(LiftFloorDisplayView.AdaptMode.FORCE_FIT_WIDTH);
                 } else {
