@@ -83,6 +83,26 @@ public class YteGroupLiftButtonsLinker extends YTEItemBlockClickingBase implemen
             } else if (isStartTrackBase ^ isEndTrackBase) {
                 Init.LOGGER.info(posEnd.toShortString());
 
+                // Count current pair before connecting (supports both directions)
+                final boolean isCurrentStartTrackFloor = world.getBlockState(posStart).getBlock().data instanceof BlockLiftTrackFloor;
+                final boolean isCurrentEndTrackFloor = world.getBlockState(posEnd).getBlock().data instanceof BlockLiftTrackFloor;
+                final boolean isCurrentStartValid = world.getBlockState(posStart).getBlock().data instanceof LiftButtonsBase ||
+                        world.getBlockState(posStart).getBlock().data instanceof LiftDestinationDispatchTerminalBase ||
+                        world.getBlockState(posStart).getBlock().data instanceof LiftPanelBase ||
+                        world.getBlockState(posStart).getBlock().data instanceof BlockLiftButtons ||
+                        world.getBlockState(posStart).getBlock().data instanceof BlockLiftPanelBase;
+                final boolean isCurrentEndValid = world.getBlockState(posEnd).getBlock().data instanceof LiftButtonsBase ||
+                        world.getBlockState(posEnd).getBlock().data instanceof LiftDestinationDispatchTerminalBase ||
+                        world.getBlockState(posEnd).getBlock().data instanceof LiftPanelBase ||
+                        world.getBlockState(posEnd).getBlock().data instanceof BlockLiftButtons ||
+                        world.getBlockState(posEnd).getBlock().data instanceof BlockLiftPanelBase;
+
+                if (isCurrentStartTrackFloor && isCurrentEndValid) {
+                    floorCount++;
+                } else if (isCurrentEndTrackFloor && isCurrentStartValid) {
+                    floorCount++;
+                }
+
                 connect(world, posStart, posEnd, isConnector);
                 connect(world, posEnd, posStart, isConnector);
 
@@ -104,22 +124,7 @@ public class YteGroupLiftButtonsLinker extends YTEItemBlockClickingBase implemen
                 posStart = (BlockPos) pos[0];
                 posEnd = (BlockPos) pos[1];
 
-                final BlockState newPosEndState = world.getBlockState(posEnd);
-                final BlockState newPosStartState = world.getBlockState(posStart);
 
-                final boolean isPosEndValid =
-                        newPosEndState.getBlock().data instanceof LiftButtonsBase ||
-                                newPosEndState.getBlock().data instanceof LiftDestinationDispatchTerminalBase ||
-                                newPosEndState.getBlock().data instanceof LiftPanelBase ||
-                                newPosEndState.getBlock().data instanceof BlockLiftButtons ||
-                                newPosEndState.getBlock().data instanceof BlockLiftPanelBase;
-
-                final boolean isPosStartTrackFloor =
-                        newPosStartState.getBlock().data instanceof BlockLiftTrackFloor;
-
-                if (isPosEndValid && isPosStartTrackFloor) {
-                    floorCount++;
-                }
             } else {
                 if (playerEntity != null) {
                     playerEntity.sendMessage(isConnector ? Text.cast(TextHelper.translatable("message.linker_status_failed")) : Text.cast(TextHelper.translatable("message.linker_status_failed_remove")), true);
@@ -148,6 +153,21 @@ public class YteGroupLiftButtonsLinker extends YTEItemBlockClickingBase implemen
         while (true) {
             if (pos1 != null && pos2 != null && world.getBlockState(pos3).getBlock().data instanceof BlockLiftTrackBase) {
 
+                // Count current pair before connecting
+                final Block blockEndPrev = world.getBlockState(pos2).getBlock();
+                final Block blockStartPrev = world.getBlockState(pos1).getBlock();
+                boolean isValidPair = false;
+                if (blockEndPrev.data instanceof LiftButtonsBase && blockStartPrev.data instanceof LiftButtonsBase) {
+                    boolean endAllowPress = ((LiftButtonsBase) blockEndPrev.data).allowPress;
+                    boolean startAllowPress = ((LiftButtonsBase) blockStartPrev.data).allowPress;
+                    if (endAllowPress != startAllowPress) {
+                        isValidPair = true;
+                    }
+                }
+                if (isValidPair) {
+                    floorCount++;
+                }
+
                 connect(world, pos1, pos2, isConnector);
                 connect(world, pos2, pos1, isConnector);
 
@@ -169,23 +189,6 @@ public class YteGroupLiftButtonsLinker extends YTEItemBlockClickingBase implemen
                 pos1 = (BlockPos) pos[1];
                 pos2 = (BlockPos) pos[2];
                 pos3 = (BlockPos) pos[0];//轨道
-
-                final Block blockEnd = world.getBlockState(pos2).getBlock();
-                final Block blockStart = world.getBlockState(pos1).getBlock();
-
-                // [修复] 同样严格判断两个点是否都是 LiftButtonsBase 且 allowPress 相反
-                boolean isValidPair = false;
-                if (blockEnd.data instanceof LiftButtonsBase && blockStart.data instanceof LiftButtonsBase) {
-                    boolean endAllowPress = ((LiftButtonsBase) blockEnd.data).allowPress;
-                    boolean startAllowPress = ((LiftButtonsBase) blockStart.data).allowPress;
-                    if (endAllowPress != startAllowPress) {
-                        isValidPair = true;
-                    }
-                }
-
-                if (isValidPair) {
-                    floorCount++;
-                }
             } else {
                 if (playerEntity != null) {
                     playerEntity.sendMessage(isConnector ? Text.cast(TextHelper.translatable("message.linker_status_failed")) : Text.cast(TextHelper.translatable("message.linker_status_failed_remove")), true);

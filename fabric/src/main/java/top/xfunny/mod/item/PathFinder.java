@@ -18,24 +18,27 @@ public class PathFinder implements DirectionHelper {
 
     public Object[] findPath(ItemUsageContext context, BlockPos pos) {
         final World world = context.getWorld();
+        array = new Object[3];
         checkPosition(world, pos, new BlockPos(0, 0, 0), new BlockPos(0, 0, 0), facingHelper(context, pos));
-        return array;
+        return array[0] == null ? null : array;
     }
 
     public Object[] findPath(ItemUsageContext context, BlockPos pos1, BlockPos pos2) {
         final World world = context.getWorld();
+        array = new Object[3];
         if (world.getBlockState(pos1).getBlock().data instanceof BlockLiftTrackBase) {
-            checkPosition(world, pos1, pos2, new BlockPos(0, 0, 0), facingHelper(context, pos1, pos2));
-        } else {
-            checkPosition(world, pos2, pos1, new BlockPos(0, 0, 0), facingHelper(context, pos1, pos2));
-        }
-        return array;
+           checkPosition(world, pos1, pos2, new BlockPos(0, 0, 0), facingHelper(context, pos1, pos2));
+       } else {
+           checkPosition(world, pos2, pos1, new BlockPos(0, 0, 0), facingHelper(context, pos1, pos2));
+       }
+        return array[0] == null ? null : array;
     }
 
     public Object[] findPath(ItemUsageContext context, BlockPos pos1, BlockPos pos2, BlockPos pos3) {
         final World world = context.getWorld();
+        array = new Object[3];
         checkPosition(world, pos3, pos1, pos2, facingHelper(context, pos3, pos3));//pos3为轨道
-        return array;
+        return array[0] == null ? null : array;
     }
 
     private void checkPosition(World world, BlockPos pos, BlockPos otherPos, BlockPos thirdPos, boolean facing) {

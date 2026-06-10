@@ -71,13 +71,18 @@ public class FloorAutoSetter extends ItemExtension implements DirectionHelper {
 
                 // 2. 寻路获取下一个位置
                 Object[] apos = pathFinder.findPath(context, pos);
-                if (apos == null || apos.length == 0) break; // 安全校验
+                if (apos == null || apos.length == 0) {
+                    // 到达路径末端，发送完成消息
+                    if (playerEntity != null) {
+                        playerEntity.sendMessage(Text.cast(TextHelper.translatable("message.floor_auto_setter_status_finished", floorCount)), true);
+                    }
+                    break;
+                }
                 pos = (BlockPos) apos[0];
 
-                // 3. 判断是否到达终点
+                // 3. 判断是否到达终点（安全兜底）
                 if (number == pathFinder.getMark().size()) {
                     if (playerEntity != null) {
-                        // 直接输出 floorCount，不需要再 +1
                         playerEntity.sendMessage(Text.cast(TextHelper.translatable("message.floor_auto_setter_status_finished", floorCount)), true);
                     }
                     break;
