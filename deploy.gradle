@@ -169,6 +169,9 @@ tasks.register("testLaunch") {
 
         printResultTable(results, logger)
 
+        // 清理残留 java 进程
+        try { "taskkill /F /FI \"IMAGENAME eq java.exe\" /FI \"MEMUSAGE gt 800000\"".execute() } catch (e) {}
+
         def failed = results.findAll { it[1] == "FAIL" }
         if (failed) throw new GradleException("${failed.size()} test(s) failed")
     }
@@ -363,136 +366,54 @@ def resolveTestVersions(testVersion, versionsDir) {
 }
 
 def launchOne(ver, minecraftDir, versionDir, versionJson, javaHome, timeoutSec) {
-    def json = new groovy.json.JsonSlurper().parse(versionJson)
-    def assetsDir = new File(minecraftDir, "assets")
-    def librariesDir = new File(minecraftDir, "libraries")
-    def logFile      = new File(versionDir, "logs/latest.log")
-    def crashDir     = new File(versionDir, "crash-reports")
-    def nativesDir   = new File(versionDir, "natives-windows-x86_64")
-    if (!nativesDir.exists()) nativesDir = new File(versionDir, "natives")
-    def isForge = ver.toLowerCase().contains("forge")
-    def cpSep = File.pathSeparator
+    def logFile    = new File(versionDir, "logs/latest.log")
+    def crashDir   = new File(versionDir, "crash-reports")
+    def isForge    = ver.toLowerCase().contains("forge")
+    def scriptDir  = new File(minecraftDir).parentFile  // D:/Minecraft/test
+    def psScript   = new File(scriptDir, "${ver}.ps1")
 
-    // 选择正确的 Java（仅 1.16.5 必须用 Java 8，其他用默认 JDK 24）
-    def requiredJava = json.javaVersion?.majorVersion
-    if (requiredJava != null && requiredJava <= 8) {
-        def j8 = "E:/jdks/azul-1.8.0_452"
-        if (new File(j8).exists()) javaHome = j8
-    }
-    def javaExe = "${javaHome}/bin/java${System.getProperty("os.name").toLowerCase().contains("win") ? ".exe" : ""}"
-
-    logger.lifecycle("\n  [${ver}] ${isForge ? 'Forge' : 'Fabric'} - Launching...")
+    // 清除旧日志
     if (logFile.exists()) logFile.delete()
+    // 清除旧的 crash reports
+    if (crashDir.exists()) crashDir.listFiles()?.each { if (it.name.endsWith(".txt")) it.delete() }
 
-    // 构建 classpath
-    def classpath = new StringBuilder(new File(versionDir, "${ver}.jar").absolutePath)
-    json.libraries.each { lib ->
-        if (lib.rules != null) {
-            def allowed = lib.rules.any { it.action == "allow" && it.os?.name?.toLowerCase() == "windows" }
-            if (!allowed && lib.rules.any { it.action == "allow" && it.os != null }) return
-        }
-        def parts = lib.name.split(":")
-        if (parts.length >= 3) {
-            def group = parts[0].replace(".", "/"); def artifact = parts[1]; def v = parts[2]
-            def cl = parts.length > 3 ? "-${parts[3]}" : ""
-            def jp = new File(librariesDir, "${group}/${artifact}/${v}/${artifact}-${v}${cl}.jar")
-            if (jp.exists()) classpath.append(cpSep).append(jp.absolutePath)
-        }
+    if (!psScript.exists()) {
+        return [ver, "SKIP", 0, "PS script not found: ${psScript.name}"]
     }
 
-    // 构建命令
-    def jvmArgs = []
-    def gameArgs = [
-        "--username", "YTETester", "--version", ver,
-        "--gameDir", versionDir.absolutePath, "--assetsDir", assetsDir.absolutePath,
-        "--assetIndex", json.assetIndex?.id ?: json.assets,
-        "--uuid", "00000000-0000-0000-0000-000000000000",
-        "--accessToken", "0", "--clientId", "0", "--xuid", "0",
-        "--userType", "mojang", "--versionType", "release"
-    ]
+    logger.lifecycle("\n  [${ver}] ${isForge ? 'Forge' : 'Fabric'} - Launching via ${psScript.name}...")
 
-    if (isForge) {
-        def fv = "47.4.0"; def mv = ver.replaceAll(/-Forge/, ""); def mp = "20230612.114412"; def lt = "forgeclient"
-        def gal = json.arguments?.game
-        if (gal != null) {
-            for (int i = 0; i < gal.size() - 1; i++) {
-                if (gal[i] instanceof String) {
-                    if (gal[i] == "--fml.forgeVersion") fv = gal[i+1].toString()
-                    if (gal[i] == "--fml.mcpVersion") mp = gal[i+1].toString()
-                    if (gal[i] == "--fml.mcVersion") mv = gal[i+1].toString()
-                    if (gal[i] == "--launchTarget") lt = gal[i+1].toString()
-                }
-            }
-        }
-        if (fv == "47.4.0") {
-            json.libraries?.each { lib ->
-                if (lib.name.contains("net.minecraftforge:forge:")) {
-                    def m = lib.name.split(":")[2] =~ /(\d+\.\d+\.\d+)/
-                    if (m) fv = m[0][1]
-                }
-            }
-        }
-
-        jvmArgs = [
-            "-Xmx2G", "-Djava.library.path=${nativesDir.absolutePath}",
-            "-Dminecraft.launcher.brand=YTE-Gradle", "-Dminecraft.launcher.version=test",
-            "-Djava.net.preferIPv6Addresses=system",
-            "-DignoreList=bootstraplauncher,securejarhandler,asm-commons,asm-util,asm-analysis,asm-tree,asm,JarJarFileSystems,client-extra,fmlcore,javafmllanguage,lowcodelanguage,mclanguage,forge-,${ver}.jar,${ver}.jar",
-            "-DmergeModules=jna-5.10.0.jar,jna-platform-5.10.0.jar",
-            "-DlibraryDirectory=${librariesDir.absolutePath}"
-        ]
-
-        def fm = fv?.isNumber() ? fv.split("\\.")[0].toInteger() : 0
-        if (fm >= 37) {
-            jvmArgs += [
-                "-p", buildForgeModulePath(librariesDir), "--add-modules", "ALL-MODULE-PATH",
-                "--add-opens", "java.base/java.util.jar=cpw.mods.securejarhandler",
-                "--add-opens", "java.base/java.lang.invoke=cpw.mods.securejarhandler",
-                "--add-exports", "java.base/sun.security.util=cpw.mods.securejarhandler",
-                "--add-exports", "jdk.naming.dns/com.sun.jndi.dns=java.naming"
-            ]
-        }
-        jvmArgs += ["-cp", classpath.toString()]
-        gameArgs += ["--launchTarget", lt, "--fml.forgeVersion", fv, "--fml.mcVersion", mv,
-                     "--fml.forgeGroup", "net.minecraftforge", "--fml.mcpVersion", mp]
-    } else {
-        jvmArgs = ["-Xmx2G", "-Djava.library.path=${nativesDir.absolutePath}",
-                   "-Dminecraft.launcher.brand=YTE-Gradle", "-Dminecraft.launcher.version=test"]
-    }
-
-    def mainClass = json.mainClass
-    def command = isForge
-        ? ([javaExe] + jvmArgs + [mainClass] + gameArgs).collect { it.toString() }
-        : ([javaExe] + jvmArgs + ["-cp", classpath.toString(), mainClass] + gameArgs).collect { it.toString() }
-
-    // 启动
+    // 启动 PS 脚本
     def process
     try {
-        def cmdString = command.join(" ")
-        if (cmdString.length() > 7000) {
-            def argFile = File.createTempFile("yte-launch-", ".args", versionDir)
-            argFile.deleteOnExit()
-            argFile.text = command.drop(1).collect { it.toString().contains(" ") ? "\"${it}\"" : it.toString() }.join("\n")
-            command = [command[0].toString(), "@${argFile.absolutePath}".toString()]
-        }
-        def pb = new ProcessBuilder(command)
-        pb.directory(versionDir); pb.redirectErrorStream(true)
+        def pb = new ProcessBuilder("powershell", "-ExecutionPolicy", "Bypass", "-File", psScript.absolutePath)
+        pb.directory(versionDir)
+        pb.redirectErrorStream(true)
         process = pb.start()
         Thread.start { process.inputStream.eachLine {} }
     } catch (Exception e) {
         return [ver, "FAIL", 0, "Launch error: ${e.message}"]
     }
 
-    // 监控
-    def success = false; def crashed = false; def yteLoaded = false
-    def startTime = System.currentTimeMillis(); def logOffset = 0L
+    // 监控日志
+    def success   = false
+    def crashed   = false
+    def yteLoaded = false
+    def startTime = System.currentTimeMillis()
+    def logOffset = 0L
+    // 等日志文件出现
+    for (int i = 0; i < 10 && !logFile.exists(); i++) Thread.sleep(1000)
 
     while (System.currentTimeMillis() - startTime < timeoutSec * 1000L) {
         if (!process.isAlive()) { if (process.exitValue() != 0) crashed = true; break }
+
+        // 检查 crash-reports
         if (crashDir.exists()) {
             def cfs = crashDir.listFiles()?.findAll { it.name.endsWith(".txt") }
             if (cfs?.any { it.lastModified() > startTime }) { crashed = true; break }
         }
+
+        // 读取日志
         if (logFile.exists() && logFile.length() > logOffset) {
             logFile.withReader("UTF-8") { r ->
                 r.skip(logOffset)
@@ -508,11 +429,14 @@ def launchOne(ver, minecraftDir, versionDir, versionJson, javaHome, timeoutSec) 
                 }
             }
         }
+
         if (success || crashed) break
         Thread.sleep(1000)
     }
 
-    if (process.isAlive()) process.destroyForcibly()
+    // 杀掉脚本进程（java 子进程会随之关闭）
+    process.destroyForcibly()
+
     def elapsed = (System.currentTimeMillis() - startTime) / 1000.0
 
     if (success) {
@@ -535,21 +459,6 @@ def launchOne(ver, minecraftDir, versionDir, versionJson, javaHome, timeoutSec) 
         logger.error("  [${ver}] ✗ TIMEOUT (${String.format("%.1f", elapsed)}s)")
         return [ver, "FAIL", elapsed, "timeout - no YTE activity"]
     }
-}
-
-def buildForgeModulePath(librariesDir) {
-    def cpSep = File.pathSeparator
-    def modules = [
-        "cpw/mods/bootstraplauncher/1.1.2/bootstraplauncher-1.1.2.jar",
-        "cpw/mods/securejarhandler/2.1.10/securejarhandler-2.1.10.jar",
-        "org/ow2/asm/asm-commons/9.7.1/asm-commons-9.7.1.jar",
-        "org/ow2/asm/asm-util/9.7.1/asm-util-9.7.1.jar",
-        "org/ow2/asm/asm-analysis/9.7.1/asm-analysis-9.7.1.jar",
-        "org/ow2/asm/asm-tree/9.7.1/asm-tree-9.7.1.jar",
-        "org/ow2/asm/asm/9.7.1/asm-9.7.1.jar",
-        "net/minecraftforge/JarJarFileSystems/0.3.19/JarJarFileSystems-0.3.19.jar"
-    ]
-    return modules.collect { new File(librariesDir, it).absolutePath }.join(cpSep)
 }
 
 def downloadFabricApi(mcVersions, minecraftDir, logger) {

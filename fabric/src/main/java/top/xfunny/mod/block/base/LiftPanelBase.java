@@ -163,8 +163,8 @@ public abstract class LiftPanelBase extends BlockExtension implements DirectionH
 
             if (IBlock.getStatePropertySafe(world, getPos2(), SIDE) == EnumSide.RIGHT) {
                 final BlockEntity blockEntity = world.getBlockEntity(getPos2().offset(IBlock.getStatePropertySafe(world, getPos2(), FACING).rotateYCounterclockwise()));
-                if (blockEntity != null && blockEntity.data instanceof LiftButtonsBase.BlockEntityBase) {
-                    ((LiftButtonsBase.BlockEntityBase) blockEntity.data).registerFloor(selfPos, world, pos, isAdd);
+                if (blockEntity != null && blockEntity.data instanceof LiftPanelBase.BlockEntityBase) {
+                    ((LiftPanelBase.BlockEntityBase) blockEntity.data).registerFloor(selfPos, world, pos, isAdd);
                 }
             } else {
                 if (isAdd) {
