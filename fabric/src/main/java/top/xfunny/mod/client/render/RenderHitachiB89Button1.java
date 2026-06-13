@@ -193,7 +193,7 @@ public class RenderHitachiB89Button1 extends BlockEntityRenderer<HitachiB89Butto
                         FontList.instance.getFont(floorNumber.matches("^(-1|1)$") ? "hitachi_b85_left" : "hitachi_b85"),
                         8.375F,
                         0xFFFF0000);
-                liftFloorDisplayView.setDisplayLength(2, 0.05F);
+                liftFloorDisplayView.setDisplayLength(2, 0);
                 liftFloorDisplayView.setTextureId(String.format("hitachi_b85_screen_1_display_%d", i));
                 liftFloorDisplayView.setLetterSpacing(15);
                 liftFloorDisplayView.setWidth(0.6F / 16);
