@@ -9,7 +9,6 @@ import org.mtr.mapping.mapper.ButtonWidgetExtension;
 import org.mtr.mapping.mapper.GraphicsHolder;
 import org.mtr.mapping.mapper.TextHelper;
 import org.mtr.mod.generated.lang.TranslationProvider;
-import top.xfunny.mod.Keys;
 import top.xfunny.mod.client.InitClient;
 import top.xfunny.mod.client.screen.base.BaseConfigScreen;
 import top.xfunny.mod.client.screen.widget.ContentItem;

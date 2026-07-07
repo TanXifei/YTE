@@ -10,6 +10,7 @@ import top.xfunny.mod.packet.PacketLanternSoundInstruction;
 import top.xfunny.mod.packet.PacketUpdatePATRS01RailwaySignConfig;
 import top.xfunny.mod.packet.PacketYTEOpenBlockEntityScreen;
 
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -19,13 +20,26 @@ public final class Init {
     public static final Registry REGISTRY = new Registry();
     public static int HAS_UPDATE = -1;
 
+    private static final String[] LOGO = {
+            "__  __                  __         ______                      _ __  ______     __                  _           ",
+            "\\ \\/ /_  ______  ____  / /_  __  _/_  __/________ _____  _____(_) /_/ ____/  __/ /____  ____  _____(_)___  ____ ",
+            " \\  / / / / __ \\/_  / / __ \\/ / / // / / ___/ __ `/ __ \\/ ___/ / __/ __/ | |/_/ __/ _ \\/ __ \\/ ___/ / __ \\/ __ \\",
+            " / / /_/ / / / / / /_/ / / / /_/ // / / /  / /_/ / / / (__  ) / /_/ /____>  </ /_/  __/ / / (__  ) / /_/ / / / /",
+            "/_/\\__,_/_/ /_/ /___/_/ /_/\\__,_//_/ /_/   \\__,_/_/ /_/____/_/\\__/_____/_/|_|\\__/\\___/_/ /_/____/_/\\____/_/ /_/ "
+    };
+    private static final int LOGO_WIDTH = Arrays.stream(LOGO).mapToInt(String::length).max().orElse(0);
 
     public static void init() {
-
+        for (String line : LOGO) LOGGER.info(line);
+        char SEPARATOR_CHAR = '─';
+        String versionTag = " " + Keys.MOD_VERSION + " ";
+        String suffix = String.valueOf(SEPARATOR_CHAR);
+        char[] barChars = new char[Math.max(0, LOGO_WIDTH - versionTag.length() - suffix.length())];
+        Arrays.fill(barChars, SEPARATOR_CHAR);
+        LOGGER.info("{}{}{}", new String(barChars), versionTag, suffix);
         long startTime = System.currentTimeMillis();
         Map<String, Runnable> initSteps = new LinkedHashMap<>();
 
-        //UpdateCheckerUtil.init();
         initSteps.put("Sound Events", SoundEvents::init);
         initSteps.put("Blocks", Blocks::init);
         initSteps.put("Block Entity Types", BlockEntityTypes::init);
@@ -39,16 +53,13 @@ public final class Init {
         });
 
         int currentStep = 1;
-
         for (Map.Entry<String, Runnable> step : initSteps.entrySet()) {
             LOGGER.info("Registering {} ({}/{})", step.getKey(), currentStep, initSteps.size());
             step.getValue().run();
             currentStep++;
         }
 
-        long endTime = System.currentTimeMillis();
-        long duration = endTime - startTime;
-        LOGGER.info("Yunzhu Transit Extension initialized successfully in {} ms.", duration);
+        LOGGER.info("Yunzhu Transit Extension initialized successfully in {} ms.", System.currentTimeMillis() - startTime);
         REGISTRY.init();
     }
 

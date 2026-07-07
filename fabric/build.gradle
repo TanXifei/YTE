@@ -1,5 +1,7 @@
 import org.apache.tools.ant.filters.ReplaceTokens
 import org.mtr.mod.BuildTools
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
 
 plugins {
     id "fabric-loom" version "1.10-SNAPSHOT"
@@ -44,7 +46,18 @@ tasks.register("setupFiles") {
         ])
         rename "(.+).template.json", "\$1.json"
     }
+    copy {
+        outputs.upToDateWhen { false }
+        from "src/main/KeysTemplate.java"
+        into "src/main/java/top/xfunny/mod"
+        filter(ReplaceTokens, tokens: [
+                "version"   : version,
+                "build_time": ZonedDateTime.now().format(DateTimeFormatter.ofPattern("yyMMdd-HHmmXX"))
+        ])
+        rename "(.+)Template.java", "\$1.java"
+    }
 }
+compileJava.dependsOn setupFiles
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
