@@ -126,3 +126,4 @@ build {
 processResources {
     dependsOn setupFiles
 }
+compileJava.dependsOn setupFiles
