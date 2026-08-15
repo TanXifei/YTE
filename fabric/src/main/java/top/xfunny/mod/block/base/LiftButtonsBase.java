@@ -21,7 +21,9 @@ import top.xfunny.mixin.MixinLiftSchema;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.function.Consumer;
 
 import static org.mtr.core.data.LiftDirection.NONE;
@@ -121,6 +123,7 @@ public abstract class LiftButtonsBase extends BlockExtension implements Directio
                         // before the client ever observes a lift instruction. Latch the
                         // direction directly from the button so the car and hall displays
                         // still show the requested direction for the complete door cycle.
+                        final Set<Long> sameFloorCandidateLiftIds = new HashSet<>();
                         data.trackPositions.forEach(trackPosition -> MinecraftClientData.getInstance().lifts.forEach(lift -> {
                             final int calledFloor = lift.getFloorIndex(Init.blockPosToPosition(trackPosition));
                             final int displayedFloor = lift.getFloorIndex(lift.getCurrentFloor().getPosition());
@@ -131,10 +134,12 @@ public abstract class LiftButtonsBase extends BlockExtension implements Directio
                                 if (doorCycleActive) {
                                     directionState.deferSameFloorCallDirection(data.liftDirection);
                                 } else {
-                                    directionState.setSameFloorCallDirection(data.liftDirection);
+                                    sameFloorCandidateLiftIds.add(lift.getId());
                                 }
                             }
                         }));
+                        LiftDisplayDirectionState.registerPendingSameFloorCall(
+                                sameFloorCandidateLiftIds, data.liftDirection);
 
                         final PressLift pressLift = new PressLift();
                         data.trackPositions.forEach(trackPosition -> pressLift.add(Init.blockPosToPosition(trackPosition), data.liftDirection));
