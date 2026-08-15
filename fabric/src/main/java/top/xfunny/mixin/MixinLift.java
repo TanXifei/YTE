@@ -12,15 +12,20 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import top.xfunny.mod.config.YteLiftConfigStore;
 import top.xfunny.mod.Init;
+import top.xfunny.mod.LiftDisplayDirection;
+import top.xfunny.mod.LiftDisplayDirectionState;
 
 @Mixin(value = Lift.class, remap = false)
-public abstract class MixinLift implements MixinLiftSchema, MixinLiftFields, MixinNameColorDataBaseSchema {
+public abstract class MixinLift implements MixinLiftSchema, MixinLiftFields, MixinNameColorDataBaseSchema, LiftDisplayDirection {
 
     @Unique
     private static final long YTE_LIFT_STOPPING_TIME = Vehicle.DOOR_MOVE_TIME + 2500;
 
     @Unique
     private static final long YTE_BRAKE_HOLD_TIME = 200;
+
+    @Unique
+    private static final long YTE_ARRIVAL_DIRECTION_DELAY = 100;
 
     /**
      * MTR's door curve becomes negative when the cooldown is extended beyond its
@@ -30,6 +35,17 @@ public abstract class MixinLift implements MixinLiftSchema, MixinLiftFields, Mix
     private void yte$clampBrakeHoldDoorValue(CallbackInfoReturnable<Float> cir) {
         if (cir.getReturnValue() < 0) {
             cir.setReturnValue(0F);
+        }
+    }
+
+    /**
+     * Keep dispatching on MTR's original server-side direction while exposing a
+     * persistent, elevator-style travel direction to every client display.
+     */
+    @Inject(method = "getDirection", at = @At("HEAD"), cancellable = true)
+    private void yte$getDisplayDirection(CallbackInfoReturnable<LiftDirection> cir) {
+        if (isClientside()) {
+            cir.setReturnValue(LiftDisplayDirectionState.get(((Lift) (Object) this).getId()).direction);
         }
     }
 
@@ -66,22 +82,36 @@ public abstract class MixinLift implements MixinLiftSchema, MixinLiftFields, Mix
                 setSpeed(Math.max(Math.abs(getSpeed()) - customAccel * millisElapsed, 0) * Math.signum(getSpeed()));
             } else {
                 final long nextInstructionProgress = invokeGetProgress(getInstructions().get(0).getFloor());
+                final double distanceToTarget = Math.abs(nextInstructionProgress - getRailProgress());
+                final double absoluteSpeed = Math.abs(getSpeed());
+                final boolean useLevellingApproach = levellingDistance > 0 && levellingSpeed > 0;
+                final double distanceToBrakingTarget = useLevellingApproach
+                        ? Math.max(distanceToTarget - levellingDistance, 0)
+                        : distanceToTarget;
+                final double brakingTargetSpeed = useLevellingApproach ? levellingSpeed : 0;
+                final double requiredBrakingDistance = Math.max(
+                        (absoluteSpeed * absoluteSpeed - brakingTargetSpeed * brakingTargetSpeed) / (2 * customAccel), 0);
+                final double movementThisTick = absoluteSpeed * millisElapsed;
 
-                if (getSpeed() * getSpeed() / 2 / customAccel > Math.abs(nextInstructionProgress - getRailProgress())) {
-                    setSpeed(Math.max(Math.abs(getSpeed()) - customAccel * millisElapsed, customAccel) * Math.signum(getSpeed()));
+                if (useLevellingApproach && absoluteSpeed > levellingSpeed && movementThisTick >= distanceToBrakingTarget) {
+                    // Last-resort guard for discrete ticks: never enter the levelling
+                    // zone faster than its configured speed, even if normal braking
+                    // could not finish before the boundary.
+                    setSpeed(levellingSpeed * Math.signum(getSpeed()));
+                } else if (absoluteSpeed > brakingTargetSpeed && requiredBrakingDistance + movementThisTick > distanceToBrakingTarget) {
+                    setSpeed(Math.max(absoluteSpeed - customAccel * millisElapsed, customAccel) * Math.signum(getSpeed()));
                 } else {
                     setSpeed(Utilities.clamp(getSpeed() + customAccel * millisElapsed * Math.signum(nextInstructionProgress - getRailProgress()), -customMaxSpeed, customMaxSpeed));
                 }
 
-                final double distanceToTarget = Math.abs(nextInstructionProgress - getRailProgress());
                 if (getSpeed() != 0 && levellingDistance > 0 && levellingSpeed > 0 && distanceToTarget <= levellingDistance) {
                     final double levellingDeceleration = levellingSpeed * levellingSpeed / (2 * levellingDistance);
                     final double levellingTargetSpeed = Math.sqrt(2 * levellingDeceleration * distanceToTarget);
                     setSpeed(Math.min(Math.abs(getSpeed()), levellingTargetSpeed) * Math.signum(getSpeed()));
                 }
 
-                final double movementThisTick = Math.abs(getSpeed() * millisElapsed);
-                if (adoDistance > 0 && !isClientside() && !adoLevelling && getSpeed() != 0 && distanceToTarget <= adoDistance + movementThisTick) {
+                final double updatedMovementThisTick = Math.abs(getSpeed() * millisElapsed);
+                if (adoDistance > 0 && !isClientside() && !adoLevelling && getSpeed() != 0 && distanceToTarget <= adoDistance + updatedMovementThisTick) {
                     setStoppingCoolDown(YTE_LIFT_STOPPING_TIME);
                     Init.sendLiftAdoStart(id, YTE_LIFT_STOPPING_TIME);
                 }
@@ -102,6 +132,10 @@ public abstract class MixinLift implements MixinLiftSchema, MixinLiftFields, Mix
             setRailProgress(Utilities.clamp(getRailProgress() + getSpeed() * millisElapsed, 0, invokeGetProgress(Integer.MAX_VALUE)));
         }
 
+        if (isClientside()) {
+            yte$updateDisplayDirection(millisElapsed);
+        }
+
         if (getData() instanceof Simulator) {
             ((Simulator) getData()).clients.forEach(client -> {
                 if (Utilities.isBetween(client.getPosition(), getMinPosition(), getMaxPosition(), client.getUpdateRadius())) {
@@ -111,6 +145,117 @@ public abstract class MixinLift implements MixinLiftSchema, MixinLiftFields, Mix
 
             setNeedsUpdate(false);
         }
+    }
+
+    @Unique
+    private void yte$updateDisplayDirection(long millisElapsed) {
+        final Lift lift = (Lift) (Object) this;
+        final LiftDisplayDirectionState displayState = LiftDisplayDirectionState.get(lift.getId());
+        final int instructionCount = getInstructions().size();
+        final boolean instructionAdded = instructionCount > displayState.previousInstructionCount;
+        displayState.previousInstructionCount = instructionCount;
+        final int floorCount = getFloors().size();
+        final int displayedFloorIndex = lift.getFloorIndex(lift.getCurrentFloor().getPosition());
+
+        final boolean activeDirectionCycle = getSpeed() != 0
+                || getStoppingCoolDown() > 1
+                || !getInstructions().isEmpty();
+        final boolean doorCycleActive = getStoppingCoolDown() > 1 || lift.getDoorValue() != 0;
+
+        if (!doorCycleActive) {
+            displayState.deferredSameFloorCallDirection = LiftDirection.NONE;
+        }
+
+        if (displayState.sameFloorCallDirection != LiftDirection.NONE) {
+            displayState.sameFloorCallWaitMillis += millisElapsed;
+            if (doorCycleActive) {
+                displayState.sameFloorCallDoorCycleStarted = true;
+            }
+
+            if (doorCycleActive) {
+                displayState.direction = displayState.sameFloorCallDirection;
+                return;
+            }
+
+            if (!displayState.sameFloorCallDoorCycleStarted && displayState.sameFloorCallWaitMillis < 10000) {
+                displayState.direction = displayState.sameFloorCallDirection;
+                return;
+            }
+
+            displayState.sameFloorCallDirection = LiftDirection.NONE;
+            displayState.sameFloorCallDoorCycleStarted = false;
+            displayState.sameFloorCallWaitMillis = 0;
+        }
+
+        if (!getInstructions().isEmpty()) {
+            final LiftInstruction instruction = getInstructions().get(0);
+            if (displayedFloorIndex == instruction.getFloor()) {
+                final LiftDirection arrivalDirection = displayedFloorIndex == floorCount - 1
+                        ? LiftDirection.DOWN
+                        : displayedFloorIndex == 0
+                        ? LiftDirection.UP
+                        : instruction.getDirection();
+                final boolean deferDirectionChange = doorCycleActive
+                        && displayState.deferredSameFloorCallDirection != LiftDirection.NONE;
+                if (!deferDirectionChange && (displayState.arrivalFloor != displayedFloorIndex
+                        || displayState.arrivalDirection != arrivalDirection)) {
+                    displayState.arrivalFloor = displayedFloorIndex;
+                    displayState.arrivalDirection = arrivalDirection;
+                    displayState.arrivalMillis = 0;
+                }
+            }
+        }
+
+        if (displayState.arrivalFloor >= 0 && displayedFloorIndex != displayState.arrivalFloor) {
+            yte$resetArrivalDirectionDelay();
+        } else if (activeDirectionCycle && displayState.arrivalFloor >= 0) {
+            displayState.arrivalMillis += millisElapsed;
+            final boolean currentInstructionIsArrival = !getInstructions().isEmpty()
+                    && getInstructions().get(0).getFloor() == displayState.arrivalFloor;
+            final boolean retainArrivalDirection = getStoppingCoolDown() > 1 || currentInstructionIsArrival;
+            if (retainArrivalDirection
+                    && displayState.arrivalMillis >= YTE_ARRIVAL_DIRECTION_DELAY
+                    && displayState.arrivalDirection != LiftDirection.NONE) {
+                displayState.direction = displayState.arrivalDirection;
+                return;
+            }
+        }
+
+        // During ADO and the complete door cycle, retain the arrival direction.
+        // Client lifts keep a value of 1 as the completed sync sentinel.
+        // Only larger values represent an active ADO/door cycle.
+        if (getStoppingCoolDown() > 1) {
+            if (instructionAdded && displayState.direction == LiftDirection.NONE) {
+                yte$setDisplayDirectionFromNextInstruction(displayState);
+            }
+            return;
+        }
+
+        if (getInstructions().isEmpty()) {
+            displayState.direction = LiftDirection.NONE;
+            return;
+        }
+
+        yte$setDisplayDirectionFromNextInstruction(displayState);
+    }
+
+    @Unique
+    private void yte$setDisplayDirectionFromNextInstruction(LiftDisplayDirectionState displayState) {
+        final LiftInstruction instruction = getInstructions().get(0);
+        final double difference = invokeGetProgress(instruction.getFloor()) - getRailProgress();
+        displayState.direction = difference > 0 ? LiftDirection.UP
+                : difference < 0 ? LiftDirection.DOWN
+                : instruction.getDirection() != LiftDirection.NONE
+                ? instruction.getDirection()
+                : displayState.direction;
+    }
+
+    @Override
+    public void yte$resetArrivalDirectionDelay() {
+        final LiftDisplayDirectionState displayState = LiftDisplayDirectionState.get(((Lift) (Object) this).getId());
+        displayState.arrivalFloor = -1;
+        displayState.arrivalDirection = LiftDirection.NONE;
+        displayState.arrivalMillis = 0;
     }
 
 }

@@ -22,6 +22,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import top.xfunny.mod.block.LiftTrackMagneticVane;
+import top.xfunny.mod.LiftDisplayDirection;
 import top.xfunny.mod.util.LiftTrackMagneticVaneDisplayHelper;
 
 @Mixin(value = RenderLifts.class, remap = false)
@@ -72,6 +73,9 @@ public abstract class MixinRenderLifts {
             return;
         }
         final LiftTrackMagneticVane.BlockEntity magneticVane = LiftTrackMagneticVaneDisplayHelper.getDisplayedMagneticVane(world, lift);
+        if (magneticVane != null) {
+            ((LiftDisplayDirection) lift).yte$resetArrivalDirectionDelay();
+        }
         if (magneticVane != null) {
             cir.setReturnValue(new ObjectObjectImmutablePair<>(lift.getDirection(),
                     new ObjectObjectImmutablePair<>(magneticVane.getFloorNumber(), magneticVane.getFloorDescription())));

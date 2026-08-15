@@ -16,6 +16,7 @@ import top.xfunny.mod.*;
 import top.xfunny.mod.Items;
 import top.xfunny.mod.keymapping.DefaultButtonsKeyMapping;
 import top.xfunny.mod.util.TransformPositionX;
+import top.xfunny.mixin.MixinLiftSchema;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -115,6 +116,25 @@ public abstract class LiftButtonsBase extends BlockExtension implements Directio
                         } else {
                             data.liftDirection = descriptor.hasDownButton() ? LiftDirection.DOWN : LiftDirection.UP;
                         }
+
+                        // A same-floor hall call can be accepted and removed by the server
+                        // before the client ever observes a lift instruction. Latch the
+                        // direction directly from the button so the car and hall displays
+                        // still show the requested direction for the complete door cycle.
+                        data.trackPositions.forEach(trackPosition -> MinecraftClientData.getInstance().lifts.forEach(lift -> {
+                            final int calledFloor = lift.getFloorIndex(Init.blockPosToPosition(trackPosition));
+                            final int displayedFloor = lift.getFloorIndex(lift.getCurrentFloor().getPosition());
+                            final MixinLiftSchema liftSchema = (MixinLiftSchema) lift;
+                            final boolean doorCycleActive = liftSchema.getStoppingCoolDown() > 1 || lift.getDoorValue() != 0;
+                            if (calledFloor >= 0 && calledFloor == displayedFloor && liftSchema.getSpeed() == 0) {
+                                final LiftDisplayDirectionState directionState = LiftDisplayDirectionState.get(lift.getId());
+                                if (doorCycleActive) {
+                                    directionState.deferSameFloorCallDirection(data.liftDirection);
+                                } else {
+                                    directionState.setSameFloorCallDirection(data.liftDirection);
+                                }
+                            }
+                        }));
 
                         final PressLift pressLift = new PressLift();
                         data.trackPositions.forEach(trackPosition -> pressLift.add(Init.blockPosToPosition(trackPosition), data.liftDirection));
