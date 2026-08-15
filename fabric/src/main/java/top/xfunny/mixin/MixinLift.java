@@ -14,6 +14,9 @@ import top.xfunny.mod.config.YteLiftConfigStore;
 import top.xfunny.mod.Init;
 import top.xfunny.mod.LiftDisplayDirection;
 import top.xfunny.mod.LiftDisplayDirectionState;
+import top.xfunny.mod.LiftDoorControlState;
+import top.xfunny.mod.DisplayDirectionMode;
+import top.xfunny.mod.LiftDisplayState;
 
 @Mixin(value = Lift.class, remap = false)
 public abstract class MixinLift implements MixinLiftSchema, MixinLiftFields, MixinNameColorDataBaseSchema, LiftDisplayDirection {
@@ -26,6 +29,15 @@ public abstract class MixinLift implements MixinLiftSchema, MixinLiftFields, Mix
 
     @Unique
     private static final long YTE_ARRIVAL_DIRECTION_DELAY = 100;
+
+    @Unique
+    private static final long YTE_DOOR_CLOSED_DELAY = 500;
+
+    @Unique
+    private static final long YTE_SINGLE_DOOR_MOVE_TIME = Vehicle.DOOR_MOVE_TIME / 2;
+
+    @Unique
+    private static final long YTE_DOOR_CLOSE_PROTECTION_TIME = 300;
 
     /**
      * MTR's door curve becomes negative when the cooldown is extended beyond its
@@ -45,7 +57,7 @@ public abstract class MixinLift implements MixinLiftSchema, MixinLiftFields, Mix
     @Inject(method = "getDirection", at = @At("HEAD"), cancellable = true)
     private void yte$getDisplayDirection(CallbackInfoReturnable<LiftDirection> cir) {
         if (isClientside()) {
-            cir.setReturnValue(LiftDisplayDirectionState.get(((Lift) (Object) this).getId()).direction);
+            cir.setReturnValue(yte$getDisplayDirection(DisplayDirectionMode.LATCH_UNTIL_DOOR_CLOSE));
         }
     }
 
@@ -61,6 +73,13 @@ public abstract class MixinLift implements MixinLiftSchema, MixinLiftFields, Mix
         final double adoDistance = YteLiftConfigStore.getAdoDistance(id);
         final double levellingDistance = YteLiftConfigStore.getLevellingDistance(id);
         final double levellingSpeed = YteLiftConfigStore.getLevellingSpeed(id) / 1000.0;
+
+        if (!isClientside()) {
+            final LiftDoorControlState.Command doorCommand = LiftDoorControlState.consume(id);
+            if (doorCommand != null) {
+                yte$applyDoorCommand(doorCommand);
+            }
+        }
 
         final boolean adoLevelling = getStoppingCoolDown() > 0 && getSpeed() != 0 && !getInstructions().isEmpty();
 
@@ -133,6 +152,7 @@ public abstract class MixinLift implements MixinLiftSchema, MixinLiftFields, Mix
         }
 
         if (isClientside()) {
+            yte$updateDisplayFacts(levellingDistance);
             yte$updateDisplayDirection(millisElapsed);
         }
 
@@ -145,6 +165,85 @@ public abstract class MixinLift implements MixinLiftSchema, MixinLiftFields, Mix
 
             setNeedsUpdate(false);
         }
+    }
+
+    @Unique
+    private void yte$applyDoorCommand(LiftDoorControlState.Command command) {
+        if (getSpeed() != 0 || !yte$isExactlyAtFloor()) {
+            return;
+        }
+
+        final Lift lift = (Lift) (Object) this;
+        final long coolDown = getStoppingCoolDown();
+        final long fullOpenCoolDown = YTE_LIFT_STOPPING_TIME - YTE_SINGLE_DOOR_MOVE_TIME;
+        final long closeStartCoolDown = YTE_DOOR_CLOSED_DELAY + YTE_SINGLE_DOOR_MOVE_TIME;
+        final boolean startingIdleDoorCycle = command == LiftDoorControlState.Command.OPEN
+                && getInstructions().isEmpty()
+                && coolDown < YTE_DOOR_CLOSED_DELAY
+                && lift.getDoorValue() <= 0;
+
+        if (command == LiftDoorControlState.Command.OPEN) {
+            final float doorValue = Utilities.clamp(lift.getDoorValue(), 0, 1);
+            if (doorValue >= 1) {
+                setStoppingCoolDown(fullOpenCoolDown);
+            } else if (doorValue > 0 && coolDown <= closeStartCoolDown) {
+                setStoppingCoolDown(YTE_LIFT_STOPPING_TIME - Math.round(doorValue * YTE_SINGLE_DOOR_MOVE_TIME));
+            } else if (doorValue <= 0 && coolDown < YTE_DOOR_CLOSED_DELAY) {
+                setStoppingCoolDown(YTE_LIFT_STOPPING_TIME);
+                if (startingIdleDoorCycle) {
+                    Init.sendIdleLiftDoorOpen(lift.getId());
+                }
+            }
+        } else if (lift.getDoorValue() >= 0.999F
+                && coolDown <= fullOpenCoolDown - YTE_DOOR_CLOSE_PROTECTION_TIME
+                && coolDown > closeStartCoolDown) {
+            setStoppingCoolDown(closeStartCoolDown);
+        }
+
+        setNeedsUpdate(true);
+    }
+
+    @Unique
+    private boolean yte$isExactlyAtFloor() {
+        for (int i = 0; i < getFloors().size(); i++) {
+            if (Math.abs(getRailProgress() - invokeGetProgress(i)) < 0.000001) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Unique
+    private void yte$updateDisplayFacts(double levellingDistance) {
+        final Lift lift = (Lift) (Object) this;
+        final boolean moving = getSpeed() != 0;
+        final LiftDirection movementDirection = getSpeed() > 0
+                ? LiftDirection.UP
+                : getSpeed() < 0 ? LiftDirection.DOWN : LiftDirection.NONE;
+        int targetFloor = -1;
+        double distanceToTarget = Double.POSITIVE_INFINITY;
+        LiftDirection targetDirection = LiftDirection.NONE;
+
+        if (!getInstructions().isEmpty()) {
+            final LiftInstruction instruction = getInstructions().get(0);
+            targetFloor = instruction.getFloor();
+            final double difference = invokeGetProgress(targetFloor) - getRailProgress();
+            distanceToTarget = Math.abs(difference);
+            targetDirection = difference > 0
+                    ? LiftDirection.UP
+                    : difference < 0
+                    ? LiftDirection.DOWN
+                    : instruction.getDirection();
+        }
+
+        final boolean doorCycle = getStoppingCoolDown() > 1 || lift.getDoorValue() != 0;
+        final boolean levelling = moving && levellingDistance > 0 && distanceToTarget <= levellingDistance;
+        final boolean idle = !moving && getInstructions().isEmpty() && !doorCycle;
+        final int displayedFloor = lift.getFloorIndex(lift.getCurrentFloor().getPosition());
+
+        LiftDisplayState.get(lift.getId()).update(
+                movementDirection, targetDirection, moving, levelling, doorCycle, idle,
+                displayedFloor, targetFloor, getSpeed(), distanceToTarget, getStoppingCoolDown());
     }
 
     @Unique
@@ -256,6 +355,11 @@ public abstract class MixinLift implements MixinLiftSchema, MixinLiftFields, Mix
         displayState.arrivalFloor = -1;
         displayState.arrivalDirection = LiftDirection.NONE;
         displayState.arrivalMillis = 0;
+    }
+
+    @Override
+    public LiftDisplayState yte$getDisplayState() {
+        return LiftDisplayState.get(((Lift) (Object) this).getId());
     }
 
 }

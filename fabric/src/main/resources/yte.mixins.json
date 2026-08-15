@@ -20,6 +20,7 @@
     "MixinRenderLiftPanel",
     "MixinRenderLifts",
     "MixinLiftDoorBlockEntity",
+    "MixinLiftSelectionScreen",
     "MixinLiftCustomizationScreen"
   ],
   "server": [],

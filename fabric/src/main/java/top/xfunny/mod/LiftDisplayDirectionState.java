@@ -39,4 +39,17 @@ public final class LiftDisplayDirectionState {
     public void deferSameFloorCallDirection(LiftDirection direction) {
         deferredSameFloorCallDirection = direction;
     }
+
+    public void resetForIdleDoorCycle() {
+        // A same-floor hall call has an explicit requested direction and must
+        // keep it. Manual door opening and a car call for the current floor do not.
+        if (sameFloorCallDirection != LiftDirection.NONE) {
+            return;
+        }
+        direction = LiftDirection.NONE;
+        arrivalFloor = -1;
+        arrivalDirection = LiftDirection.NONE;
+        arrivalMillis = 0;
+        deferredSameFloorCallDirection = LiftDirection.NONE;
+    }
 }
