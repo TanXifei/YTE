@@ -1,12 +1,15 @@
 package top.xfunny.mixin;
 
 import org.mtr.core.data.Lift;
+import org.mtr.libraries.it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import org.mtr.mapping.holder.BlockPos;
 import org.mtr.mapping.holder.ClickableWidget;
 import org.mtr.mapping.mapper.ButtonWidgetExtension;
 import org.mtr.mapping.mapper.TextHelper;
 import org.mtr.mod.client.MinecraftClientData;
 import org.mtr.mod.data.IGui;
 import org.mtr.mod.screen.DashboardList;
+import org.mtr.mod.screen.DashboardListItem;
 import org.mtr.mod.screen.LiftSelectionScreen;
 import org.mtr.mod.screen.MTRScreenBase;
 import org.spongepowered.asm.mixin.Final;
@@ -25,6 +28,7 @@ import top.xfunny.mod.packet.PacketLiftDoorControl;
 public abstract class MixinLiftSelectionScreen extends MTRScreenBase {
 
     @Shadow @Final private DashboardList selectionList;
+    @Shadow @Final private ObjectArrayList<BlockPos> floorLevels;
     @Shadow @Final private long liftId;
 
     @Unique private ButtonWidgetExtension yte$openDoorButton;
@@ -37,6 +41,27 @@ public abstract class MixinLiftSelectionScreen extends MTRScreenBase {
                 TextHelper.literal("◀▶"), button -> yte$sendDoorCommand(LiftDoorControlState.Command.OPEN));
         yte$closeDoorButton = new ButtonWidgetExtension(0, 0, 0, IGui.SQUARE_SIZE,
                 TextHelper.literal("▶◀"), button -> yte$sendDoorCommand(LiftDoorControlState.Command.CLOSE));
+    }
+
+    @Inject(method = "onPress", at = @At("HEAD"))
+    private void yte$resetDirectionForCurrentFloorCarCall(
+            DashboardListItem ignoredItem, int index, CallbackInfo ci) {
+        final Lift lift = MinecraftClientData.getLift(liftId);
+        if (lift == null || index < 0 || index >= floorLevels.size()) {
+            return;
+        }
+
+        final MixinLiftSchema schema = (MixinLiftSchema) lift;
+        final int selectedFloor = lift.getFloorIndex(org.mtr.mod.Init.blockPosToPosition(
+                floorLevels.get(floorLevels.size() - index - 1)));
+        final int currentFloor = lift.getFloorIndex(lift.getCurrentFloor().getPosition());
+        if (selectedFloor == currentFloor
+                && schema.getSpeed() == 0
+                && schema.getInstructions().isEmpty()
+                && schema.getStoppingCoolDown() <= 500
+                && lift.getDoorValue() == 0) {
+            LiftDisplayDirectionState.get(liftId).resetForCarSameFloorOpen();
+        }
     }
 
     @Inject(method = "init2", at = @At("TAIL"))
@@ -107,12 +132,15 @@ public abstract class MixinLiftSelectionScreen extends MTRScreenBase {
 
         if (doorValue >= 1) {
             schema.setStoppingCoolDown(fullOpenCoolDown);
+            LiftDoorControlState.beginClientOpenPrediction(liftId, doorValue);
         } else if (doorValue > 0 && coolDown <= closeStartCoolDown) {
             // Reverse from the exact locally rendered position immediately;
             // waiting for the server round trip causes a visible forward jump.
             schema.setStoppingCoolDown(stoppingTime - Math.round(doorValue * singleDoorMoveTime));
+            LiftDoorControlState.beginClientOpenPrediction(liftId, doorValue);
         } else if (doorValue <= 0 && coolDown < 500) {
             schema.setStoppingCoolDown(stoppingTime);
+            LiftDoorControlState.beginClientOpenPrediction(liftId, doorValue);
             if (schema.getInstructions().isEmpty()) {
                 LiftDisplayDirectionState.get(liftId).resetForIdleDoorCycle();
             }

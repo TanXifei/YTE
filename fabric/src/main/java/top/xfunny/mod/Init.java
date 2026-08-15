@@ -135,11 +135,12 @@ public final class Init implements Utilities {
         }
     }
 
-    public static void sendIdleLiftDoorOpen(long liftId) {
+    public static void sendLiftDoorOpen(long liftId, long stoppingCoolDown, boolean resetIdleDirection) {
         if (minecraftServer != null) {
             MinecraftServerHelper.iteratePlayers(minecraftServer, player ->
                     REGISTRY.sendPacketToClient(player,
-                            new PacketLiftDoorControl(liftId, top.xfunny.mod.LiftDoorControlState.Command.OPEN)));
+                            new PacketLiftDoorControl(liftId, top.xfunny.mod.LiftDoorControlState.Command.OPEN,
+                                    stoppingCoolDown, resetIdleDirection)));
         }
     }
 

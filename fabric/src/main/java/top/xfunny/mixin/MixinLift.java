@@ -45,9 +45,11 @@ public abstract class MixinLift implements MixinLiftSchema, MixinLiftFields, Mix
      */
     @Inject(method = "getDoorValue", at = @At("RETURN"), cancellable = true)
     private void yte$clampBrakeHoldDoorValue(CallbackInfoReturnable<Float> cir) {
-        if (cir.getReturnValue() < 0) {
-            cir.setReturnValue(0F);
-        }
+        final Lift lift = (Lift) (Object) this;
+        final float doorValue = Math.max(cir.getReturnValue(), 0F);
+        cir.setReturnValue(isClientside()
+                ? LiftDoorControlState.preserveClientOpenDoorValue(lift.getId(), doorValue)
+                : doorValue);
     }
 
     /**
@@ -181,23 +183,28 @@ public abstract class MixinLift implements MixinLiftSchema, MixinLiftFields, Mix
                 && getInstructions().isEmpty()
                 && coolDown < YTE_DOOR_CLOSED_DELAY
                 && lift.getDoorValue() <= 0;
+        boolean openCommandApplied = false;
 
         if (command == LiftDoorControlState.Command.OPEN) {
             final float doorValue = Utilities.clamp(lift.getDoorValue(), 0, 1);
             if (doorValue >= 1) {
                 setStoppingCoolDown(fullOpenCoolDown);
+                openCommandApplied = true;
             } else if (doorValue > 0 && coolDown <= closeStartCoolDown) {
                 setStoppingCoolDown(YTE_LIFT_STOPPING_TIME - Math.round(doorValue * YTE_SINGLE_DOOR_MOVE_TIME));
+                openCommandApplied = true;
             } else if (doorValue <= 0 && coolDown < YTE_DOOR_CLOSED_DELAY) {
                 setStoppingCoolDown(YTE_LIFT_STOPPING_TIME);
-                if (startingIdleDoorCycle) {
-                    Init.sendIdleLiftDoorOpen(lift.getId());
-                }
+                openCommandApplied = true;
             }
         } else if (lift.getDoorValue() >= 0.999F
                 && coolDown <= fullOpenCoolDown - YTE_DOOR_CLOSE_PROTECTION_TIME
                 && coolDown > closeStartCoolDown) {
             setStoppingCoolDown(closeStartCoolDown);
+        }
+
+        if (openCommandApplied) {
+            Init.sendLiftDoorOpen(lift.getId(), getStoppingCoolDown(), startingIdleDoorCycle);
         }
 
         setNeedsUpdate(true);
@@ -261,6 +268,20 @@ public abstract class MixinLift implements MixinLiftSchema, MixinLiftFields, Mix
                 || !getInstructions().isEmpty();
         final boolean doorCycleActive = getStoppingCoolDown() > 1 || lift.getDoorValue() != 0;
 
+        if (doorCycleActive && displayState.sameFloorCallDirection == LiftDirection.NONE) {
+            final LiftDirection claimedSameFloorCallDirection =
+                    LiftDisplayDirectionState.claimPendingSameFloorCall(lift.getId());
+            if (claimedSameFloorCallDirection != LiftDirection.NONE) {
+                displayState.setSameFloorCallDirection(claimedSameFloorCallDirection);
+            }
+        }
+
+        if (getSpeed() != 0) {
+            displayState.movedSinceIdle = true;
+        } else if (!activeDirectionCycle) {
+            displayState.movedSinceIdle = false;
+        }
+
         if (!doorCycleActive) {
             displayState.deferredSameFloorCallDirection = LiftDirection.NONE;
         }
@@ -289,9 +310,11 @@ public abstract class MixinLift implements MixinLiftSchema, MixinLiftFields, Mix
         if (!getInstructions().isEmpty()) {
             final LiftInstruction instruction = getInstructions().get(0);
             if (displayedFloorIndex == instruction.getFloor()) {
-                final LiftDirection arrivalDirection = displayedFloorIndex == floorCount - 1
+                final boolean terminalTurnaround = displayState.movedSinceIdle
+                        || instruction.getDirection() != LiftDirection.NONE;
+                final LiftDirection arrivalDirection = terminalTurnaround && displayedFloorIndex == floorCount - 1
                         ? LiftDirection.DOWN
-                        : displayedFloorIndex == 0
+                        : terminalTurnaround && displayedFloorIndex == 0
                         ? LiftDirection.UP
                         : instruction.getDirection();
                 final boolean deferDirectionChange = doorCycleActive
