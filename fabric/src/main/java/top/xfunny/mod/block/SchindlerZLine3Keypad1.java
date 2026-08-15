@@ -190,7 +190,7 @@ public class SchindlerZLine3Keypad1 extends LiftDestinationDispatchTerminalBase 
             switch (actionId) {
                 case ACT_AUTO_CALL: {
                     final String floorNumber = ArrayListToString.arrayListToString(inputString);
-                    final String ident = callLift(world, pos, floorNumber);
+                    final String ident = callEnteredFloor(world, pos, floorNumber);
                     switchScreen("schindler_z_line_3_keypad_1_key_mapping_identifier");
                     inputString.clear();
                     if (!ident.equals("?")) {
@@ -219,6 +219,14 @@ public class SchindlerZLine3Keypad1 extends LiftDestinationDispatchTerminalBase 
          * 开始新输入（从 home/accessibility/identifier 页按数字键）。
          * 清空旧输入，取消所有定时器，开始输入。
          */
+        private String callEnteredFloor(World world, BlockPos pos, String floorNumber) {
+            String result = callLift(world, pos, floorNumber);
+            if (result.equals("?") && floorNumber.matches("-\\d+")) {
+                result = callLift(world, pos, "B" + floorNumber.substring(1));
+            }
+            return result;
+        }
+
         void startNewInput(World world, BlockPos pos, String digit) {
             cancelTimer();
             clearInputString();
