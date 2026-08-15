@@ -22,12 +22,12 @@ public abstract class YteLiftConfigSchema implements SerializedDataBaseWithId {
 
     public static final double DEFAULT_SPEED = 10.0;
     public static final double DEFAULT_ACCELERATION = 4.0;
-    public static final double DEFAULT_ADO_DISTANCE = 0.05;
+    public static final double DEFAULT_ADO_DISTANCE = 0;
     public static final double DEFAULT_LEVELLING_DISTANCE = 0.3;
     public static final double DEFAULT_LEVELLING_SPEED = 0.2;
-    public static final double MIN_SPEED = 0.5;
+    public static final double MIN_SPEED = 0.1;
     public static final double MAX_SPEED = 20.0;
-    public static final double MIN_ACCELERATION = 0.5;
+    public static final double MIN_ACCELERATION = 0.1;
     public static final double MAX_ACCELERATION = 10.0;
     public static final double MIN_ADO_DISTANCE = 0;
     public static final double MAX_ADO_DISTANCE = 2;

@@ -414,8 +414,13 @@
 
   "gui.yte.lift_speed_value": "Speed: %.1f m/s",
   "gui.yte.lift_acceleration_value": "Accel: %.1f m/s\u00B2",
-  "gui.yte.lift_ado_distance": "ADO distance (blocks)",
-  "gui.yte.lift_levelling_distance": "Levelling distance (blocks)",
+  "gui.yte.lift_professional_mode_off": "Professional mode: Off",
+  "gui.yte.lift_professional_mode_on": "Professional mode: On",
+  "gui.yte.lift_ado_distance": "ADO distance (m)",
+  "gui.yte.lift_ado_distance_value": "ADO distance: %s m",
+  "gui.yte.lift_levelling_distance": "Levelling distance (m)",
+  "gui.yte.lift_levelling_distance_value": "Levelling distance: %s m",
   "gui.yte.lift_levelling_speed": "Levelling speed (m/s)",
+  "gui.yte.lift_levelling_speed_value": "Levelling speed: %s m/s",
   "block.yte.lift_track_magnetic_vane": "Lift Express-Zone Magnetic Vane"
 }

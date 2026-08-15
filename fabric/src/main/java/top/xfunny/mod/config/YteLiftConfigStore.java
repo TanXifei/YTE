@@ -17,7 +17,7 @@ public final class YteLiftConfigStore {
 
     private static final double DEFAULT_SPEED = 10.0;
     private static final double DEFAULT_ACCELERATION = 4.0;
-    private static final double DEFAULT_ADO_DISTANCE = 0.05;
+    private static final double DEFAULT_ADO_DISTANCE = 0;
     private static final double DEFAULT_LEVELLING_DISTANCE = 0.3;
     private static final double DEFAULT_LEVELLING_SPEED = 0.2;
 

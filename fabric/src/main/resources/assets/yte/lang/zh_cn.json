@@ -409,8 +409,13 @@
   "hint.yte.locked": "已锁定",
   "gui.yte.lift_speed_value": "速度：%.1f m/s",
   "gui.yte.lift_acceleration_value": "加速度：%.1f m/s²",
-  "gui.yte.lift_ado_distance": "提前开门距离（格）",
-  "gui.yte.lift_levelling_distance": "平层距离（格）",
+  "gui.yte.lift_professional_mode_off": "专业模式：关",
+  "gui.yte.lift_professional_mode_on": "专业模式：开",
+  "gui.yte.lift_ado_distance": "预开门距离（m）",
+  "gui.yte.lift_ado_distance_value": "预开门距离：%s m",
+  "gui.yte.lift_levelling_distance": "平层距离（m）",
+  "gui.yte.lift_levelling_distance_value": "平层距离：%s m",
   "gui.yte.lift_levelling_speed": "平层速度（m/s）",
+  "gui.yte.lift_levelling_speed_value": "平层速度：%s m/s",
   "block.yte.lift_track_magnetic_vane": "电梯快速区间隔磁板"
 }
