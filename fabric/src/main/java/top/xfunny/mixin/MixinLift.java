@@ -17,6 +17,7 @@ import top.xfunny.mod.LiftDisplayDirectionState;
 import top.xfunny.mod.LiftDoorControlState;
 import top.xfunny.mod.DisplayDirectionMode;
 import top.xfunny.mod.LiftDisplayState;
+import top.xfunny.mod.LiftMotionProfile;
 
 @Mixin(value = Lift.class, remap = false)
 public abstract class MixinLift implements MixinLiftSchema, MixinLiftFields, MixinNameColorDataBaseSchema, LiftDisplayDirection {
@@ -38,6 +39,18 @@ public abstract class MixinLift implements MixinLiftSchema, MixinLiftFields, Mix
 
     @Unique
     private static final long YTE_DOOR_CLOSE_PROTECTION_TIME = 300;
+
+    @Unique
+    private int yte$motionTargetFloor = Integer.MIN_VALUE;
+
+    @Unique
+    private boolean yte$twoStageFineLevelling;
+
+    @Unique
+    private long yte$twoStageCoarseHoldRemaining;
+
+    @Unique
+    private static final long YTE_TWO_STAGE_COARSE_HOLD_TIME = 1000;
 
     /**
      * MTR's door curve becomes negative when the cooldown is extended beyond its
@@ -70,11 +83,14 @@ public abstract class MixinLift implements MixinLiftSchema, MixinLiftFields, Mix
     @Overwrite
     public void tick(long millisElapsed) {
         final long id = ((Lift) (Object) this).getId();
-        final double customMaxSpeed = YteLiftConfigStore.getSpeed(id) / 1000.0;
-        final double customAccel = YteLiftConfigStore.getAcceleration(id) / 1_000_000.0;
+        final boolean movingDown = getSpeed() < 0 || getSpeed() == 0 && !getInstructions().isEmpty()
+                && invokeGetProgress(getInstructions().get(0).getFloor()) < getRailProgress();
+        final double customMaxSpeed = YteLiftConfigStore.getSpeed(id, movingDown) / 1000.0;
+        final double customAccel = YteLiftConfigStore.getAcceleration(id, movingDown) / 1_000_000.0;
         final double adoDistance = YteLiftConfigStore.getAdoDistance(id);
         final double levellingDistance = YteLiftConfigStore.getLevellingDistance(id);
         final double levellingSpeed = YteLiftConfigStore.getLevellingSpeed(id) / 1000.0;
+        final LiftMotionProfile motionProfile = YteLiftConfigStore.getMotionProfile(id);
 
         if (!isClientside()) {
             final LiftDoorControlState.Command doorCommand = LiftDoorControlState.consume(id);
@@ -100,35 +116,40 @@ public abstract class MixinLift implements MixinLiftSchema, MixinLiftFields, Mix
             }
 
             if (getInstructions().isEmpty()) {
+                yte$motionTargetFloor = Integer.MIN_VALUE;
+                yte$twoStageFineLevelling = false;
+                yte$twoStageCoarseHoldRemaining = 0;
                 setSpeed(Math.max(Math.abs(getSpeed()) - customAccel * millisElapsed, 0) * Math.signum(getSpeed()));
             } else {
-                final long nextInstructionProgress = invokeGetProgress(getInstructions().get(0).getFloor());
-                final double distanceToTarget = Math.abs(nextInstructionProgress - getRailProgress());
-                final double absoluteSpeed = Math.abs(getSpeed());
-                final boolean useLevellingApproach = levellingDistance > 0 && levellingSpeed > 0;
-                final double distanceToBrakingTarget = useLevellingApproach
-                        ? Math.max(distanceToTarget - levellingDistance, 0)
-                        : distanceToTarget;
-                final double brakingTargetSpeed = useLevellingApproach ? levellingSpeed : 0;
-                final double requiredBrakingDistance = Math.max(
-                        (absoluteSpeed * absoluteSpeed - brakingTargetSpeed * brakingTargetSpeed) / (2 * customAccel), 0);
-                final double movementThisTick = absoluteSpeed * millisElapsed;
-
-                if (useLevellingApproach && absoluteSpeed > levellingSpeed && movementThisTick >= distanceToBrakingTarget) {
-                    // Last-resort guard for discrete ticks: never enter the levelling
-                    // zone faster than its configured speed, even if normal braking
-                    // could not finish before the boundary.
-                    setSpeed(levellingSpeed * Math.signum(getSpeed()));
-                } else if (absoluteSpeed > brakingTargetSpeed && requiredBrakingDistance + movementThisTick > distanceToBrakingTarget) {
-                    setSpeed(Math.max(absoluteSpeed - customAccel * millisElapsed, customAccel) * Math.signum(getSpeed()));
-                } else {
-                    setSpeed(Utilities.clamp(getSpeed() + customAccel * millisElapsed * Math.signum(nextInstructionProgress - getRailProgress()), -customMaxSpeed, customMaxSpeed));
+                final int nextInstructionFloor = getInstructions().get(0).getFloor();
+                final long nextInstructionProgress = invokeGetProgress(nextInstructionFloor);
+                if (nextInstructionFloor != yte$motionTargetFloor) {
+                    yte$motionTargetFloor = nextInstructionFloor;
+                    yte$twoStageFineLevelling = false;
+                    yte$twoStageCoarseHoldRemaining = 0;
                 }
-
-                if (getSpeed() != 0 && levellingDistance > 0 && levellingSpeed > 0 && distanceToTarget <= levellingDistance) {
-                    final double levellingDeceleration = levellingSpeed * levellingSpeed / (2 * levellingDistance);
-                    final double levellingTargetSpeed = Math.sqrt(2 * levellingDeceleration * distanceToTarget);
-                    setSpeed(Math.min(Math.abs(getSpeed()), levellingTargetSpeed) * Math.signum(getSpeed()));
+                final double distanceToTarget = Math.abs(nextInstructionProgress - getRailProgress());
+                final double direction = Math.signum(nextInstructionProgress - getRailProgress());
+                if (motionProfile == LiftMotionProfile.TWO_STAGE && yte$twoStageCoarseHoldRemaining > 0) {
+                    setSpeed(LiftMotionProfile.TWO_STAGE_COARSE_STOP_SPEED * direction);
+                    yte$twoStageCoarseHoldRemaining = Math.max(
+                            yte$twoStageCoarseHoldRemaining - millisElapsed, 0);
+                    if (yte$twoStageCoarseHoldRemaining == 0) {
+                        yte$twoStageFineLevelling = true;
+                    }
+                } else {
+                    final LiftMotionProfile.MotionResult motionResult = motionProfile.calculate(
+                            new LiftMotionProfile.MotionContext(getSpeed(), customMaxSpeed, customAccel, distanceToTarget,
+                                    levellingDistance, levellingSpeed, direction, millisElapsed,
+                                    yte$twoStageFineLevelling));
+                    setSpeed(motionResult.speed);
+                    if (motionProfile == LiftMotionProfile.TWO_STAGE && motionResult.enterFineLevelling) {
+                        yte$twoStageCoarseHoldRemaining = YTE_TWO_STAGE_COARSE_HOLD_TIME;
+                    }
+                }
+                if (motionProfile != LiftMotionProfile.TWO_STAGE) {
+                    yte$twoStageFineLevelling = false;
+                    yte$twoStageCoarseHoldRemaining = 0;
                 }
 
                 final double updatedMovementThisTick = Math.abs(getSpeed() * millisElapsed);
@@ -142,6 +163,9 @@ public abstract class MixinLift implements MixinLiftSchema, MixinLiftFields, Mix
                     setSpeed(0);
                     if (!isClientside()) {
                         getInstructions().remove(0);
+                        yte$motionTargetFloor = Integer.MIN_VALUE;
+                        yte$twoStageFineLevelling = false;
+                        yte$twoStageCoarseHoldRemaining = 0;
                         if (getStoppingCoolDown() == 0) {
                             setStoppingCoolDown(YTE_LIFT_STOPPING_TIME + (adoDistance <= 0 ? YTE_BRAKE_HOLD_TIME : 0));
                         }
