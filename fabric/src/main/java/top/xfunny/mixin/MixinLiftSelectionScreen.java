@@ -1,9 +1,12 @@
 package top.xfunny.mixin;
 
 import org.mtr.core.data.Lift;
+import org.mtr.core.data.LiftDirection;
+import org.mtr.libraries.it.unimi.dsi.fastutil.objects.ObjectObjectImmutablePair;
 import org.mtr.libraries.it.unimi.dsi.fastutil.objects.ObjectArrayList;
 import org.mtr.mapping.holder.BlockPos;
 import org.mtr.mapping.holder.ClickableWidget;
+import org.mtr.mapping.holder.World;
 import org.mtr.mapping.mapper.ButtonWidgetExtension;
 import org.mtr.mapping.mapper.TextHelper;
 import org.mtr.mod.client.MinecraftClientData;
@@ -18,11 +21,13 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import top.xfunny.mod.LiftDoorControlState;
 import top.xfunny.mod.LiftDisplayDirectionState;
 import top.xfunny.mod.client.InitClient;
 import top.xfunny.mod.packet.PacketLiftDoorControl;
+import top.xfunny.mod.util.GetLiftDetails;
 
 @Mixin(value = LiftSelectionScreen.class, remap = false)
 public abstract class MixinLiftSelectionScreen extends MTRScreenBase {
@@ -34,6 +39,18 @@ public abstract class MixinLiftSelectionScreen extends MTRScreenBase {
     @Unique private ButtonWidgetExtension yte$openDoorButton;
     @Unique private ButtonWidgetExtension yte$closeDoorButton;
     @Unique private boolean yte$clearDoorButtonFocus;
+
+    @Redirect(
+            method = "lambda$new$0",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lorg/mtr/mod/render/RenderLifts;getLiftDetails(Lorg/mtr/mapping/holder/World;Lorg/mtr/core/data/Lift;Lorg/mtr/mapping/holder/BlockPos;)Lorg/mtr/libraries/it/unimi/dsi/fastutil/objects/ObjectObjectImmutablePair;"
+            )
+    )
+    private ObjectObjectImmutablePair<LiftDirection, ObjectObjectImmutablePair<String, String>> yte$getRealFloorDetailsForSelection(
+            World world, Lift lift, BlockPos blockPos) {
+        return GetLiftDetails.getLiftDetails(world, lift, blockPos);
+    }
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void yte$createDoorButtons(long liftId, CallbackInfo ci) {
