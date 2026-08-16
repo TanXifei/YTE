@@ -2,6 +2,7 @@ package top.xfunny.core.data;
 
 import org.mtr.core.serializer.ReaderBase;
 import top.xfunny.core.generated.data.YteLiftConfigSchema;
+import top.xfunny.mod.LiftMotionProfile;
 
 public class YteLiftConfig extends YteLiftConfigSchema {
 
@@ -11,6 +12,19 @@ public class YteLiftConfig extends YteLiftConfigSchema {
 
     public YteLiftConfig(long liftId, double speed, double acceleration, double adoDistance, double levellingDistance, double levellingSpeed) {
         super(liftId, speed, acceleration, adoDistance, levellingDistance, levellingSpeed);
+    }
+
+    public YteLiftConfig(long liftId, double upSpeed, double downSpeed, double upAcceleration, double downAcceleration,
+            boolean directionParametersLinked, double adoDistance, double levellingDistance, double levellingSpeed) {
+        super(liftId, upSpeed, downSpeed, upAcceleration, downAcceleration, directionParametersLinked,
+                adoDistance, levellingDistance, levellingSpeed);
+    }
+
+    public YteLiftConfig(long liftId, double upSpeed, double downSpeed, double upAcceleration, double downAcceleration,
+            boolean directionParametersLinked, double adoDistance, double levellingDistance, double levellingSpeed,
+            LiftMotionProfile motionProfile) {
+        super(liftId, upSpeed, downSpeed, upAcceleration, downAcceleration, directionParametersLinked,
+                adoDistance, levellingDistance, levellingSpeed, motionProfile.name());
     }
 
     public YteLiftConfig(ReaderBase readerBase) {
@@ -24,6 +38,18 @@ public class YteLiftConfig extends YteLiftConfigSchema {
     public double getAcceleration() {
         return acceleration;
     }
+
+    public double getUpSpeed() { return speed; }
+
+    public double getDownSpeed() { return directionParametersLinked ? speed : downSpeed; }
+
+    public double getUpAcceleration() { return acceleration; }
+
+    public double getDownAcceleration() { return directionParametersLinked ? acceleration : downAcceleration; }
+
+    public boolean areDirectionParametersLinked() { return directionParametersLinked; }
+
+    public LiftMotionProfile getMotionProfile() { return LiftMotionProfile.fromSerializedName(motionProfile); }
 
     public double getAdoDistance() { return adoDistance; }
 

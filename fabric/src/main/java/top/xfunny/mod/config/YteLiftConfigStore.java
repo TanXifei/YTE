@@ -1,5 +1,7 @@
 package top.xfunny.mod.config;
 
+import top.xfunny.mod.LiftMotionProfile;
+
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -11,9 +13,12 @@ public final class YteLiftConfigStore {
 
     private static final Map<Long, Double> speedMap = new ConcurrentHashMap<>();
     private static final Map<Long, Double> accelerationMap = new ConcurrentHashMap<>();
+    private static final Map<Long, Double> downSpeedMap = new ConcurrentHashMap<>();
+    private static final Map<Long, Double> downAccelerationMap = new ConcurrentHashMap<>();
     private static final Map<Long, Double> adoDistanceMap = new ConcurrentHashMap<>();
     private static final Map<Long, Double> levellingDistanceMap = new ConcurrentHashMap<>();
     private static final Map<Long, Double> levellingSpeedMap = new ConcurrentHashMap<>();
+    private static final Map<Long, LiftMotionProfile> motionProfileMap = new ConcurrentHashMap<>();
 
     private static final double DEFAULT_SPEED = 10.0;
     private static final double DEFAULT_ACCELERATION = 4.0;
@@ -24,11 +29,25 @@ public final class YteLiftConfigStore {
     private YteLiftConfigStore() {}
 
     public static void put(long liftId, double speed, double acceleration, double adoDistance, double levellingDistance, double levellingSpeed) {
-        speedMap.put(liftId, speed);
-        accelerationMap.put(liftId, acceleration);
+        put(liftId, speed, speed, acceleration, acceleration, adoDistance, levellingDistance, levellingSpeed);
+    }
+
+    public static void put(long liftId, double upSpeed, double downSpeed, double upAcceleration, double downAcceleration,
+            double adoDistance, double levellingDistance, double levellingSpeed) {
+        put(liftId, upSpeed, downSpeed, upAcceleration, downAcceleration,
+                adoDistance, levellingDistance, levellingSpeed, LiftMotionProfile.STANDARD);
+    }
+
+    public static void put(long liftId, double upSpeed, double downSpeed, double upAcceleration, double downAcceleration,
+            double adoDistance, double levellingDistance, double levellingSpeed, LiftMotionProfile motionProfile) {
+        speedMap.put(liftId, upSpeed);
+        downSpeedMap.put(liftId, downSpeed);
+        accelerationMap.put(liftId, upAcceleration);
+        downAccelerationMap.put(liftId, downAcceleration);
         adoDistanceMap.put(liftId, adoDistance);
         levellingDistanceMap.put(liftId, levellingDistance);
         levellingSpeedMap.put(liftId, levellingSpeed);
+        motionProfileMap.put(liftId, motionProfile);
     }
 
     public static double getSpeed(long liftId) {
@@ -39,25 +58,43 @@ public final class YteLiftConfigStore {
         return accelerationMap.getOrDefault(liftId, DEFAULT_ACCELERATION);
     }
 
+    public static double getSpeed(long liftId, boolean down) {
+        return down ? downSpeedMap.getOrDefault(liftId, getSpeed(liftId)) : getSpeed(liftId);
+    }
+
+    public static double getAcceleration(long liftId, boolean down) {
+        return down ? downAccelerationMap.getOrDefault(liftId, getAcceleration(liftId)) : getAcceleration(liftId);
+    }
+
     public static double getAdoDistance(long liftId) { return adoDistanceMap.getOrDefault(liftId, DEFAULT_ADO_DISTANCE); }
 
     public static double getLevellingDistance(long liftId) { return levellingDistanceMap.getOrDefault(liftId, DEFAULT_LEVELLING_DISTANCE); }
 
     public static double getLevellingSpeed(long liftId) { return levellingSpeedMap.getOrDefault(liftId, DEFAULT_LEVELLING_SPEED); }
 
+    public static LiftMotionProfile getMotionProfile(long liftId) {
+        return motionProfileMap.getOrDefault(liftId, LiftMotionProfile.STANDARD);
+    }
+
     public static void remove(long liftId) {
         speedMap.remove(liftId);
         accelerationMap.remove(liftId);
+        downSpeedMap.remove(liftId);
+        downAccelerationMap.remove(liftId);
         adoDistanceMap.remove(liftId);
         levellingDistanceMap.remove(liftId);
         levellingSpeedMap.remove(liftId);
+        motionProfileMap.remove(liftId);
     }
 
     public static void clear() {
         speedMap.clear();
         accelerationMap.clear();
+        downSpeedMap.clear();
+        downAccelerationMap.clear();
         adoDistanceMap.clear();
         levellingDistanceMap.clear();
         levellingSpeedMap.clear();
+        motionProfileMap.clear();
     }
 }
