@@ -27,6 +27,7 @@ import top.xfunny.mod.client.InitClient;
 import top.xfunny.mod.client.YteMinecraftClientData;
 import top.xfunny.mod.config.YteLiftConfigStore;
 import top.xfunny.mod.packet.YtePacketUpdateData;
+import top.xfunny.mod.LiftMotionProfile;
 
 import java.util.Locale;
 
@@ -38,7 +39,12 @@ public abstract class MixinLiftCustomizationScreen extends MTRScreenBase {
     private Lift lift;
 
     @Shadow
+    @Final
     private int width2;
+
+    @Shadow
+    @Final
+    private ButtonWidgetExtension buttonLiftStyle;
 
     @Unique
     private WidgetShorterSlider yte$sliderSpeed;
@@ -46,12 +52,19 @@ public abstract class MixinLiftCustomizationScreen extends MTRScreenBase {
     @Unique
     private WidgetShorterSlider yte$sliderAcceleration;
 
+    @Unique private WidgetShorterSlider yte$sliderDownSpeed;
+    @Unique private WidgetShorterSlider yte$sliderDownAcceleration;
+
     @Unique private WidgetShorterSlider yte$sliderAdoDistance;
     @Unique private WidgetShorterSlider yte$sliderLevellingDistance;
     @Unique private WidgetShorterSlider yte$sliderLevellingSpeed;
     @Unique private ButtonWidgetExtension yte$professionalModeButton;
+    @Unique private ButtonWidgetExtension yte$directionLinkButton;
+    @Unique private ButtonWidgetExtension yte$motionProfileButton;
     @Unique private TextFieldWidgetExtension yte$speedField;
     @Unique private TextFieldWidgetExtension yte$accelerationField;
+    @Unique private TextFieldWidgetExtension yte$downSpeedField;
+    @Unique private TextFieldWidgetExtension yte$downAccelerationField;
     @Unique private TextFieldWidgetExtension yte$adoDistanceField;
     @Unique private TextFieldWidgetExtension yte$levellingDistanceField;
     @Unique private TextFieldWidgetExtension yte$levellingSpeedField;
@@ -72,26 +85,38 @@ public abstract class MixinLiftCustomizationScreen extends MTRScreenBase {
 
     @Unique
     private double yte$lastSentAccel = -1;
+    @Unique private double yte$lastSentDownSpeed = -1;
+    @Unique private double yte$lastSentDownAccel = -1;
+    @Unique private boolean yte$directionParametersLinked = true;
+    @Unique private boolean yte$lastSentDirectionParametersLinked = true;
+    @Unique private LiftMotionProfile yte$motionProfile = LiftMotionProfile.STANDARD;
+    @Unique private LiftMotionProfile yte$lastSentMotionProfile = LiftMotionProfile.STANDARD;
     @Unique private double yte$lastSentAdoDistance = -1;
     @Unique private double yte$lastSentLevellingDistance = -1;
     @Unique private double yte$lastSentLevellingSpeed = -1;
-    @Unique private final double[] yte$easyModeValues = new double[5];
-    @Unique private final int[] yte$easyModeSliderAnchors = new int[5];
-    @Unique private final boolean[] yte$easyModeSliderTouched = new boolean[5];
+    @Unique private final double[] yte$easyModeValues = new double[7];
+    @Unique private final int[] yte$easyModeSliderAnchors = new int[7];
+    @Unique private final boolean[] yte$easyModeSliderTouched = new boolean[7];
     @Unique private double yte$scrollOffset;
     @Unique private boolean yte$contentTransformPushed;
     @Unique private boolean yte$scrollbarDragging;
     @Unique private double yte$scrollbarDragOffset;
-
-    @Unique private static final int YTE_CONTENT_ROWS = 22;
+    @Unique private int yte$liftStyleButtonContentY;
+    @Unique private int yte$directionLinkButtonContentY;
+    @Unique private int yte$motionProfileButtonContentY;
+    @Unique private boolean yte$scrollingTextButtonsSuppressed;
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void onConstructed(Lift liftParam, CallbackInfo ci) {
         final long liftId = liftParam.getId();
         final YteLiftConfig config = YteMinecraftClientData.getInstance().getConfig(liftId);
 
-        final double currentSpeed = config != null ? config.getSpeed() : YteLiftConfig.DEFAULT_SPEED;
-        final double currentAccel = config != null ? config.getAcceleration() : YteLiftConfig.DEFAULT_ACCELERATION;
+        final double currentSpeed = config != null ? config.getUpSpeed() : YteLiftConfig.DEFAULT_SPEED;
+        final double currentDownSpeed = config != null ? config.getDownSpeed() : currentSpeed;
+        final double currentAccel = config != null ? config.getUpAcceleration() : YteLiftConfig.DEFAULT_ACCELERATION;
+        final double currentDownAccel = config != null ? config.getDownAcceleration() : currentAccel;
+        yte$directionParametersLinked = config == null || config.areDirectionParametersLinked();
+        yte$motionProfile = config == null ? LiftMotionProfile.STANDARD : config.getMotionProfile();
         final double currentAdoDistance = config != null ? config.getAdoDistance() : YteLiftConfig.DEFAULT_ADO_DISTANCE;
         final double currentLevellingDistance = config != null ? config.getLevellingDistance() : YteLiftConfig.DEFAULT_LEVELLING_DISTANCE;
         final double currentLevellingSpeed = config != null ? config.getLevellingSpeed() : YteLiftConfig.DEFAULT_LEVELLING_SPEED;
@@ -105,6 +130,11 @@ public abstract class MixinLiftCustomizationScreen extends MTRScreenBase {
                 value -> "", null);
         yte$sliderAcceleration.setValue(accelToValue(currentAccel));
 
+        yte$sliderDownSpeed = new WidgetShorterSlider(0, 60, SPEED_SLIDER_MAX, value -> "", null);
+        yte$sliderDownSpeed.setValue(speedToValue(currentDownSpeed));
+        yte$sliderDownAcceleration = new WidgetShorterSlider(0, 60, ACCEL_SLIDER_MAX, value -> "", null);
+        yte$sliderDownAcceleration.setValue(accelToValue(currentDownAccel));
+
         yte$sliderAdoDistance = new WidgetShorterSlider(0, 60, ADO_DISTANCE_SLIDER_MAX,
                 value -> "", null);
         yte$sliderAdoDistance.setValue(adoDistanceToValue(currentAdoDistance));
@@ -117,19 +147,30 @@ public abstract class MixinLiftCustomizationScreen extends MTRScreenBase {
                 value -> "", null);
         yte$sliderLevellingSpeed.setValue(levellingSpeedToValue(currentLevellingSpeed));
 
-        yte$setEasyModeValues(currentSpeed, currentAccel, currentAdoDistance, currentLevellingDistance, currentLevellingSpeed);
+        yte$setEasyModeValues(currentSpeed, currentDownSpeed, currentAccel, currentDownAccel,
+                currentAdoDistance, currentLevellingDistance, currentLevellingSpeed);
 
         yte$professionalModeButton = new ButtonWidgetExtension(0, 0, 0, IGui.SQUARE_SIZE,
                 TextHelper.literal(""), button -> yte$toggleProfessionalMode());
+        yte$directionLinkButton = new ButtonWidgetExtension(0, 0, 0, IGui.SQUARE_SIZE,
+                TextHelper.literal(""), button -> yte$toggleDirectionParametersLinked());
+        yte$motionProfileButton = new ButtonWidgetExtension(0, 0, 0, IGui.SQUARE_SIZE,
+                TextHelper.literal(""), button -> yte$toggleMotionProfile());
 
         yte$speedField = yte$createNumberField(currentSpeed);
         yte$accelerationField = yte$createNumberField(currentAccel);
+        yte$downSpeedField = yte$createNumberField(currentDownSpeed);
+        yte$downAccelerationField = yte$createNumberField(currentDownAccel);
         yte$adoDistanceField = yte$createNumberField(currentAdoDistance);
         yte$levellingDistanceField = yte$createNumberField(currentLevellingDistance);
         yte$levellingSpeedField = yte$createNumberField(currentLevellingSpeed);
 
         yte$lastSentSpeed = currentSpeed;
         yte$lastSentAccel = currentAccel;
+        yte$lastSentDownSpeed = currentDownSpeed;
+        yte$lastSentDownAccel = currentDownAccel;
+        yte$lastSentDirectionParametersLinked = yte$directionParametersLinked;
+        yte$lastSentMotionProfile = yte$motionProfile;
         yte$lastSentAdoDistance = currentAdoDistance;
         yte$lastSentLevellingDistance = currentLevellingDistance;
         yte$lastSentLevellingSpeed = currentLevellingSpeed;
@@ -140,57 +181,77 @@ public abstract class MixinLiftCustomizationScreen extends MTRScreenBase {
         // 与原版全宽控件对齐：x=0, width=width2
         // Speed: row 11 文字, row 12 滑块
         // Accel: row 13 文字, row 14 滑块
-        final int sliderY1 = IGui.SQUARE_SIZE * 13;
-        final int sliderY2 = IGui.SQUARE_SIZE * 15;
-
         yte$professionalModeButton.setX2(0);
         yte$professionalModeButton.setY2(IGui.SQUARE_SIZE * 11);
         yte$professionalModeButton.setWidth2(width2);
-
-        yte$sliderSpeed.setX2(0);
-        yte$sliderSpeed.setY2(sliderY1);
-        yte$sliderSpeed.setHeight(IGui.SQUARE_SIZE);
-        yte$sliderSpeed.setWidth2(width2);
-
-        yte$sliderAcceleration.setX2(0);
-        yte$sliderAcceleration.setY2(sliderY2);
-        yte$sliderAcceleration.setHeight(IGui.SQUARE_SIZE);
-        yte$sliderAcceleration.setWidth2(width2);
-
-        yte$positionSlider(yte$sliderAdoDistance, 17);
-        yte$positionSlider(yte$sliderLevellingDistance, 19);
-        yte$positionSlider(yte$sliderLevellingSpeed, 21);
+        yte$directionLinkButton.setX2(0);
+        yte$directionLinkButton.setY2(IGui.SQUARE_SIZE * 12);
+        yte$directionLinkButton.setWidth2(width2);
+        yte$motionProfileButton.setX2(0);
+        yte$motionProfileButton.setY2(IGui.SQUARE_SIZE * 13);
+        yte$motionProfileButton.setWidth2(width2);
 
         addChild(new ClickableWidget(yte$professionalModeButton));
+        addChild(new ClickableWidget(yte$directionLinkButton));
+        addChild(new ClickableWidget(yte$motionProfileButton));
         addChild(new ClickableWidget(yte$sliderSpeed));
         addChild(new ClickableWidget(yte$sliderAcceleration));
+        addChild(new ClickableWidget(yte$sliderDownSpeed));
+        addChild(new ClickableWidget(yte$sliderDownAcceleration));
         addChild(new ClickableWidget(yte$sliderAdoDistance));
         addChild(new ClickableWidget(yte$sliderLevellingDistance));
         addChild(new ClickableWidget(yte$sliderLevellingSpeed));
 
-        yte$positionField(yte$speedField, 13);
-        yte$positionField(yte$accelerationField, 15);
-        yte$positionField(yte$adoDistanceField, 17);
-        yte$positionField(yte$levellingDistanceField, 19);
-        yte$positionField(yte$levellingSpeedField, 21);
         addChild(new ClickableWidget(yte$speedField));
         addChild(new ClickableWidget(yte$accelerationField));
+        addChild(new ClickableWidget(yte$downSpeedField));
+        addChild(new ClickableWidget(yte$downAccelerationField));
         addChild(new ClickableWidget(yte$adoDistanceField));
         addChild(new ClickableWidget(yte$levellingDistanceField));
         addChild(new ClickableWidget(yte$levellingSpeedField));
 
         // Text fields are recreated by the screen initialization lifecycle.
         // Restore their visible text after they have been attached to the screen.
-        yte$syncFieldsFromValues(yte$lastSentSpeed, yte$lastSentAccel, yte$lastSentAdoDistance,
+        yte$layoutDirectionWidgets();
+        yte$syncFieldsFromValues(yte$lastSentSpeed, yte$lastSentDownSpeed, yte$lastSentAccel, yte$lastSentDownAccel, yte$lastSentAdoDistance,
                 yte$lastSentLevellingDistance, yte$lastSentLevellingSpeed);
         yte$updateModeWidgets();
     }
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lorg/mtr/mod/screen/MTRScreenBase;render(Lorg/mtr/mapping/mapper/GraphicsHolder;IIF)V", shift = At.Shift.BEFORE))
     private void yte$beginScrollableContent(GraphicsHolder graphicsHolder, int mouseX, int mouseY, float delta, CallbackInfo ci) {
+        yte$drawExtendedBackground(graphicsHolder);
+        // Long button labels use a screen-space horizontal scissor rectangle.
+        // A matrix-only vertical translation moves the button but not that
+        // rectangle, so suppress these two buttons and render them later at a
+        // physically adjusted Y coordinate.
+        yte$liftStyleButtonContentY = buttonLiftStyle.getY2();
+        yte$directionLinkButtonContentY = yte$directionLinkButton.getY2();
+        yte$motionProfileButtonContentY = yte$motionProfileButton.getY2();
+        buttonLiftStyle.setVisibleMapped(false);
+        yte$directionLinkButton.setVisibleMapped(false);
+        yte$motionProfileButton.setVisibleMapped(false);
+        yte$scrollingTextButtonsSuppressed = true;
         graphicsHolder.push();
         graphicsHolder.translate(0, -yte$scrollOffset, 0);
         yte$contentTransformPushed = true;
+    }
+
+    @Unique
+    private void yte$drawExtendedBackground(GraphicsHolder graphicsHolder) {
+        final int extendedRight = yte$getPanelRight();
+        if (extendedRight <= width2) {
+            return;
+        }
+        final GuiDrawing guiDrawing = new GuiDrawing(graphicsHolder);
+        guiDrawing.beginDrawingRectangle();
+        guiDrawing.drawRectangle(width2, 0, extendedRight, getHeightMapped(), 0xFF121212);
+        guiDrawing.finishDrawingRectangle();
+    }
+
+    @Unique
+    private int yte$getPanelRight() {
+        return Math.min(getWidthMapped(), width2 + 15);
     }
 
     @ModifyVariable(method = "render", at = @At("HEAD"), argsOnly = true, ordinal = 1)
@@ -203,44 +264,63 @@ public abstract class MixinLiftCustomizationScreen extends MTRScreenBase {
             CallbackInfo ci) {
         // "Speed: X.X m/s" 文字行（滑块上方），左对齐
         final int labelY1 = IGui.SQUARE_SIZE * 12 + IGui.TEXT_PADDING;
-        final int labelY2 = IGui.SQUARE_SIZE * 14 + IGui.TEXT_PADDING;
-
-        final double speed = yte$professionalMode
+        final double upSpeed = yte$professionalMode
                 ? yte$parseNumber(yte$speedField, yte$lastSentSpeed, YteLiftConfig.MIN_SPEED, YteLiftConfig.MAX_SPEED)
                 : yte$getEasyModeValue(0, yte$sliderSpeed, valueToSpeed(yte$sliderSpeed.getIntValue()));
-        final double accel = yte$professionalMode
+        final double downSpeed = yte$directionParametersLinked ? upSpeed : yte$professionalMode
+                ? yte$parseNumber(yte$downSpeedField, yte$lastSentDownSpeed, YteLiftConfig.MIN_SPEED, YteLiftConfig.MAX_SPEED)
+                : yte$getEasyModeValue(1, yte$sliderDownSpeed, valueToSpeed(yte$sliderDownSpeed.getIntValue()));
+        final double upAccel = yte$professionalMode
                 ? yte$parseNumber(yte$accelerationField, yte$lastSentAccel, YteLiftConfig.MIN_ACCELERATION, YteLiftConfig.MAX_ACCELERATION)
-                : yte$getEasyModeValue(1, yte$sliderAcceleration, valueToAccel(yte$sliderAcceleration.getIntValue()));
+                : yte$getEasyModeValue(2, yte$sliderAcceleration, valueToAccel(yte$sliderAcceleration.getIntValue()));
+        final double downAccel = yte$directionParametersLinked ? upAccel : yte$professionalMode
+                ? yte$parseNumber(yte$downAccelerationField, yte$lastSentDownAccel, YteLiftConfig.MIN_ACCELERATION, YteLiftConfig.MAX_ACCELERATION)
+                : yte$getEasyModeValue(3, yte$sliderDownAcceleration, valueToAccel(yte$sliderDownAcceleration.getIntValue()));
         final double adoDistance = yte$professionalMode
                 ? yte$parseNumber(yte$adoDistanceField, yte$lastSentAdoDistance, YteLiftConfig.MAX_ADO_DISTANCE)
-                : yte$getEasyModeValue(2, yte$sliderAdoDistance, valueToAdoDistance(yte$sliderAdoDistance.getIntValue()));
+                : yte$getEasyModeValue(4, yte$sliderAdoDistance, valueToAdoDistance(yte$sliderAdoDistance.getIntValue()));
         final double levellingDistance = yte$professionalMode
                 ? yte$parseNumber(yte$levellingDistanceField, yte$lastSentLevellingDistance, YteLiftConfig.MAX_LEVELLING_DISTANCE)
-                : yte$getEasyModeValue(3, yte$sliderLevellingDistance, valueToLevellingDistance(yte$sliderLevellingDistance.getIntValue()));
+                : yte$getEasyModeValue(5, yte$sliderLevellingDistance, valueToLevellingDistance(yte$sliderLevellingDistance.getIntValue()));
         final double levellingSpeed = yte$professionalMode
                 ? yte$parseNumber(yte$levellingSpeedField, yte$lastSentLevellingSpeed, YteLiftConfig.MAX_LEVELLING_SPEED)
-                : yte$getEasyModeValue(4, yte$sliderLevellingSpeed, valueToLevellingSpeed(yte$sliderLevellingSpeed.getIntValue()));
+                : yte$getEasyModeValue(6, yte$sliderLevellingSpeed, valueToLevellingSpeed(yte$sliderLevellingSpeed.getIntValue()));
 
-        graphicsHolder.drawText(TextHelper.translatable("gui.yte.lift_speed_value", speed),
-                0, labelY1, IGui.ARGB_WHITE, false, GraphicsHolder.getDefaultLight());
-        graphicsHolder.drawText(TextHelper.translatable("gui.yte.lift_acceleration_value", accel),
-                0, labelY2, IGui.ARGB_WHITE, false, GraphicsHolder.getDefaultLight());
-        yte$drawModeLabel(graphicsHolder, "gui.yte.lift_ado_distance", "gui.yte.lift_ado_distance_value", adoDistance, 16);
-        yte$drawModeLabel(graphicsHolder, "gui.yte.lift_levelling_distance", "gui.yte.lift_levelling_distance_value", levellingDistance, 18);
-        yte$drawModeLabel(graphicsHolder, "gui.yte.lift_levelling_speed", "gui.yte.lift_levelling_speed_value", levellingSpeed, 20);
+        if (yte$directionParametersLinked) {
+            yte$drawModeLabel(graphicsHolder, "gui.yte.lift_speed", "gui.yte.lift_speed_value", upSpeed, 14);
+            yte$drawModeLabel(graphicsHolder, "gui.yte.lift_acceleration", "gui.yte.lift_acceleration_value", upAccel, 16);
+        } else {
+            yte$drawModeLabel(graphicsHolder, "gui.yte.lift_up_speed", "gui.yte.lift_up_speed_value", upSpeed, 14);
+            yte$drawModeLabel(graphicsHolder, "gui.yte.lift_down_speed", "gui.yte.lift_down_speed_value", downSpeed, 16);
+            yte$drawModeLabel(graphicsHolder, "gui.yte.lift_up_acceleration", "gui.yte.lift_up_acceleration_value", upAccel, 18);
+            yte$drawModeLabel(graphicsHolder, "gui.yte.lift_down_acceleration", "gui.yte.lift_down_acceleration_value", downAccel, 20);
+        }
+        final int extraStartRow = yte$directionParametersLinked ? 18 : 22;
+        yte$drawModeLabel(graphicsHolder, "gui.yte.lift_ado_distance", "gui.yte.lift_ado_distance_value", adoDistance, extraStartRow);
+        yte$drawModeLabel(graphicsHolder, "gui.yte.lift_levelling_distance", "gui.yte.lift_levelling_distance_value", levellingDistance, extraStartRow + 2);
+        yte$drawModeLabel(graphicsHolder, "gui.yte.lift_levelling_speed", "gui.yte.lift_levelling_speed_value", levellingSpeed, extraStartRow + 4);
 
-        if (speed != yte$lastSentSpeed || accel != yte$lastSentAccel
+        if (upSpeed != yte$lastSentSpeed || downSpeed != yte$lastSentDownSpeed
+                || upAccel != yte$lastSentAccel || downAccel != yte$lastSentDownAccel
+                || yte$directionParametersLinked != yte$lastSentDirectionParametersLinked
+                || yte$motionProfile != yte$lastSentMotionProfile
                 || adoDistance != yte$lastSentAdoDistance || levellingDistance != yte$lastSentLevellingDistance
                 || levellingSpeed != yte$lastSentLevellingSpeed) {
-            yte$lastSentSpeed = speed;
-            yte$lastSentAccel = accel;
+            yte$lastSentSpeed = upSpeed;
+            yte$lastSentDownSpeed = downSpeed;
+            yte$lastSentAccel = upAccel;
+            yte$lastSentDownAccel = downAccel;
+            yte$lastSentDirectionParametersLinked = yte$directionParametersLinked;
+            yte$lastSentMotionProfile = yte$motionProfile;
             yte$lastSentAdoDistance = adoDistance;
             yte$lastSentLevellingDistance = levellingDistance;
             yte$lastSentLevellingSpeed = levellingSpeed;
 
             final long liftId = lift.getId();
-            final YteLiftConfig config = new YteLiftConfig(liftId, speed, accel, adoDistance, levellingDistance, levellingSpeed);
-            YteLiftConfigStore.put(liftId, speed, accel, adoDistance, levellingDistance, levellingSpeed);
+            final YteLiftConfig config = new YteLiftConfig(liftId, upSpeed, downSpeed, upAccel, downAccel,
+                    yte$directionParametersLinked, adoDistance, levellingDistance, levellingSpeed, yte$motionProfile);
+            YteLiftConfigStore.put(liftId, upSpeed, downSpeed, upAccel, downAccel,
+                    adoDistance, levellingDistance, levellingSpeed, yte$motionProfile);
 
             final YteUpdateDataRequest request = new YteUpdateDataRequest(
                     config, YteMinecraftClientData.getInstance());
@@ -252,12 +332,34 @@ public abstract class MixinLiftCustomizationScreen extends MTRScreenBase {
             graphicsHolder.pop();
             yte$contentTransformPushed = false;
         }
+        if (yte$scrollingTextButtonsSuppressed) {
+            final int screenMouseY = mouseY - (int) yte$scrollOffset;
+            yte$renderScrollSafeButton(graphicsHolder, buttonLiftStyle, yte$liftStyleButtonContentY,
+                    mouseX, screenMouseY, delta);
+            yte$renderScrollSafeButton(graphicsHolder, yte$directionLinkButton, yte$directionLinkButtonContentY,
+                    mouseX, screenMouseY, delta);
+            yte$renderScrollSafeButton(graphicsHolder, yte$motionProfileButton, yte$motionProfileButtonContentY,
+                    mouseX, screenMouseY, delta);
+            yte$scrollingTextButtonsSuppressed = false;
+        }
         yte$drawScrollbar(graphicsHolder);
+    }
+
+    @Unique
+    private void yte$renderScrollSafeButton(GraphicsHolder graphicsHolder, ButtonWidgetExtension button,
+            int contentY, int mouseX, int mouseY, float delta) {
+        final int screenY = contentY - (int) Math.round(yte$scrollOffset);
+        button.setY2(screenY);
+        button.setVisibleMapped(true);
+        if (screenY + IGui.SQUARE_SIZE > 0 && screenY < getHeightMapped()) {
+            button.render(graphicsHolder, mouseX, mouseY, delta);
+        }
+        button.setY2(contentY);
     }
 
     @Override
     public boolean mouseScrolled2(double mouseX, double mouseY, double amount) {
-        if (mouseX >= 0 && mouseX <= width2 && yte$getMaxScroll() > 0) {
+        if (mouseX >= 0 && mouseX <= yte$getPanelRight() && yte$getMaxScroll() > 0) {
             yte$scrollOffset = Math.max(0, Math.min(yte$getMaxScroll(), yte$scrollOffset - amount * IGui.SQUARE_SIZE));
             return true;
         }
@@ -266,7 +368,8 @@ public abstract class MixinLiftCustomizationScreen extends MTRScreenBase {
 
     @Override
     public boolean mouseClicked2(double mouseX, double mouseY, int button) {
-        if (button == 0 && yte$getMaxScroll() > 0 && mouseX >= width2 - 4 && mouseX <= width2) {
+        final int panelRight = yte$getPanelRight();
+        if (button == 0 && yte$getMaxScroll() > 0 && mouseX >= panelRight - 4 && mouseX <= panelRight) {
             final int thumbY = yte$getScrollbarThumbY();
             final int thumbHeight = yte$getScrollbarThumbHeight();
             yte$scrollbarDragging = true;
@@ -319,46 +422,118 @@ public abstract class MixinLiftCustomizationScreen extends MTRScreenBase {
     }
 
     @Unique
+    private void yte$layoutDirectionWidgets() {
+        yte$positionSlider(yte$sliderSpeed, 15);
+        yte$positionField(yte$speedField, 15);
+
+        if (yte$directionParametersLinked) {
+            yte$positionSlider(yte$sliderAcceleration, 17);
+            yte$positionField(yte$accelerationField, 17);
+        } else {
+            yte$positionSlider(yte$sliderDownSpeed, 17);
+            yte$positionField(yte$downSpeedField, 17);
+            yte$positionSlider(yte$sliderAcceleration, 19);
+            yte$positionField(yte$accelerationField, 19);
+            yte$positionSlider(yte$sliderDownAcceleration, 21);
+            yte$positionField(yte$downAccelerationField, 21);
+        }
+
+        final int extraControlRow = yte$directionParametersLinked ? 19 : 23;
+        yte$positionSlider(yte$sliderAdoDistance, extraControlRow);
+        yte$positionField(yte$adoDistanceField, extraControlRow);
+        yte$positionSlider(yte$sliderLevellingDistance, extraControlRow + 2);
+        yte$positionField(yte$levellingDistanceField, extraControlRow + 2);
+        yte$positionSlider(yte$sliderLevellingSpeed, extraControlRow + 4);
+        yte$positionField(yte$levellingSpeedField, extraControlRow + 4);
+        yte$scrollOffset = Math.min(yte$scrollOffset, yte$getMaxScroll());
+    }
+
+    @Unique
+    private void yte$toggleDirectionParametersLinked() {
+        final double upSpeed = yte$professionalMode
+                ? yte$parseNumber(yte$speedField, yte$lastSentSpeed, YteLiftConfig.MIN_SPEED, YteLiftConfig.MAX_SPEED)
+                : yte$getEasyModeValue(0, yte$sliderSpeed, valueToSpeed(yte$sliderSpeed.getIntValue()));
+        final double upAcceleration = yte$professionalMode
+                ? yte$parseNumber(yte$accelerationField, yte$lastSentAccel, YteLiftConfig.MIN_ACCELERATION, YteLiftConfig.MAX_ACCELERATION)
+                : yte$getEasyModeValue(2, yte$sliderAcceleration, valueToAccel(yte$sliderAcceleration.getIntValue()));
+
+        yte$downSpeedField.setText2(Double.toString(upSpeed));
+        yte$downAccelerationField.setText2(Double.toString(upAcceleration));
+        yte$easyModeValues[1] = upSpeed;
+        yte$easyModeValues[3] = upAcceleration;
+        yte$sliderDownSpeed.setValue(speedToValue(upSpeed));
+        yte$sliderDownAcceleration.setValue(accelToValue(upAcceleration));
+        yte$easyModeSliderAnchors[1] = yte$sliderDownSpeed.getIntValue();
+        yte$easyModeSliderAnchors[3] = yte$sliderDownAcceleration.getIntValue();
+        yte$easyModeSliderTouched[1] = false;
+        yte$easyModeSliderTouched[3] = false;
+
+        yte$directionParametersLinked = !yte$directionParametersLinked;
+        yte$layoutDirectionWidgets();
+        yte$updateModeWidgets();
+    }
+
+    @Unique
+    private void yte$toggleMotionProfile() {
+        yte$motionProfile = yte$motionProfile.next();
+        yte$updateModeWidgets();
+    }
+
+    @Unique
     private void yte$toggleProfessionalMode() {
         if (yte$professionalMode) {
             yte$setEasyModeValues(
                     yte$parseNumber(yte$speedField, yte$lastSentSpeed, YteLiftConfig.MIN_SPEED, YteLiftConfig.MAX_SPEED),
+                    yte$directionParametersLinked ? yte$parseNumber(yte$speedField, yte$lastSentSpeed, YteLiftConfig.MIN_SPEED, YteLiftConfig.MAX_SPEED)
+                            : yte$parseNumber(yte$downSpeedField, yte$lastSentDownSpeed, YteLiftConfig.MIN_SPEED, YteLiftConfig.MAX_SPEED),
                     yte$parseNumber(yte$accelerationField, yte$lastSentAccel, YteLiftConfig.MIN_ACCELERATION, YteLiftConfig.MAX_ACCELERATION),
+                    yte$directionParametersLinked ? yte$parseNumber(yte$accelerationField, yte$lastSentAccel, YteLiftConfig.MIN_ACCELERATION, YteLiftConfig.MAX_ACCELERATION)
+                            : yte$parseNumber(yte$downAccelerationField, yte$lastSentDownAccel, YteLiftConfig.MIN_ACCELERATION, YteLiftConfig.MAX_ACCELERATION),
                     yte$parseNumber(yte$adoDistanceField, yte$lastSentAdoDistance, YteLiftConfig.MAX_ADO_DISTANCE),
                     yte$parseNumber(yte$levellingDistanceField, yte$lastSentLevellingDistance, YteLiftConfig.MAX_LEVELLING_DISTANCE),
                     yte$parseNumber(yte$levellingSpeedField, yte$lastSentLevellingSpeed, YteLiftConfig.MAX_LEVELLING_SPEED));
         } else {
             yte$syncFieldsFromValues(
                     yte$getEasyModeValue(0, yte$sliderSpeed, valueToSpeed(yte$sliderSpeed.getIntValue())),
-                    yte$getEasyModeValue(1, yte$sliderAcceleration, valueToAccel(yte$sliderAcceleration.getIntValue())),
-                    yte$getEasyModeValue(2, yte$sliderAdoDistance, valueToAdoDistance(yte$sliderAdoDistance.getIntValue())),
-                    yte$getEasyModeValue(3, yte$sliderLevellingDistance, valueToLevellingDistance(yte$sliderLevellingDistance.getIntValue())),
-                    yte$getEasyModeValue(4, yte$sliderLevellingSpeed, valueToLevellingSpeed(yte$sliderLevellingSpeed.getIntValue())));
+                    yte$directionParametersLinked ? yte$getEasyModeValue(0, yte$sliderSpeed, valueToSpeed(yte$sliderSpeed.getIntValue()))
+                            : yte$getEasyModeValue(1, yte$sliderDownSpeed, valueToSpeed(yte$sliderDownSpeed.getIntValue())),
+                    yte$getEasyModeValue(2, yte$sliderAcceleration, valueToAccel(yte$sliderAcceleration.getIntValue())),
+                    yte$directionParametersLinked ? yte$getEasyModeValue(2, yte$sliderAcceleration, valueToAccel(yte$sliderAcceleration.getIntValue()))
+                            : yte$getEasyModeValue(3, yte$sliderDownAcceleration, valueToAccel(yte$sliderDownAcceleration.getIntValue())),
+                    yte$getEasyModeValue(4, yte$sliderAdoDistance, valueToAdoDistance(yte$sliderAdoDistance.getIntValue())),
+                    yte$getEasyModeValue(5, yte$sliderLevellingDistance, valueToLevellingDistance(yte$sliderLevellingDistance.getIntValue())),
+                    yte$getEasyModeValue(6, yte$sliderLevellingSpeed, valueToLevellingSpeed(yte$sliderLevellingSpeed.getIntValue())));
         }
         yte$professionalMode = !yte$professionalMode;
         yte$updateModeWidgets();
     }
 
     @Unique
-    private void yte$setEasyModeValues(double speed, double acceleration, double adoDistance,
+    private void yte$setEasyModeValues(double upSpeed, double downSpeed, double upAcceleration, double downAcceleration, double adoDistance,
             double levellingDistance, double levellingSpeed) {
-        yte$easyModeValues[0] = speed;
-        yte$easyModeValues[1] = acceleration;
-        yte$easyModeValues[2] = adoDistance;
-        yte$easyModeValues[3] = levellingDistance;
-        yte$easyModeValues[4] = levellingSpeed;
+        yte$easyModeValues[0] = upSpeed;
+        yte$easyModeValues[1] = downSpeed;
+        yte$easyModeValues[2] = upAcceleration;
+        yte$easyModeValues[3] = downAcceleration;
+        yte$easyModeValues[4] = adoDistance;
+        yte$easyModeValues[5] = levellingDistance;
+        yte$easyModeValues[6] = levellingSpeed;
 
-        yte$sliderSpeed.setValue(speedToValue(speed));
-        yte$sliderAcceleration.setValue(accelToValue(acceleration));
+        yte$sliderSpeed.setValue(speedToValue(upSpeed));
+        yte$sliderDownSpeed.setValue(speedToValue(downSpeed));
+        yte$sliderAcceleration.setValue(accelToValue(upAcceleration));
+        yte$sliderDownAcceleration.setValue(accelToValue(downAcceleration));
         yte$sliderAdoDistance.setValue(adoDistanceToValue(adoDistance));
         yte$sliderLevellingDistance.setValue(levellingDistanceToValue(levellingDistance));
         yte$sliderLevellingSpeed.setValue(levellingSpeedToValue(levellingSpeed));
 
         yte$easyModeSliderAnchors[0] = yte$sliderSpeed.getIntValue();
-        yte$easyModeSliderAnchors[1] = yte$sliderAcceleration.getIntValue();
-        yte$easyModeSliderAnchors[2] = yte$sliderAdoDistance.getIntValue();
-        yte$easyModeSliderAnchors[3] = yte$sliderLevellingDistance.getIntValue();
-        yte$easyModeSliderAnchors[4] = yte$sliderLevellingSpeed.getIntValue();
+        yte$easyModeSliderAnchors[1] = yte$sliderDownSpeed.getIntValue();
+        yte$easyModeSliderAnchors[2] = yte$sliderAcceleration.getIntValue();
+        yte$easyModeSliderAnchors[3] = yte$sliderDownAcceleration.getIntValue();
+        yte$easyModeSliderAnchors[4] = yte$sliderAdoDistance.getIntValue();
+        yte$easyModeSliderAnchors[5] = yte$sliderLevellingDistance.getIntValue();
+        yte$easyModeSliderAnchors[6] = yte$sliderLevellingSpeed.getIntValue();
         for (int i = 0; i < yte$easyModeSliderTouched.length; i++) {
             yte$easyModeSliderTouched[i] = false;
         }
@@ -373,10 +548,12 @@ public abstract class MixinLiftCustomizationScreen extends MTRScreenBase {
     }
 
     @Unique
-    private void yte$syncFieldsFromValues(double speed, double acceleration, double adoDistance,
+    private void yte$syncFieldsFromValues(double upSpeed, double downSpeed, double upAcceleration, double downAcceleration, double adoDistance,
             double levellingDistance, double levellingSpeed) {
-        yte$speedField.setText2(Double.toString(speed));
-        yte$accelerationField.setText2(Double.toString(acceleration));
+        yte$speedField.setText2(Double.toString(upSpeed));
+        yte$downSpeedField.setText2(Double.toString(downSpeed));
+        yte$accelerationField.setText2(Double.toString(upAcceleration));
+        yte$downAccelerationField.setText2(Double.toString(downAcceleration));
         yte$adoDistanceField.setText2(Double.toString(adoDistance));
         yte$levellingDistanceField.setText2(Double.toString(levellingDistance));
         yte$levellingSpeedField.setText2(Double.toString(levellingSpeed));
@@ -390,15 +567,25 @@ public abstract class MixinLiftCustomizationScreen extends MTRScreenBase {
 
         yte$sliderSpeed.setVisibleMapped(!yte$professionalMode);
         yte$sliderAcceleration.setVisibleMapped(!yte$professionalMode);
+        yte$sliderDownSpeed.setVisibleMapped(!yte$professionalMode && !yte$directionParametersLinked);
+        yte$sliderDownAcceleration.setVisibleMapped(!yte$professionalMode && !yte$directionParametersLinked);
         yte$sliderAdoDistance.setVisibleMapped(!yte$professionalMode);
         yte$sliderLevellingDistance.setVisibleMapped(!yte$professionalMode);
         yte$sliderLevellingSpeed.setVisibleMapped(!yte$professionalMode);
 
         yte$speedField.setVisibleMapped(yte$professionalMode);
         yte$accelerationField.setVisibleMapped(yte$professionalMode);
+        yte$downSpeedField.setVisibleMapped(yte$professionalMode && !yte$directionParametersLinked);
+        yte$downAccelerationField.setVisibleMapped(yte$professionalMode && !yte$directionParametersLinked);
         yte$adoDistanceField.setVisibleMapped(yte$professionalMode);
         yte$levellingDistanceField.setVisibleMapped(yte$professionalMode);
         yte$levellingSpeedField.setVisibleMapped(yte$professionalMode);
+
+        yte$directionLinkButton.setMessage2(new Text(TextHelper.translatable(yte$directionParametersLinked
+                ? "gui.yte.lift_direction_link_on"
+                : "gui.yte.lift_direction_link_off").data));
+        yte$motionProfileButton.setMessage2(new Text(TextHelper.translatable(
+                yte$motionProfile.getTranslationKey()).data));
     }
 
     @Unique
@@ -433,7 +620,7 @@ public abstract class MixinLiftCustomizationScreen extends MTRScreenBase {
 
     @Unique
     private double yte$getMaxScroll() {
-        return Math.max(0, YTE_CONTENT_ROWS * IGui.SQUARE_SIZE - getHeightMapped());
+        return Math.max(0, yte$getContentRows() * IGui.SQUARE_SIZE - getHeightMapped());
     }
 
     @Unique
@@ -444,20 +631,26 @@ public abstract class MixinLiftCustomizationScreen extends MTRScreenBase {
         }
         final int screenHeight = getHeightMapped();
         final int trackWidth = 4;
-        final int trackX = Math.max(0, width2 - trackWidth);
+        final int panelRight = yte$getPanelRight();
+        final int trackX = Math.max(0, panelRight - trackWidth);
         final int thumbHeight = yte$getScrollbarThumbHeight();
         final int thumbY = yte$getScrollbarThumbY();
         final GuiDrawing guiDrawing = new GuiDrawing(graphicsHolder);
         guiDrawing.beginDrawingRectangle();
-        guiDrawing.drawRectangle(trackX, 0, width2, screenHeight, 0x66000000);
-        guiDrawing.drawRectangle(trackX, thumbY, width2, thumbY + thumbHeight, 0xFFAAAAAA);
+        guiDrawing.drawRectangle(trackX, 0, panelRight, screenHeight, 0x66000000);
+        guiDrawing.drawRectangle(trackX, thumbY, panelRight, thumbY + thumbHeight, 0xFFAAAAAA);
         guiDrawing.finishDrawingRectangle();
     }
 
     @Unique
     private int yte$getScrollbarThumbHeight() {
         final int screenHeight = getHeightMapped();
-        return Math.max(IGui.SQUARE_SIZE, screenHeight * screenHeight / (YTE_CONTENT_ROWS * IGui.SQUARE_SIZE));
+        return Math.max(IGui.SQUARE_SIZE, screenHeight * screenHeight / (yte$getContentRows() * IGui.SQUARE_SIZE));
+    }
+
+    @Unique
+    private int yte$getContentRows() {
+        return yte$directionParametersLinked ? 24 : 28;
     }
 
     @Unique
