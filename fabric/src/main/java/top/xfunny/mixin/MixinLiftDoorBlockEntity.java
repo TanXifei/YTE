@@ -51,21 +51,7 @@ public abstract class MixinLiftDoorBlockEntity extends BlockEntityExtension {
             // immediately move the hall-door association to that destination.
             // Use the instruction floor only once the lift is actually moving
             // (the ADO/levelling phase); otherwise keep the current floor.
-            if (schema.getSpeed() == 0) {
-                LiftFloor nearestFloor = lift.getCurrentFloor();
-                double nearestDistance = Double.POSITIVE_INFINITY;
-                final MixinLiftFields fields = (MixinLiftFields) lift;
-                final double railProgress = schema.getRailProgress();
-                for (int i = 0; i < schema.getFloors().size(); i++) {
-                    final LiftFloor floor = schema.getFloors().get(i);
-                    final double distance = Math.abs(fields.invokeGetProgress(i) - railProgress);
-                    if (distance < nearestDistance) {
-                        nearestFloor = floor;
-                        nearestDistance = distance;
-                    }
-                }
-                targetFloor = nearestFloor;
-            } else if (schema.getInstructions().isEmpty()) {
+            if (schema.getSpeed() == 0 || schema.getInstructions().isEmpty()) {
                 targetFloor = lift.getCurrentFloor();
             } else {
                 final int targetFloorIndex = schema.getInstructions().get(0).getFloor();
