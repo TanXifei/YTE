@@ -23,8 +23,7 @@ body:
       label: |
         问题描述 / Problem Description
       description: |
-        清晰简洁地描述你遇到的问题
-
+        清晰简洁地描述你遇到的问题<br>
         Clearly and concisely describe the issue you encountered.
       placeholder: 描述问题 / Describe the issue
     validations:
@@ -36,8 +35,7 @@ body:
       label: |
         复现步骤 / Steps to Reproduce
       description: |
-        一步步说明如何复现该问题，越详细越好
-
+        一步步说明如何复现该问题，越详细越好<br>
         Provide step-by-step instructions on how to reproduce the issue; the more detailed, the better.
       placeholder: |
         1. 启动游戏，进入世界（或服务器）
@@ -52,8 +50,7 @@ body:
       label: |
         期望行为 / Expected Behavior
       description: |
-        预期会发生什么？
-
+        预期会发生什么？<br>
         What did you expect to happen?
       placeholder: |
         例如：楼层设置器成功修改楼层 
@@ -67,8 +64,7 @@ body:
       label: |
         实际行为 / Actual Behavior
       description: |
-        实际发生了什么？（错误、崩溃、异常表现等）
-
+        实际发生了什么？（错误、崩溃、异常表现等）<br>
         What actually happened? (Errors, crashes, abnormal behavior, etc.)
       placeholder: |
         例如：楼层设置器无法修改楼层，也没有日志输出
@@ -87,8 +83,7 @@ body:
       label: |
         Minecraft 版本 / Minecraft version
       description: |
-        填写所用的Minecraft版本号
-
+        填写所用的Minecraft版本号<br>
         Please specify the Minecraft version you are using.
       placeholder: e.g. 1.19.2
     validations:
@@ -100,8 +95,7 @@ body:
       label: |
         Mod 版本 / Mod version
       description: |
-        填写Mod发布版本号，或Action-Build中的构建编号
-
+        填写Mod发布版本号，或Action-Build中的构建编号<br>
         Please enter the release version number or build number.
       placeholder: |
         e.g. FABRIC-1.0.2-prerelease.2 / build #492
@@ -114,8 +108,7 @@ body:
       label: |
         Mod 加载器 / Mod loader
       description: |
-        填写所用Mod加载器名称和具体版本
-
+        填写所用Mod加载器名称和具体版本<br>
         Mod loader name and version required. 
       placeholder: e.g. Fabric 0.17.2，API 0.77.0
     validations:
@@ -127,8 +120,7 @@ body:
       label: |
         Java 版本 / Java version
       description: |
-        请注明Java运行环境的发行商及版本号 (JDK/JRE)
-
+        请注明Java运行环境的发行商及版本号 (JDK/JRE)<br>
         State the Java runtime vendor and version (JDK/JRE).
       placeholder: e.g. Graalvm-jdk-21.0.11
     validations:
@@ -140,9 +132,8 @@ body:
       label: |
         操作系统 / Operating system
       description: |
-        设备的操作系统名称及版本
-
-        the OS name and version of your device.
+        设备的操作系统名称及版本<br>
+        The OS name and version of your device.
       placeholder: |
         e.g.
         Windows 10 22H2
@@ -159,8 +150,7 @@ body:
       label: |
         硬件配置 / Hardware configuration
       description: |
-        请填写运行设备的硬件配置
-
+        请填写运行设备的硬件配置<br>
         Please specify the hardware configuration of the device in use.
       placeholder: |
         e.g. i5-7400, 16GB RAM (allocated 8GB to JDK), using Radeon RX 6400 4G discrete GPU
