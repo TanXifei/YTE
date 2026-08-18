@@ -77,6 +77,7 @@ public final class Init implements Utilities {
             REGISTRY.registerPacket(YtePacketRequestData.class, YtePacketRequestData::new);
             REGISTRY.registerPacket(YtePacketUpdateData.class, YtePacketUpdateData::new);
             REGISTRY.registerPacket(PacketLiftAdoStart.class, PacketLiftAdoStart::new);
+            REGISTRY.registerPacket(PacketLiftDoorControl.class, PacketLiftDoorControl::new);
         });
 
         int currentStep = 1;
@@ -131,6 +132,15 @@ public final class Init implements Utilities {
         if (minecraftServer != null) {
             MinecraftServerHelper.iteratePlayers(minecraftServer, player ->
                     REGISTRY.sendPacketToClient(player, new PacketLiftAdoStart(liftId, stoppingCoolDown)));
+        }
+    }
+
+    public static void sendLiftDoorOpen(long liftId, long stoppingCoolDown, boolean resetIdleDirection) {
+        if (minecraftServer != null) {
+            MinecraftServerHelper.iteratePlayers(minecraftServer, player ->
+                    REGISTRY.sendPacketToClient(player,
+                            new PacketLiftDoorControl(liftId, top.xfunny.mod.LiftDoorControlState.Command.OPEN,
+                                    stoppingCoolDown, resetIdleDirection)));
         }
     }
 

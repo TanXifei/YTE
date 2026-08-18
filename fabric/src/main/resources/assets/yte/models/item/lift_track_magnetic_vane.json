@@ -1,3 +1,6 @@
 {
-  "parent": "mtr:item/lift_track_floor_1"
+  "parent": "mtr:item/lift_track_floor_1",
+  "textures": {
+    "particle": "minecraft:block/stone"
+  }
 }
