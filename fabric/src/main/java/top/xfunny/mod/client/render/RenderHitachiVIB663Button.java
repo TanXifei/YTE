@@ -196,7 +196,7 @@ public class RenderHitachiVIB663Button extends BlockEntityRenderer<HitachiVIB663
                         blockPos,
                         sortedPositionsAndLifts.get(i).right(),
                         FontList.instance.getFont("hitachi-bxsclc5"),
-                        5F,
+                        6F,
                         0xFFFF4800);
                 liftFloorDisplayView.setTextureId(String.format("hitachi_vib_663_display_%d", i));
                 liftFloorDisplayView.setWidth(1.43F / 16);
@@ -210,7 +210,7 @@ public class RenderHitachiVIB663Button extends BlockEntityRenderer<HitachiVIB663
                             blockPos,
                             sortedPositionsAndLifts.get(i).right(),
                             FontList.instance.getFont("hitachi-bxsclc5-compact"),
-                            5F,
+                            6F,
                             0xFFFF4800);
                     liftFloorDisplayView.setAdaptMode(LiftFloorDisplayView.AdaptMode.FORCE_FIT_WIDTH);
                 } else {
@@ -222,7 +222,7 @@ public class RenderHitachiVIB663Button extends BlockEntityRenderer<HitachiVIB663
                 liftArrowView.setBasicsAttributes(world, blockPos, sortedPositionsAndLifts.get(i).right(), LiftArrowView.ArrowType.AUTO);
                 liftArrowView.setTexture(ARROW_TEXTURE);
                 liftArrowView.setDimension(0.475F / 16, 384, 512);
-                liftArrowView.setMargin(0.58F / 16, 1.75F / 16, 0, -0.3F / 16);
+                liftArrowView.setMargin(0.58F / 16, 1.75F / 16, 0, -0.2F / 16);
                 liftArrowView.setQueuedRenderLayer(QueuedRenderLayer.LIGHT_TRANSLUCENT);
                 if (unlocked) {
                     liftArrowView.setColor(0xFFFFFFFF);

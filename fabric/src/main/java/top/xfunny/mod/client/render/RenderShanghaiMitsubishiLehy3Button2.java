@@ -206,10 +206,9 @@ public class RenderShanghaiMitsubishiLehy3Button2 extends BlockEntityRenderer<Sh
                 ;
                 liftFloorDisplayView.setWidth(1.4F / 16);
                 liftFloorDisplayView.setHeight(1.7F / 16);
-                //liftFloorDisplayView.setMargin(0, 0, 0.2F / 16, 0);
+                liftFloorDisplayView.setMargin(0, 0, 0.2F / 16, 0);
                 liftFloorDisplayView.setLetterSpacing(-10);
-                liftFloorDisplayView.setTextAlign(floorNumber.equals("1") ?TextView.HorizontalTextAlign.RIGHT : TextView.HorizontalTextAlign.CENTER);
-                liftFloorDisplayView.setGravity(Gravity.CENTER_HORIZONTAL);//添加了居中
+                liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.RIGHT);
 
 
                 final LiftArrowView liftArrowView = new LiftArrowView();

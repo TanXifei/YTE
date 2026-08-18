@@ -197,7 +197,7 @@ public class RenderHitachiVIB322ButtonDotMatrix extends BlockEntityRenderer<Hita
                         blockPos,
                         sortedPositionsAndLifts.get(i).right(),
                         FontList.instance.getFont("hitachi-bxsclc5"),
-                        7F,
+                        6F,
                         0xFFFF4800);
                 liftFloorDisplayView.setTextureId(String.format("hitachi_vib_322_dot_matrix_display_%d", i));
                 liftFloorDisplayView.setWidth(1.43F / 16);
@@ -211,7 +211,7 @@ public class RenderHitachiVIB322ButtonDotMatrix extends BlockEntityRenderer<Hita
                             blockPos,
                             sortedPositionsAndLifts.get(i).right(),
                             FontList.instance.getFont("hitachi-bxsclc5-compact"),
-                            7F,
+                            6F,
                             0xFFFF4800);
                     liftFloorDisplayView.setAdaptMode(LiftFloorDisplayView.AdaptMode.FORCE_FIT_WIDTH);
                 } else {
