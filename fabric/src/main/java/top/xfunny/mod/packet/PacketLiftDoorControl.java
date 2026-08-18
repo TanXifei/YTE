@@ -21,9 +21,10 @@ public final class PacketLiftDoorControl extends PacketHandler {
 
     public PacketLiftDoorControl(PacketBufferReceiver packetBufferReceiver) {
         liftId = packetBufferReceiver.readLong();
-        command = packetBufferReceiver.readBoolean()
-                ? LiftDoorControlState.Command.OPEN
-                : LiftDoorControlState.Command.CLOSE;
+        final int commandInt = packetBufferReceiver.readInt();
+        command = commandInt == 0 ? LiftDoorControlState.Command.OPEN
+                : commandInt == 1 ? LiftDoorControlState.Command.CLOSE
+                : LiftDoorControlState.Command.HOLD_OPEN;
         stoppingCoolDown = packetBufferReceiver.readLong();
         resetIdleDirection = packetBufferReceiver.readBoolean();
     }
@@ -46,7 +47,8 @@ public final class PacketLiftDoorControl extends PacketHandler {
     @Override
     public void write(PacketBufferSender packetBufferSender) {
         packetBufferSender.writeLong(liftId);
-        packetBufferSender.writeBoolean(command == LiftDoorControlState.Command.OPEN);
+        packetBufferSender.writeInt(command == LiftDoorControlState.Command.OPEN ? 0
+                : command == LiftDoorControlState.Command.CLOSE ? 1 : 2);
         packetBufferSender.writeLong(stoppingCoolDown);
         packetBufferSender.writeBoolean(resetIdleDirection);
     }
@@ -58,7 +60,7 @@ public final class PacketLiftDoorControl extends PacketHandler {
 
     @Override
     public void runClient() {
-        if (command != LiftDoorControlState.Command.OPEN) {
+        if (command != LiftDoorControlState.Command.OPEN && command != LiftDoorControlState.Command.HOLD_OPEN) {
             return;
         }
         final Lift lift = MinecraftClientData.getLift(liftId);

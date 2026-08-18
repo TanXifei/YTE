@@ -19,6 +19,7 @@ public final class YteLiftConfigStore {
     private static final Map<Long, Double> levellingDistanceMap = new ConcurrentHashMap<>();
     private static final Map<Long, Double> levellingSpeedMap = new ConcurrentHashMap<>();
     private static final Map<Long, LiftMotionProfile> motionProfileMap = new ConcurrentHashMap<>();
+    private static final Map<Long, Boolean> doorHoldEnabledMap = new ConcurrentHashMap<>();
 
     private static final double DEFAULT_SPEED = 10.0;
     private static final double DEFAULT_ACCELERATION = 4.0;
@@ -40,6 +41,13 @@ public final class YteLiftConfigStore {
 
     public static void put(long liftId, double upSpeed, double downSpeed, double upAcceleration, double downAcceleration,
             double adoDistance, double levellingDistance, double levellingSpeed, LiftMotionProfile motionProfile) {
+        put(liftId, upSpeed, downSpeed, upAcceleration, downAcceleration,
+                adoDistance, levellingDistance, levellingSpeed, motionProfile, false);
+    }
+
+    public static void put(long liftId, double upSpeed, double downSpeed, double upAcceleration, double downAcceleration,
+            double adoDistance, double levellingDistance, double levellingSpeed, LiftMotionProfile motionProfile,
+            boolean doorHoldEnabled) {
         speedMap.put(liftId, upSpeed);
         downSpeedMap.put(liftId, downSpeed);
         accelerationMap.put(liftId, upAcceleration);
@@ -48,6 +56,7 @@ public final class YteLiftConfigStore {
         levellingDistanceMap.put(liftId, levellingDistance);
         levellingSpeedMap.put(liftId, levellingSpeed);
         motionProfileMap.put(liftId, motionProfile);
+        doorHoldEnabledMap.put(liftId, doorHoldEnabled);
     }
 
     public static double getSpeed(long liftId) {
@@ -76,6 +85,10 @@ public final class YteLiftConfigStore {
         return motionProfileMap.getOrDefault(liftId, LiftMotionProfile.STANDARD);
     }
 
+    public static boolean isDoorHoldEnabled(long liftId) {
+        return doorHoldEnabledMap.getOrDefault(liftId, false);
+    }
+
     public static void remove(long liftId) {
         speedMap.remove(liftId);
         accelerationMap.remove(liftId);
@@ -85,6 +98,7 @@ public final class YteLiftConfigStore {
         levellingDistanceMap.remove(liftId);
         levellingSpeedMap.remove(liftId);
         motionProfileMap.remove(liftId);
+        doorHoldEnabledMap.remove(liftId);
     }
 
     public static void clear() {
@@ -96,5 +110,6 @@ public final class YteLiftConfigStore {
         levellingDistanceMap.clear();
         levellingSpeedMap.clear();
         motionProfileMap.clear();
+        doorHoldEnabledMap.clear();
     }
 }

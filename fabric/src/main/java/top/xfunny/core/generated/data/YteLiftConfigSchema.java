@@ -16,6 +16,7 @@ public abstract class YteLiftConfigSchema implements SerializedDataBaseWithId {
     protected double adoDistance;
     protected double levellingDistance;
     protected double levellingSpeed;
+    protected boolean doorHoldEnabled;
 
     private static final String KEY_LIFT_ID = "lift_id";
     private static final String KEY_SPEED = "speed";
@@ -27,6 +28,7 @@ public abstract class YteLiftConfigSchema implements SerializedDataBaseWithId {
     private static final String KEY_ADO_DISTANCE = "ado_distance";
     private static final String KEY_LEVELLING_DISTANCE = "levelling_distance";
     private static final String KEY_LEVELLING_SPEED = "levelling_speed";
+    private static final String KEY_DOOR_HOLD_ENABLED = "door_hold_enabled";
 
     public static final double DEFAULT_SPEED = 10.0;
     public static final double DEFAULT_ACCELERATION = 4.0;
@@ -48,18 +50,25 @@ public abstract class YteLiftConfigSchema implements SerializedDataBaseWithId {
 
     protected YteLiftConfigSchema(long liftId, double speed, double acceleration, double adoDistance, double levellingDistance, double levellingSpeed) {
         this(liftId, speed, speed, acceleration, acceleration, true, adoDistance, levellingDistance, levellingSpeed,
-                DEFAULT_MOTION_PROFILE);
+                DEFAULT_MOTION_PROFILE, false);
     }
 
     protected YteLiftConfigSchema(long liftId, double speed, double downSpeed, double acceleration, double downAcceleration,
             boolean directionParametersLinked, double adoDistance, double levellingDistance, double levellingSpeed) {
         this(liftId, speed, downSpeed, acceleration, downAcceleration, directionParametersLinked,
-                adoDistance, levellingDistance, levellingSpeed, DEFAULT_MOTION_PROFILE);
+                adoDistance, levellingDistance, levellingSpeed, DEFAULT_MOTION_PROFILE, false);
     }
 
     protected YteLiftConfigSchema(long liftId, double speed, double downSpeed, double acceleration, double downAcceleration,
             boolean directionParametersLinked, double adoDistance, double levellingDistance, double levellingSpeed,
             String motionProfile) {
+        this(liftId, speed, downSpeed, acceleration, downAcceleration, directionParametersLinked,
+                adoDistance, levellingDistance, levellingSpeed, motionProfile, false);
+    }
+
+    protected YteLiftConfigSchema(long liftId, double speed, double downSpeed, double acceleration, double downAcceleration,
+            boolean directionParametersLinked, double adoDistance, double levellingDistance, double levellingSpeed,
+            String motionProfile, boolean doorHoldEnabled) {
         this.liftId = liftId;
         this.speed = speed;
         this.acceleration = acceleration;
@@ -70,6 +79,7 @@ public abstract class YteLiftConfigSchema implements SerializedDataBaseWithId {
         this.adoDistance = adoDistance;
         this.levellingDistance = levellingDistance;
         this.levellingSpeed = levellingSpeed;
+        this.doorHoldEnabled = doorHoldEnabled;
     }
 
     protected YteLiftConfigSchema(ReaderBase readerBase) {
@@ -82,6 +92,7 @@ public abstract class YteLiftConfigSchema implements SerializedDataBaseWithId {
         adoDistance = DEFAULT_ADO_DISTANCE;
         levellingDistance = DEFAULT_LEVELLING_DISTANCE;
         levellingSpeed = DEFAULT_LEVELLING_SPEED;
+        doorHoldEnabled = false;
         updateData(readerBase);
     }
 
@@ -97,6 +108,7 @@ public abstract class YteLiftConfigSchema implements SerializedDataBaseWithId {
         readerBase.unpackDouble(KEY_ADO_DISTANCE, value -> adoDistance = value);
         readerBase.unpackDouble(KEY_LEVELLING_DISTANCE, value -> levellingDistance = value);
         readerBase.unpackDouble(KEY_LEVELLING_SPEED, value -> levellingSpeed = value);
+        doorHoldEnabled = readerBase.getBoolean(KEY_DOOR_HOLD_ENABLED, false);
     }
 
     @Override
@@ -111,6 +123,7 @@ public abstract class YteLiftConfigSchema implements SerializedDataBaseWithId {
         writerBase.writeDouble(KEY_ADO_DISTANCE, adoDistance);
         writerBase.writeDouble(KEY_LEVELLING_DISTANCE, levellingDistance);
         writerBase.writeDouble(KEY_LEVELLING_SPEED, levellingSpeed);
+        writerBase.writeBoolean(KEY_DOOR_HOLD_ENABLED, doorHoldEnabled);
     }
 
     @Override
