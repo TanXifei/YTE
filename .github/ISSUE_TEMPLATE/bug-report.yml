@@ -1,0 +1,193 @@
+name: 问题报告 / Bug Report
+description: 提交Mod相关的Bug / Submit a defect related to the mod
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: |
+        提交前确认 / Confirmation before submitting
+      description: 请勾选以下确认项 / Please check the following confirmations
+      options:
+        - label: |
+            我已搜索[已有 Issues](https://github.com/Yunzhu-Dev/Yunzhu-Transit-Extension/issues)，确认没有重复报告。<br>I have searched [existing Issues](https://github.com/Yunzhu-Dev/Yunzhu-Transit-Extension/issues) to confirm no duplicate.
+          required: true
+        - label: |
+            我使用的是**最新版**（或明确指定的开发版）Mod。<br>I am using the **latest version** (or a clearly specified development build) of the mod.
+          required: true
+
+  - type: textarea
+    id: problem-description
+    attributes:
+      label: |
+        问题描述 / Problem Description
+      description: |
+        清晰简洁地描述你遇到的问题
+
+        Clearly and concisely describe the issue you encountered.
+      placeholder: 描述问题 / Describe the issue
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: |
+        复现步骤 / Steps to Reproduce
+      description: |
+        一步步说明如何复现该问题，越详细越好
+
+        Provide step-by-step instructions on how to reproduce the issue; the more detailed, the better.
+      placeholder: |
+        1. 启动游戏，进入世界（或服务器）
+        2. 执行操作 ...
+        3. 观察到异常 ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: |
+        期望行为 / Expected Behavior
+      description: |
+        预期会发生什么？
+
+        What did you expect to happen?
+      placeholder: |
+        例如：楼层设置器成功修改楼层 
+        e.g., the floor setter successfully modifies the floor.
+    validations:
+      required: false
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: |
+        实际行为 / Actual Behavior
+      description: |
+        实际发生了什么？（错误、崩溃、异常表现等）
+
+        What actually happened? (Errors, crashes, abnormal behavior, etc.)
+      placeholder: |
+        例如：楼层设置器无法修改楼层，也没有日志输出
+        e.g., the floor setter fails to modify the floor, and no log output is produced.
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ### 环境信息 / Environment Information
+
+  - type: input
+    id: minecraft-version
+    attributes:
+      label: |
+        Minecraft 版本 / Minecraft version
+      description: |
+        填写所用的Minecraft版本号
+
+        Please specify the Minecraft version you are using.
+      placeholder: e.g. 1.19.2
+    validations:
+      required: true
+
+  - type: input
+    id: mod-version
+    attributes:
+      label: |
+        Mod 版本 / Mod version
+      description: |
+        填写Mod发布版本号，或Action-Build中的构建编号
+
+        Please enter the release version number or build number.
+      placeholder: |
+        e.g. FABRIC-1.0.2-prerelease.2 / build #492
+    validations:
+      required: true
+
+  - type: input
+    id: mod-loader
+    attributes:
+      label: |
+        Mod 加载器 / Mod loader
+      description: |
+        填写所用Mod加载器名称和具体版本
+
+        Mod loader name and version required. 
+      placeholder: e.g. Fabric 0.17.2，API 0.77.0
+    validations:
+      required: true
+
+  - type: input
+    id: java-version
+    attributes:
+      label: |
+        Java 版本 / Java version
+      description: |
+        请注明Java运行环境的发行商及版本号 (JDK/JRE)
+
+        State the Java runtime vendor and version (JDK/JRE).
+      placeholder: e.g. Graalvm-jdk-21.0.11
+    validations:
+      required: false
+
+  - type: textarea
+    id: os
+    attributes:
+      label: |
+        操作系统 / Operating system
+      description: |
+        设备的操作系统名称及版本
+
+        the OS name and version of your device.
+      placeholder: |
+        e.g.
+        Windows 10 22H2
+        macOS Tahoe 26.5
+        Ubuntu 22.04
+        Android 16
+        HarmonyOS 7.0.0.102 SP8
+    validations:
+      required: false
+
+  - type: textarea
+    id: hardware
+    attributes:
+      label: |
+        硬件配置 / Hardware configuration
+      description: |
+        请填写运行设备的硬件配置
+
+        Please specify the hardware configuration of the device in use.
+      placeholder: |
+        e.g. i5-7400, 16GB RAM (allocated 8GB to JDK), using Radeon RX 6400 4G discrete GPU
+        MacBook Pro 16-inch (M5 Max), 36GB RAM (allocated 12GB to JDK)
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ### 日志与崩溃报告 / Logs and Crash Reports
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: |
+        日志内容 / Log content
+      description: |
+        请务必提供相关日志文件：
+        - 游戏日志：`[version name]/logs/latest.log`
+        - 若崩溃，请附带 `crash-reports/` 下的报告
+        - 可同时附上截图或复现视频
+
+        Please be sure to provide relevant log files:
+        - Game log: `[version name]/logs/latest.log`
+        - If crashed, attach the report under `crash-reports/`
+        - You may also attach screenshots or reproduction videos.
+      placeholder: 粘贴日志或拖放文件... / Paste logs or drag files here...
+    validations:
+      required: true
