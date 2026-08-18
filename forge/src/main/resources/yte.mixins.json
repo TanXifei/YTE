@@ -1,0 +1,30 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "top.xfunny.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "yte.refmap.json",
+  "mixins": [
+    "MixinBlockLiftButtons",
+    "MixinBlockLiftPanelBase",
+    "MixinLiftSchema",
+    "MixinLiftFields",
+    "MixinNameColorDataBaseSchema",
+    "MixinLift",
+    "MixinUpdateDataRequest"
+  ],
+  "client": [
+    "MixinBlockEntityRenderer",
+    "MixinDynamicTextureCache",
+    "MixinRenderLiftButtons",
+    "MixinRenderLiftPanel",
+    "MixinRenderLifts",
+    "MixinLiftDoorBlockEntity",
+    "MixinLiftSelectionScreen",
+    "MixinLiftCustomizationScreen"
+  ],
+  "server": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
