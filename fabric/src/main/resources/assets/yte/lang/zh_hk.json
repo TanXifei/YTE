@@ -431,5 +431,8 @@
   "gui.yte.lift_levelling_distance_value": "平層距離：%s m",
   "gui.yte.lift_levelling_speed": "平層速度（m/s）",
   "gui.yte.lift_levelling_speed_value": "平層速度：%s m/s",
+  "gui.yte.lift_door_hold_on": "HOLD（門保持延長）：開",
+  "gui.yte.lift_door_hold_off": "HOLD（門保持延長）：關",
+  "gui.yte.lift_hold_open": "延時關門",
   "block.yte.lift_track_magnetic_vane": "電梯快速區間隔磁板"
 }

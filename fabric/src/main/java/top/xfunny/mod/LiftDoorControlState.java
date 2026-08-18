@@ -1,19 +1,24 @@
 package top.xfunny.mod;
 
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public final class LiftDoorControlState {
 
     private static final long CLIENT_OPEN_PREDICTION_TIMEOUT = 3000;
+    private static final long HOLD_TIMEOUT = 60_000;
 
     public enum Command {
         OPEN,
-        CLOSE
+        CLOSE,
+        HOLD_OPEN
     }
 
     private static final Map<Long, Command> PENDING_COMMANDS = new ConcurrentHashMap<>();
     private static final Map<Long, ClientOpenPrediction> CLIENT_OPEN_PREDICTIONS = new ConcurrentHashMap<>();
+    private static final Set<Long> ACTIVE_HOLDS = ConcurrentHashMap.newKeySet();
+    private static final Map<Long, Long> HOLD_START_TIMES = new ConcurrentHashMap<>();
 
     private LiftDoorControlState() {
     }
@@ -24,6 +29,25 @@ public final class LiftDoorControlState {
 
     public static Command consume(long liftId) {
         return PENDING_COMMANDS.remove(liftId);
+    }
+
+    public static void beginHold(long liftId) {
+        ACTIVE_HOLDS.add(liftId);
+        HOLD_START_TIMES.put(liftId, System.currentTimeMillis());
+    }
+
+    public static void endHold(long liftId) {
+        ACTIVE_HOLDS.remove(liftId);
+        HOLD_START_TIMES.remove(liftId);
+    }
+
+    public static boolean isHoldActive(long liftId) {
+        return ACTIVE_HOLDS.contains(liftId);
+    }
+
+    public static boolean isHoldExpired(long liftId) {
+        final Long startTime = HOLD_START_TIMES.get(liftId);
+        return startTime != null && System.currentTimeMillis() - startTime >= HOLD_TIMEOUT;
     }
 
     public static void beginClientOpenPrediction(long liftId, float doorValue) {

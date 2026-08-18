@@ -23,8 +23,15 @@ public class YteLiftConfig extends YteLiftConfigSchema {
     public YteLiftConfig(long liftId, double upSpeed, double downSpeed, double upAcceleration, double downAcceleration,
             boolean directionParametersLinked, double adoDistance, double levellingDistance, double levellingSpeed,
             LiftMotionProfile motionProfile) {
+        this(liftId, upSpeed, downSpeed, upAcceleration, downAcceleration, directionParametersLinked,
+                adoDistance, levellingDistance, levellingSpeed, motionProfile, false);
+    }
+
+    public YteLiftConfig(long liftId, double upSpeed, double downSpeed, double upAcceleration, double downAcceleration,
+            boolean directionParametersLinked, double adoDistance, double levellingDistance, double levellingSpeed,
+            LiftMotionProfile motionProfile, boolean doorHoldEnabled) {
         super(liftId, upSpeed, downSpeed, upAcceleration, downAcceleration, directionParametersLinked,
-                adoDistance, levellingDistance, levellingSpeed, motionProfile.name());
+                adoDistance, levellingDistance, levellingSpeed, motionProfile.name(), doorHoldEnabled);
     }
 
     public YteLiftConfig(ReaderBase readerBase) {
@@ -57,6 +64,8 @@ public class YteLiftConfig extends YteLiftConfigSchema {
 
     public double getLevellingSpeed() { return levellingSpeed; }
 
+    public boolean isDoorHoldEnabled() { return doorHoldEnabled; }
+
     public void setSpeed(double speed) {
         this.speed = clamp(speed, MIN_SPEED, MAX_SPEED);
     }
@@ -70,6 +79,8 @@ public class YteLiftConfig extends YteLiftConfigSchema {
     public void setLevellingDistance(double levellingDistance) { this.levellingDistance = clamp(levellingDistance, MIN_LEVELLING_DISTANCE, MAX_LEVELLING_DISTANCE); }
 
     public void setLevellingSpeed(double levellingSpeed) { this.levellingSpeed = clamp(levellingSpeed, MIN_LEVELLING_SPEED, MAX_LEVELLING_SPEED); }
+
+    public void setDoorHoldEnabled(boolean doorHoldEnabled) { this.doorHoldEnabled = doorHoldEnabled; }
 
     private static double clamp(double value, double min, double max) {
         return Math.max(min, Math.min(max, value));

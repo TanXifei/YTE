@@ -431,5 +431,8 @@
   "gui.yte.lift_levelling_distance_value": "Levelling distance: %s m",
   "gui.yte.lift_levelling_speed": "Levelling speed (m/s)",
   "gui.yte.lift_levelling_speed_value": "Levelling speed: %s m/s",
+  "gui.yte.lift_door_hold_on": "HOLD（ドア保持延長）：オン",
+  "gui.yte.lift_door_hold_off": "HOLD（ドア保持延長）：オフ",
+  "gui.yte.lift_hold_open": "HOLD",
   "block.yte.lift_track_magnetic_vane": "Lift Express-Zone Magnetic Vane"
 }

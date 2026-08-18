@@ -26,6 +26,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import top.xfunny.mod.LiftDoorControlState;
 import top.xfunny.mod.LiftDisplayDirectionState;
 import top.xfunny.mod.client.InitClient;
+import top.xfunny.mod.config.YteLiftConfigStore;
 import top.xfunny.mod.packet.PacketLiftDoorControl;
 import top.xfunny.mod.util.GetLiftDetails;
 
@@ -36,9 +37,11 @@ public abstract class MixinLiftSelectionScreen extends MTRScreenBase {
     @Shadow @Final private ObjectArrayList<BlockPos> floorLevels;
     @Shadow @Final private long liftId;
 
+    @Unique private ButtonWidgetExtension yte$holdOpenButton;
     @Unique private ButtonWidgetExtension yte$openDoorButton;
     @Unique private ButtonWidgetExtension yte$closeDoorButton;
     @Unique private boolean yte$clearDoorButtonFocus;
+    @Unique private boolean yte$lastHoldEnabled;
 
     @Redirect(
             method = "lambda$new$0",
@@ -54,6 +57,8 @@ public abstract class MixinLiftSelectionScreen extends MTRScreenBase {
 
     @Inject(method = "<init>", at = @At("TAIL"))
     private void yte$createDoorButtons(long liftId, CallbackInfo ci) {
+        yte$holdOpenButton = new ButtonWidgetExtension(0, 0, 0, IGui.SQUARE_SIZE,
+                TextHelper.translatable("gui.yte.lift_hold_open"), button -> yte$sendDoorCommand(LiftDoorControlState.Command.HOLD_OPEN));
         yte$openDoorButton = new ButtonWidgetExtension(0, 0, 0, IGui.SQUARE_SIZE,
                 TextHelper.literal("◀▶"), button -> yte$sendDoorCommand(LiftDoorControlState.Command.OPEN));
         yte$closeDoorButton = new ButtonWidgetExtension(0, 0, 0, IGui.SQUARE_SIZE,
@@ -84,18 +89,14 @@ public abstract class MixinLiftSelectionScreen extends MTRScreenBase {
     @Inject(method = "init2", at = @At("TAIL"))
     private void yte$initDoorButtons(CallbackInfo ci) {
         selectionList.height = Math.max(selectionList.height - IGui.SQUARE_SIZE, IGui.SQUARE_SIZE * 2);
-        final int buttonWidth = selectionList.width / 2;
         final int buttonY = selectionList.y + selectionList.height;
 
-        yte$openDoorButton.setX2(selectionList.x);
-        yte$openDoorButton.setY2(buttonY);
-        yte$openDoorButton.setWidth2(buttonWidth);
-        yte$closeDoorButton.setX2(selectionList.x + buttonWidth);
-        yte$closeDoorButton.setY2(buttonY);
-        yte$closeDoorButton.setWidth2(selectionList.width - buttonWidth);
-
+        addChild(new ClickableWidget(yte$holdOpenButton));
         addChild(new ClickableWidget(yte$openDoorButton));
         addChild(new ClickableWidget(yte$closeDoorButton));
+
+        yte$lastHoldEnabled = YteLiftConfigStore.isDoorHoldEnabled(liftId);
+        yte$updateDoorButtonLayout(buttonY);
     }
 
     @Inject(method = "tick2", at = @At("TAIL"))
@@ -105,8 +106,15 @@ public abstract class MixinLiftSelectionScreen extends MTRScreenBase {
             yte$clearDoorButtonFocus = false;
         }
 
+        final boolean holdEnabled = YteLiftConfigStore.isDoorHoldEnabled(liftId);
+        if (holdEnabled != yte$lastHoldEnabled) {
+            yte$lastHoldEnabled = holdEnabled;
+            yte$updateDoorButtonLayout(selectionList.y + selectionList.height);
+        }
+
         final Lift lift = MinecraftClientData.getLift(liftId);
         final boolean stoppedAtFloor = lift != null && yte$isStoppedAtFloor(lift);
+        yte$holdOpenButton.active = stoppedAtFloor;
         yte$openDoorButton.active = stoppedAtFloor;
 
         if (!stoppedAtFloor) {
@@ -115,14 +123,46 @@ public abstract class MixinLiftSelectionScreen extends MTRScreenBase {
         }
 
         final long coolDown = ((MixinLiftSchema) lift).getStoppingCoolDown();
-        yte$closeDoorButton.active = lift.getDoorValue() >= 0.999F
-                && coolDown <= yte$fullOpenCoolDown() - 300
-                && coolDown > yte$closeStartCoolDown();
+        final boolean doorFullyOpen = lift.getDoorValue() >= 0.999F;
+        if (holdEnabled && doorFullyOpen) {
+            yte$closeDoorButton.active = coolDown > yte$closeStartCoolDown();
+        } else {
+            yte$closeDoorButton.active = doorFullyOpen
+                    && coolDown <= yte$fullOpenCoolDown() - 300
+                    && coolDown > yte$closeStartCoolDown();
+        }
+    }
+
+    @Unique
+    private void yte$updateDoorButtonLayout(int buttonY) {
+        final boolean holdEnabled = YteLiftConfigStore.isDoorHoldEnabled(liftId);
+        yte$holdOpenButton.setVisibleMapped(holdEnabled);
+
+        if (holdEnabled) {
+            final int buttonWidth = selectionList.width / 3;
+            yte$holdOpenButton.setX2(selectionList.x);
+            yte$holdOpenButton.setY2(buttonY);
+            yte$holdOpenButton.setWidth2(buttonWidth);
+            yte$openDoorButton.setX2(selectionList.x + buttonWidth);
+            yte$openDoorButton.setY2(buttonY);
+            yte$openDoorButton.setWidth2(buttonWidth);
+            yte$closeDoorButton.setX2(selectionList.x + buttonWidth * 2);
+            yte$closeDoorButton.setY2(buttonY);
+            yte$closeDoorButton.setWidth2(selectionList.width - buttonWidth * 2);
+        } else {
+            final int buttonWidth = selectionList.width / 2;
+            yte$openDoorButton.setX2(selectionList.x);
+            yte$openDoorButton.setY2(buttonY);
+            yte$openDoorButton.setWidth2(buttonWidth);
+            yte$closeDoorButton.setX2(selectionList.x + buttonWidth);
+            yte$closeDoorButton.setY2(buttonY);
+            yte$closeDoorButton.setWidth2(selectionList.width - buttonWidth);
+        }
     }
 
     @Unique
     private void yte$sendDoorCommand(LiftDoorControlState.Command command) {
-        if (command == LiftDoorControlState.Command.OPEN) {
+        if (command == LiftDoorControlState.Command.OPEN || command == LiftDoorControlState.Command.HOLD_OPEN) {
             yte$applyClientOpenCommand();
         }
         InitClient.REGISTRY_CLIENT.sendPacketToServer(new PacketLiftDoorControl(liftId, command));

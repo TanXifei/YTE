@@ -16,7 +16,8 @@ public abstract class YteData {
                 top.xfunny.mod.config.YteLiftConfigStore.put(
                         config.getId(), config.getUpSpeed(), config.getDownSpeed(),
                         config.getUpAcceleration(), config.getDownAcceleration(), config.getAdoDistance(),
-                        config.getLevellingDistance(), config.getLevellingSpeed(), config.getMotionProfile());
+                        config.getLevellingDistance(), config.getLevellingSpeed(), config.getMotionProfile(),
+                        config.isDoorHoldEnabled());
             });
         } catch (Exception e) {
             YteCoreLogger.error("YteData sync error", e);

@@ -97,6 +97,26 @@ public abstract class MixinLift implements MixinLiftSchema, MixinLiftFields, Mix
             if (doorCommand != null) {
                 yte$applyDoorCommand(doorCommand);
             }
+
+            if (LiftDoorControlState.isHoldActive(id) && getSpeed() == 0 && yte$isExactlyAtFloor()) {
+                if (LiftDoorControlState.isHoldExpired(id)) {
+                    LiftDoorControlState.endHold(id);
+                    final float doorValue = ((Lift) (Object) this).getDoorValue();
+                    if (doorValue >= 0.999F) {
+                        setStoppingCoolDown(YTE_DOOR_CLOSED_DELAY + YTE_SINGLE_DOOR_MOVE_TIME);
+                        setNeedsUpdate(true);
+                    }
+                } else if (!getInstructions().isEmpty()) {
+                    LiftDoorControlState.endHold(id);
+                } else {
+                    final float doorValue = ((Lift) (Object) this).getDoorValue();
+                    final long fullOpenCoolDown = YTE_LIFT_STOPPING_TIME - YTE_SINGLE_DOOR_MOVE_TIME;
+                    if (doorValue >= 0.999F && getStoppingCoolDown() < fullOpenCoolDown) {
+                        setStoppingCoolDown(fullOpenCoolDown);
+                        setNeedsUpdate(true);
+                    }
+                }
+            }
         }
 
         final boolean adoLevelling = getStoppingCoolDown() > 0 && getSpeed() != 0 && !getInstructions().isEmpty();
@@ -200,6 +220,7 @@ public abstract class MixinLift implements MixinLiftSchema, MixinLiftFields, Mix
         }
 
         final Lift lift = (Lift) (Object) this;
+        final long id = lift.getId();
         final long coolDown = getStoppingCoolDown();
         final long fullOpenCoolDown = YTE_LIFT_STOPPING_TIME - YTE_SINGLE_DOOR_MOVE_TIME;
         final long closeStartCoolDown = YTE_DOOR_CLOSED_DELAY + YTE_SINGLE_DOOR_MOVE_TIME;
@@ -209,7 +230,8 @@ public abstract class MixinLift implements MixinLiftSchema, MixinLiftFields, Mix
                 && lift.getDoorValue() <= 0;
         boolean openCommandApplied = false;
 
-        if (command == LiftDoorControlState.Command.OPEN) {
+        if (command == LiftDoorControlState.Command.HOLD_OPEN) {
+            LiftDoorControlState.beginHold(id);
             final float doorValue = Utilities.clamp(lift.getDoorValue(), 0, 1);
             if (doorValue >= 1) {
                 setStoppingCoolDown(fullOpenCoolDown);
@@ -221,10 +243,23 @@ public abstract class MixinLift implements MixinLiftSchema, MixinLiftFields, Mix
                 setStoppingCoolDown(YTE_LIFT_STOPPING_TIME);
                 openCommandApplied = true;
             }
-        } else if (lift.getDoorValue() >= 0.999F
-                && coolDown <= fullOpenCoolDown - YTE_DOOR_CLOSE_PROTECTION_TIME
-                && coolDown > closeStartCoolDown) {
-            setStoppingCoolDown(closeStartCoolDown);
+        } else if (command == LiftDoorControlState.Command.OPEN) {
+            final float doorValue = Utilities.clamp(lift.getDoorValue(), 0, 1);
+            if (doorValue >= 1) {
+                setStoppingCoolDown(fullOpenCoolDown);
+                openCommandApplied = true;
+            } else if (doorValue > 0 && coolDown <= closeStartCoolDown) {
+                setStoppingCoolDown(YTE_LIFT_STOPPING_TIME - Math.round(doorValue * YTE_SINGLE_DOOR_MOVE_TIME));
+                openCommandApplied = true;
+            } else if (doorValue <= 0 && coolDown < YTE_DOOR_CLOSED_DELAY) {
+                setStoppingCoolDown(YTE_LIFT_STOPPING_TIME);
+                openCommandApplied = true;
+            }
+        } else if (command == LiftDoorControlState.Command.CLOSE) {
+            LiftDoorControlState.endHold(id);
+            if (lift.getDoorValue() >= 0.999F) {
+                setStoppingCoolDown(closeStartCoolDown);
+            }
         }
 
         if (openCommandApplied) {
