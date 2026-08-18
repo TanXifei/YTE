@@ -15,6 +15,7 @@ import top.xfunny.mod.Init;
 import top.xfunny.mod.LiftDisplayDirection;
 import top.xfunny.mod.LiftDisplayDirectionState;
 import top.xfunny.mod.LiftDoorControlState;
+import top.xfunny.mod.LiftFloorCancelState;
 import top.xfunny.mod.DisplayDirectionMode;
 import top.xfunny.mod.LiftDisplayState;
 import top.xfunny.mod.LiftMotionProfile;
@@ -98,17 +99,27 @@ public abstract class MixinLift implements MixinLiftSchema, MixinLiftFields, Mix
                 yte$applyDoorCommand(doorCommand);
             }
 
-            if (LiftDoorControlState.isHoldActive(id) && getSpeed() == 0 && yte$isExactlyAtFloor()) {
-                if (LiftDoorControlState.isHoldExpired(id)) {
+            final Integer cancelledFloor = LiftFloorCancelState.consume(id);
+            if (cancelledFloor != null && getSpeed() == 0 && yte$isExactlyAtFloor()
+                    && cancelledFloor >= 0 && cancelledFloor < getFloors().size()) {
+                final boolean instructionRemoved = getInstructions().removeIf(instruction ->
+                        instruction.getFloor() == cancelledFloor && instruction.getDirection() == LiftDirection.NONE);
+                if (instructionRemoved) {
+                    setNeedsUpdate(true);
+                }
+            }
+
+            if (LiftDoorControlState.isHoldActive(id)) {
+                final boolean stoppedAtFloor = getSpeed() == 0 && yte$isExactlyAtFloor();
+                if (!YteLiftConfigStore.isDoorHoldEnabled(id) || LiftDoorControlState.isHoldExpired(id)) {
                     LiftDoorControlState.endHold(id);
+                    Init.sendLiftHoldState(id, false);
                     final float doorValue = ((Lift) (Object) this).getDoorValue();
-                    if (doorValue >= 0.999F) {
+                    if (stoppedAtFloor && doorValue >= 0.999F) {
                         setStoppingCoolDown(YTE_DOOR_CLOSED_DELAY + YTE_SINGLE_DOOR_MOVE_TIME);
                         setNeedsUpdate(true);
                     }
-                } else if (!getInstructions().isEmpty()) {
-                    LiftDoorControlState.endHold(id);
-                } else {
+                } else if (stoppedAtFloor) {
                     final float doorValue = ((Lift) (Object) this).getDoorValue();
                     final long fullOpenCoolDown = YTE_LIFT_STOPPING_TIME - YTE_SINGLE_DOOR_MOVE_TIME;
                     if (doorValue >= 0.999F && getStoppingCoolDown() < fullOpenCoolDown) {
@@ -230,8 +241,10 @@ public abstract class MixinLift implements MixinLiftSchema, MixinLiftFields, Mix
                 && lift.getDoorValue() <= 0;
         boolean openCommandApplied = false;
 
-        if (command == LiftDoorControlState.Command.HOLD_OPEN) {
+        if (command == LiftDoorControlState.Command.HOLD_OPEN
+                && YteLiftConfigStore.isDoorHoldEnabled(id)) {
             LiftDoorControlState.beginHold(id);
+            Init.sendLiftHoldState(id, true);
             final float doorValue = Utilities.clamp(lift.getDoorValue(), 0, 1);
             if (doorValue >= 1) {
                 setStoppingCoolDown(fullOpenCoolDown);
@@ -239,7 +252,7 @@ public abstract class MixinLift implements MixinLiftSchema, MixinLiftFields, Mix
             } else if (doorValue > 0 && coolDown <= closeStartCoolDown) {
                 setStoppingCoolDown(YTE_LIFT_STOPPING_TIME - Math.round(doorValue * YTE_SINGLE_DOOR_MOVE_TIME));
                 openCommandApplied = true;
-            } else if (doorValue <= 0 && coolDown < YTE_DOOR_CLOSED_DELAY) {
+            } else if (doorValue <= 0 && coolDown <= YTE_DOOR_CLOSED_DELAY) {
                 setStoppingCoolDown(YTE_LIFT_STOPPING_TIME);
                 openCommandApplied = true;
             }
@@ -251,12 +264,13 @@ public abstract class MixinLift implements MixinLiftSchema, MixinLiftFields, Mix
             } else if (doorValue > 0 && coolDown <= closeStartCoolDown) {
                 setStoppingCoolDown(YTE_LIFT_STOPPING_TIME - Math.round(doorValue * YTE_SINGLE_DOOR_MOVE_TIME));
                 openCommandApplied = true;
-            } else if (doorValue <= 0 && coolDown < YTE_DOOR_CLOSED_DELAY) {
+            } else if (doorValue <= 0 && coolDown <= YTE_DOOR_CLOSED_DELAY) {
                 setStoppingCoolDown(YTE_LIFT_STOPPING_TIME);
                 openCommandApplied = true;
             }
         } else if (command == LiftDoorControlState.Command.CLOSE) {
             LiftDoorControlState.endHold(id);
+            Init.sendLiftHoldState(id, false);
             if (lift.getDoorValue() >= 0.999F) {
                 setStoppingCoolDown(closeStartCoolDown);
             }
