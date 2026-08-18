@@ -109,7 +109,7 @@ body:
         Mod 加载器 / Mod loader
       description: |
         填写所用Mod加载器名称和具体版本<br>
-        Mod loader name and version required. 
+        Please enter the Mod loader name and version number. 
       placeholder: e.g. Fabric 0.17.2，API 0.77.0
     validations:
       required: true
