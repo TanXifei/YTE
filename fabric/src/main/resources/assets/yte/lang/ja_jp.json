@@ -431,8 +431,8 @@
   "gui.yte.lift_levelling_distance_value": "着床前に減速し始める距離: %s m",
   "gui.yte.lift_levelling_speed": "着床する時の徐行速度（m/s）",
   "gui.yte.lift_levelling_speed_value": "着床時の速度: %s m/s",
-  "gui.yte.lift_door_hold_on": "HOLD（ドア保持延長）：オン",
-  "gui.yte.lift_door_hold_off": "HOLD（ドア保持延長）：オフ",
+  "gui.yte.lift_door_hold_on": "HOLD (door open extension): On",
+  "gui.yte.lift_door_hold_off": "HOLD (door open extension): Off",
   "gui.yte.lift_hold_open": "HOLD",
   "block.yte.lift_track_magnetic_vane": "通過階用遮光板"
 }
