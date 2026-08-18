@@ -37,6 +37,10 @@ public abstract class MixinLift implements MixinLiftSchema, MixinLiftFields, Mix
     @Unique
     private static final long YTE_SINGLE_DOOR_MOVE_TIME = Vehicle.DOOR_MOVE_TIME / 2;
 
+    /** 门完全打开时对应的 stoppingCoolDown（= 停站时间 - 单次开门时间） */
+    @Unique
+    private static final long YTE_DOOR_FULL_OPEN_COOL_DOWN = YTE_LIFT_STOPPING_TIME - YTE_SINGLE_DOOR_MOVE_TIME;
+
     @Unique
     private static final long YTE_DOOR_CLOSE_PROTECTION_TIME = 300;
 
@@ -132,7 +136,8 @@ public abstract class MixinLift implements MixinLiftSchema, MixinLiftFields, Mix
             }
         } else {
             if (adoLevelling) {
-                setStoppingCoolDown(Math.max(getStoppingCoolDown() - millisElapsed, 0));
+                // 平层/预开门阶段：门开到全开后保持，避免徐行过慢时 cooldown 耗尽、停稳后二次开门
+                setStoppingCoolDown(Math.max(getStoppingCoolDown() - millisElapsed, YTE_DOOR_FULL_OPEN_COOL_DOWN));
             }
 
             if (getInstructions().isEmpty()) {

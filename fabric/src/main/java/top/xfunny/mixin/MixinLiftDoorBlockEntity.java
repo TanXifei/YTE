@@ -64,11 +64,14 @@ public abstract class MixinLiftDoorBlockEntity extends BlockEntityExtension {
             final long targetX = targetFloor.getPosition().getX();
             final long targetY = targetFloor.getPosition().getY();
             final long targetZ = targetFloor.getPosition().getZ();
+
+            final double alignY = targetY + lift.getOffsetY();
+
             final double horizontalRange = Math.max(lift.getWidth(), lift.getDepth()) / 2 + 3;
             if (Math.abs(doorPos.getX() - targetX) <= horizontalRange
                     && Math.abs(doorPos.getZ() - targetZ) <= horizontalRange) {
                 foundNearbyOpeningLift = true;
-                if (doorPos.getY() == targetY) {
+                if (doorPos.getY() + 1 >= alignY - 2 && doorPos.getY() <= alignY + 2) {
                     return;
                 }
             }
