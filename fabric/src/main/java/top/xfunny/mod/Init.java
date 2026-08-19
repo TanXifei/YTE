@@ -78,6 +78,8 @@ public final class Init implements Utilities {
             REGISTRY.registerPacket(YtePacketUpdateData.class, YtePacketUpdateData::new);
             REGISTRY.registerPacket(PacketLiftAdoStart.class, PacketLiftAdoStart::new);
             REGISTRY.registerPacket(PacketLiftDoorControl.class, PacketLiftDoorControl::new);
+            REGISTRY.registerPacket(PacketLiftHoldState.class, PacketLiftHoldState::new);
+            REGISTRY.registerPacket(PacketLiftFloorCancel.class, PacketLiftFloorCancel::new);
         });
 
         int currentStep = 1;
@@ -141,6 +143,15 @@ public final class Init implements Utilities {
                     REGISTRY.sendPacketToClient(player,
                             new PacketLiftDoorControl(liftId, top.xfunny.mod.LiftDoorControlState.Command.OPEN,
                                     stoppingCoolDown, resetIdleDirection)));
+        }
+    }
+
+    public static void sendLiftHoldState(long liftId, boolean active) {
+        if (minecraftServer != null) {
+            final long remainingMillis = active ? LiftDoorControlState.getHoldRemainingMillis(liftId) : 0;
+            MinecraftServerHelper.iteratePlayers(minecraftServer, player ->
+                    REGISTRY.sendPacketToClient(player,
+                            PacketLiftHoldState.update(liftId, active && remainingMillis > 0, remainingMillis)));
         }
     }
 
