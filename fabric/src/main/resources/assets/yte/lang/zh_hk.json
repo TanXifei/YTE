@@ -439,5 +439,9 @@
   "gui.yte.lift_floor_cancel_double_click": "取消已選樓層：雙擊",
   "gui.yte.lift_floor_cancel_long_press": "取消已選樓層：長按",
   "gui.yte.lift_hold_open": "延時關門",
+  "gui.yte.lift_tab_size": "尺寸",
+  "gui.yte.lift_tab_motion": "運行",
+  "gui.yte.lift_tab_level": "平層",
+  "gui.yte.lift_tab_door": "門控",
   "block.yte.lift_track_magnetic_vane": "電梯快速區間隔磁板"
 }
