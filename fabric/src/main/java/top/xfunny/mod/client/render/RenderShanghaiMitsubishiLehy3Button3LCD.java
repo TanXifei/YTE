@@ -87,7 +87,6 @@ public class RenderShanghaiMitsubishiLehy3Button3LCD extends BlockEntityRenderer
         screenLayout.setHeight(LayoutSize.WRAP_CONTENT);
         screenLayout.setGravity(Gravity.CENTER_HORIZONTAL);
         screenLayout.setMargin(0, 0.6F / 16, 0, 0);
-        screenLayout.setBackgroundColor(0xFFFFFFFF);
 
 
         final FrameLayout buttonLayout = new FrameLayout();

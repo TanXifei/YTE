@@ -13,6 +13,8 @@ import top.xfunny.mod.lift.LiftArrivalLanternState;
 import top.xfunny.mod.lift.LiftDisplayDirectionState;
 import top.xfunny.mod.lift.LiftDisplayState;
 import top.xfunny.mod.lift.LiftDoorControlState;
+import top.xfunny.mod.lift.policy.HitachiGHLLanternPolicy;
+import top.xfunny.mod.lift.policy.MitsubishiMPVFLanternPolicy;
 import top.xfunny.mod.lift.policy.MitsubishiNexWayLanternPolicy;
 import top.xfunny.mod.client.render.*;
 import top.xfunny.mod.client.resource.FontList;
@@ -37,6 +39,10 @@ public final class InitClient {
         LiftDisplayState.clear();
         LiftDisplayDirectionState.clear();
         MitsubishiNexWayLanternPolicy.INSTANCE.clear();
+        HitachiGHLLanternPolicy.GHL668.clear();
+        HitachiGHLLanternPolicy.GHL673.clear();
+        HitachiGHLLanternPolicy.GHL820.clear();
+        MitsubishiMPVFLanternPolicy.INSTANCE.clear();
         LiftDoorControlState.clearClientState();
 
         initializeConfig();
@@ -414,6 +420,10 @@ public final class InitClient {
             LiftDisplayState.clear();
             LiftDisplayDirectionState.clear();
             MitsubishiNexWayLanternPolicy.INSTANCE.clear();
+            HitachiGHLLanternPolicy.GHL668.clear();
+            HitachiGHLLanternPolicy.GHL673.clear();
+            HitachiGHLLanternPolicy.GHL820.clear();
+            MitsubishiMPVFLanternPolicy.INSTANCE.clear();
             LiftDoorControlState.clearClientState();
             lastMillis = System.currentTimeMillis();
             gameMillis = 0;
