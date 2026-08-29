@@ -82,9 +82,10 @@ public final class LiftDoorControlState {
         CLIENT_HOLD_EXPIRATION_TIMES.clear();
     }
 
-    public static void beginClientOpenPrediction(long liftId, float doorValue) {
-        CLIENT_OPEN_PREDICTIONS.put(liftId, new ClientOpenPrediction(doorValue,
-                System.currentTimeMillis() + CLIENT_OPEN_PREDICTION_TIMEOUT));
+    public static void beginClientOpenPrediction(long liftId, float doorValue, long doorMoveTime) {
+        final long currentTime = System.currentTimeMillis();
+        CLIENT_OPEN_PREDICTIONS.put(liftId, new ClientOpenPrediction(doorValue, currentTime,
+                Math.max(doorMoveTime, 1), currentTime + CLIENT_OPEN_PREDICTION_TIMEOUT));
     }
 
     public static float preserveClientOpenDoorValue(long liftId, float doorValue) {
@@ -92,34 +93,53 @@ public final class LiftDoorControlState {
         if (prediction == null) {
             return doorValue;
         }
-        if (System.currentTimeMillis() > prediction.expiresAt) {
+        final long currentTime = System.currentTimeMillis();
+        if (currentTime > prediction.expiresAt) {
             CLIENT_OPEN_PREDICTIONS.remove(liftId, prediction);
             return doorValue;
         }
-        prediction.doorValue = Math.max(prediction.doorValue, doorValue);
+
+        final float predictedDoorValue = Math.min(1F, prediction.initialDoorValue
+                + (float) (currentTime - prediction.startedAt) / prediction.doorMoveTime);
+        prediction.doorValue = Math.max(prediction.doorValue, Math.max(doorValue, predictedDoorValue));
+
+        // Do not hand control back merely because the command acknowledgement
+        // arrived; a regular lift update carrying the pre-command cooldown can
+        // still arrive afterwards. Release only after both timelines are open.
+        if (prediction.confirmed && doorValue >= 0.999F && predictedDoorValue >= 0.999F) {
+            CLIENT_OPEN_PREDICTIONS.remove(liftId, prediction);
+            return doorValue;
+        }
         return prediction.doorValue;
     }
 
-    public static long reconcileClientOpenCoolDown(long liftId, long serverCoolDown,
-            long stoppingTime, long singleDoorMoveTime) {
-        final ClientOpenPrediction prediction = CLIENT_OPEN_PREDICTIONS.remove(liftId);
-        if (prediction == null || System.currentTimeMillis() > prediction.expiresAt) {
+    public static long reconcileClientOpenCoolDown(long liftId, long serverCoolDown) {
+        final ClientOpenPrediction prediction = CLIENT_OPEN_PREDICTIONS.get(liftId);
+        if (prediction == null) {
+            return serverCoolDown;
+        }
+        if (System.currentTimeMillis() > prediction.expiresAt) {
+            CLIENT_OPEN_PREDICTIONS.remove(liftId, prediction);
             return serverCoolDown;
         }
 
-        // The client starts opening immediately, while the server starts only
-        // after receiving the button packet. Never let that later authoritative
-        // start rewind the already visible opening progress.
-        final long predictedCoolDown = stoppingTime
-                - Math.round(Math.max(0, Math.min(prediction.doorValue, 1)) * singleDoorMoveTime);
-        return Math.min(serverCoolDown, predictedCoolDown);
+        prediction.confirmed = true;
+        prediction.expiresAt = System.currentTimeMillis() + CLIENT_OPEN_PREDICTION_TIMEOUT;
+        return serverCoolDown;
     }
 
     private static final class ClientOpenPrediction {
+        private final float initialDoorValue;
+        private final long startedAt;
+        private final long doorMoveTime;
         private float doorValue;
-        private final long expiresAt;
+        private boolean confirmed;
+        private long expiresAt;
 
-        private ClientOpenPrediction(float doorValue, long expiresAt) {
+        private ClientOpenPrediction(float doorValue, long startedAt, long doorMoveTime, long expiresAt) {
+            initialDoorValue = doorValue;
+            this.startedAt = startedAt;
+            this.doorMoveTime = doorMoveTime;
             this.doorValue = doorValue;
             this.expiresAt = expiresAt;
         }

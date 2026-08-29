@@ -391,22 +391,15 @@ public abstract class MixinLiftSelectionScreen extends MTRScreenBase {
         final MixinLiftSchema schema = (MixinLiftSchema) lift;
         final long coolDown = schema.getStoppingCoolDown();
         final long singleDoorMoveTime = org.mtr.core.data.Vehicle.DOOR_MOVE_TIME / 2;
-        final long stoppingTime = org.mtr.core.data.Vehicle.DOOR_MOVE_TIME + 2500;
-        final long fullOpenCoolDown = stoppingTime - singleDoorMoveTime;
         final long closeStartCoolDown = 500 + singleDoorMoveTime;
         final float doorValue = Math.max(0, Math.min(lift.getDoorValue(), 1));
 
         if (doorValue >= 1) {
-            schema.setStoppingCoolDown(fullOpenCoolDown);
-            LiftDoorControlState.beginClientOpenPrediction(liftId, doorValue);
+            LiftDoorControlState.beginClientOpenPrediction(liftId, doorValue, singleDoorMoveTime);
         } else if (doorValue > 0 && coolDown <= closeStartCoolDown) {
-            // Reverse from the exact locally rendered position immediately;
-            // waiting for the server round trip causes a visible forward jump.
-            schema.setStoppingCoolDown(stoppingTime - Math.round(doorValue * singleDoorMoveTime));
-            LiftDoorControlState.beginClientOpenPrediction(liftId, doorValue);
+            LiftDoorControlState.beginClientOpenPrediction(liftId, doorValue, singleDoorMoveTime);
         } else if (doorValue <= 0 && coolDown <= 500) {
-            schema.setStoppingCoolDown(stoppingTime);
-            LiftDoorControlState.beginClientOpenPrediction(liftId, doorValue);
+            LiftDoorControlState.beginClientOpenPrediction(liftId, doorValue, singleDoorMoveTime);
             if (schema.getInstructions().isEmpty()) {
                 LiftDisplayDirectionState.get(liftId).resetForIdleDoorCycle();
             }
