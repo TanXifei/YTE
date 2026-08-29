@@ -73,12 +73,20 @@ public final class MitsubishiMPVFLanternPolicy implements LiftArrivalLanternPoli
             return LiftArrivalLanternDecision.inactive();
         }
 
-        final long startMillis = approachStartMillis.getOrDefault(liftId, context.getCurrentMillis());
-        final LiftArrivalLanternDisplayPhase phase = activeDoorCycleAtLantern
-                ? LiftArrivalLanternDisplayPhase.ARRIVED
-                : LiftArrivalLanternDisplayPhase.APPROACHING;
-        return LiftArrivalLanternDecision.active(direction, phase, SLOW_FLASH, SOUND_CUE,
-                startMillis, startMillis);
+        if (facts.getDoorValue() > 0) {
+            final long eventSequence = approachStartMillis.getOrDefault(liftId, arrivalState.getTriggerSequence());
+            final long phaseStartMillis = approachStartMillis.getOrDefault(liftId, arrivalState.getTriggerStartedMillis());
+            return LiftArrivalLanternDecision.active(direction, LiftArrivalLanternDisplayPhase.ARRIVED,
+                    SLOW_FLASH, SOUND_CUE, eventSequence, phaseStartMillis);
+        }
+
+        if (approachLatched) {
+            final long startMillis = approachStartMillis.getOrDefault(liftId, context.getCurrentMillis());
+            return LiftArrivalLanternDecision.active(direction, LiftArrivalLanternDisplayPhase.APPROACHING,
+                    SLOW_FLASH, SOUND_CUE, startMillis, startMillis);
+        }
+
+        return LiftArrivalLanternDecision.inactive();
     }
 
     private LiftDirection resolveDirection(boolean activeDoorCycleAtLantern,

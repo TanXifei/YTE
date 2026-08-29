@@ -76,12 +76,20 @@ public final class HitachiGHLLanternPolicy implements LiftArrivalLanternPolicy {
             return LiftArrivalLanternDecision.inactive();
         }
 
-        final long startMillis = approachStartMillis.getOrDefault(liftId, context.getCurrentMillis());
-        final LiftArrivalLanternDisplayPhase phase = activeDoorCycleAtLantern
-                ? LiftArrivalLanternDisplayPhase.ARRIVED
-                : LiftArrivalLanternDisplayPhase.APPROACHING;
-        return LiftArrivalLanternDecision.active(direction, phase, FLASH, soundCue,
-                startMillis, startMillis);
+        if (facts.getDoorValue() > 0) {
+            final long eventSequence = approachStartMillis.getOrDefault(liftId, arrivalState.getTriggerSequence());
+            final long phaseStartMillis = approachStartMillis.getOrDefault(liftId, arrivalState.getTriggerStartedMillis());
+            return LiftArrivalLanternDecision.active(direction, LiftArrivalLanternDisplayPhase.ARRIVED,
+                    FLASH, soundCue, eventSequence, phaseStartMillis);
+        }
+
+        if (approachLatched) {
+            final long startMillis = approachStartMillis.getOrDefault(liftId, context.getCurrentMillis());
+            return LiftArrivalLanternDecision.active(direction, LiftArrivalLanternDisplayPhase.APPROACHING,
+                    FLASH, soundCue, startMillis, startMillis);
+        }
+
+        return LiftArrivalLanternDecision.inactive();
     }
 
     /** 按运动方向计算距离本层的剩余楼层数；非朝本层运动返回 -1。 */
