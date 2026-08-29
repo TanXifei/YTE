@@ -23,7 +23,8 @@ public final class PacketLiftDoorControl extends PacketHandler {
         final int commandInt = packetBufferReceiver.readInt();
         command = commandInt == 0 ? LiftDoorControlState.Command.OPEN
                 : commandInt == 1 ? LiftDoorControlState.Command.CLOSE
-                : LiftDoorControlState.Command.HOLD_OPEN;
+                : commandInt == 2 ? LiftDoorControlState.Command.HOLD_OPEN
+                : LiftDoorControlState.Command.RELEASE_CLOSE;
         stoppingCoolDown = packetBufferReceiver.readLong();
         resetIdleDirection = packetBufferReceiver.readBoolean();
     }
@@ -47,7 +48,8 @@ public final class PacketLiftDoorControl extends PacketHandler {
     public void write(PacketBufferSender packetBufferSender) {
         packetBufferSender.writeLong(liftId);
         packetBufferSender.writeInt(command == LiftDoorControlState.Command.OPEN ? 0
-                : command == LiftDoorControlState.Command.CLOSE ? 1 : 2);
+                : command == LiftDoorControlState.Command.CLOSE ? 1
+                : command == LiftDoorControlState.Command.HOLD_OPEN ? 2 : 3);
         packetBufferSender.writeLong(stoppingCoolDown);
         packetBufferSender.writeBoolean(resetIdleDirection);
     }

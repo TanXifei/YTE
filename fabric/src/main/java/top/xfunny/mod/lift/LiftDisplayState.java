@@ -17,6 +17,7 @@ public final class LiftDisplayState {
     private LiftDirection movementDirection = LiftDirection.NONE;
     private LiftDirection targetDirection = LiftDirection.NONE;
     private LiftDirection plannedArrivalDirection = LiftDirection.NONE;
+    private LiftDirection nextQueuedDirection = LiftDirection.NONE;
     private boolean moving;
     private boolean decelerating;
     private boolean levelling;
@@ -46,7 +47,7 @@ public final class LiftDisplayState {
     }
 
     public void update(LiftDirection movementDirection, LiftDirection targetDirection,
-            LiftDirection plannedArrivalDirection,
+            LiftDirection plannedArrivalDirection, LiftDirection nextQueuedDirection,
             boolean moving, boolean levelling, boolean doorCycle, boolean idle,
             int displayedFloor, int exactFloor, int targetFloor, double speed, double doorValue,
             double distanceToTarget, long stoppingCoolDown) {
@@ -58,6 +59,7 @@ public final class LiftDisplayState {
         this.movementDirection = movementDirection;
         this.targetDirection = targetDirection;
         this.plannedArrivalDirection = plannedArrivalDirection;
+        this.nextQueuedDirection = nextQueuedDirection;
         this.moving = moving;
         this.levelling = levelling;
         this.doorCycle = doorCycle;
@@ -75,6 +77,7 @@ public final class LiftDisplayState {
     public LiftDirection getMovementDirection() { return movementDirection; }
     public LiftDirection getTargetDirection() { return targetDirection; }
     public LiftDirection getPlannedArrivalDirection() { return plannedArrivalDirection; }
+    public LiftDirection getNextQueuedDirection() { return nextQueuedDirection; }
     public boolean isMoving() { return moving; }
     public boolean isDecelerating() { return decelerating; }
     public boolean isLevelling() { return levelling; }

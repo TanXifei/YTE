@@ -8,11 +8,13 @@ public final class LiftDoorControlState {
 
     private static final long CLIENT_OPEN_PREDICTION_TIMEOUT = 3000;
     private static final long HOLD_TIMEOUT = 60_000;
+    private static final long MANUAL_CLOSE_SIGNAL_TIMEOUT = 750;
 
     public enum Command {
         OPEN,
         CLOSE,
-        HOLD_OPEN
+        HOLD_OPEN,
+        RELEASE_CLOSE
     }
 
     private static final Map<Long, Command> PENDING_COMMANDS = new ConcurrentHashMap<>();
@@ -20,6 +22,7 @@ public final class LiftDoorControlState {
     private static final Set<Long> ACTIVE_HOLDS = ConcurrentHashMap.newKeySet();
     private static final Map<Long, Long> HOLD_START_TIMES = new ConcurrentHashMap<>();
     private static final Map<Long, Long> CLIENT_HOLD_EXPIRATION_TIMES = new ConcurrentHashMap<>();
+    private static final Map<Long, Long> MANUAL_CLOSE_SIGNAL_TIMES = new ConcurrentHashMap<>();
 
     private LiftDoorControlState() {
     }
@@ -54,6 +57,26 @@ public final class LiftDoorControlState {
     public static long getHoldRemainingMillis(long liftId) {
         final Long startTime = HOLD_START_TIMES.get(liftId);
         return startTime == null ? 0 : Math.max(HOLD_TIMEOUT - (System.currentTimeMillis() - startTime), 0);
+    }
+
+    public static void signalManualClose(long liftId) {
+        MANUAL_CLOSE_SIGNAL_TIMES.put(liftId, System.currentTimeMillis());
+    }
+
+    public static void endManualClose(long liftId) {
+        MANUAL_CLOSE_SIGNAL_TIMES.remove(liftId);
+    }
+
+    public static boolean isManualCloseActive(long liftId) {
+        final Long lastSignalTime = MANUAL_CLOSE_SIGNAL_TIMES.get(liftId);
+        if (lastSignalTime == null) {
+            return false;
+        }
+        if (System.currentTimeMillis() - lastSignalTime > MANUAL_CLOSE_SIGNAL_TIMEOUT) {
+            MANUAL_CLOSE_SIGNAL_TIMES.remove(liftId, lastSignalTime);
+            return false;
+        }
+        return true;
     }
 
     public static void updateClientHold(long liftId, boolean active, long remainingMillis) {

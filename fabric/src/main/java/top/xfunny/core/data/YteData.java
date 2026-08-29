@@ -18,7 +18,8 @@ public abstract class YteData {
                         config.getUpAcceleration(), config.getDownAcceleration(), config.getAdoDistance(),
                         config.getLevellingDistance(), config.getLevellingSpeed(), config.getMotionProfile(),
                         config.isDoorHoldEnabled(), config.getDoorButtonLightMode(), config.getFloorCancelMode(),
-                        config.isFloorCancelWhileMovingAllowed(), config.getArrivalLanternTriggerMode());
+                        config.isFloorCancelWhileMovingAllowed(), config.getArrivalLanternTriggerMode(),
+                        config.getServiceMode());
                 top.xfunny.mod.config.YteLiftConfigStore.setLiftNumber(config.getId(), config.getLiftNumber());
             });
         } catch (Exception e) {

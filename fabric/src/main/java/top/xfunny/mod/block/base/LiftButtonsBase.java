@@ -103,6 +103,17 @@ public abstract class LiftButtonsBase extends BlockExtension implements Directio
 
                 if (unlocked) {
                     if (world.isClient() && !focusButton.equals("null")) {
+                        final boolean[] availableHallLift = {false};
+                        data.trackPositions.forEach(trackPosition -> MinecraftClientData.getInstance().lifts.forEach(lift -> {
+                            if (lift.getFloorIndex(Init.blockPosToPosition(trackPosition)) >= 0
+                                    && YteLiftConfigStore.getServiceMode(lift.getId()).acceptsHallCalls()) {
+                                availableHallLift[0] = true;
+                            }
+                        }));
+                        if (!availableHallLift[0]) {
+                            return ActionResult.FAIL;
+                        }
+
                         ObjectOpenHashSet<BlockPos> connectedLanternPositions = data.getLiftButtonPositions();
                         LiftButtonDescriptor descriptor = new LiftButtonDescriptor(false, false);
                         data.trackPositions.forEach(trackPosition -> LiftButtonsBase.hasButtonsClient(trackPosition, descriptor, (floor, lift) -> {
@@ -402,6 +413,9 @@ public abstract class LiftButtonsBase extends BlockExtension implements Directio
                     trackPosition, ignored -> new java.util.HashMap<>());
 
             for (Lift lift : MinecraftClientData.getInstance().lifts) {
+                if (YteLiftConfigStore.getServiceMode(lift.getId()).hidesHallDisplay()) {
+                    continue;
+                }
                 final int floorIndex = lift.getFloorIndex(Init.blockPosToPosition(trackPosition));
                 if (floorIndex < 0) continue;
 

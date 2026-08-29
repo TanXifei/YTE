@@ -6,6 +6,7 @@ import top.xfunny.mod.lift.LiftArrivalLanternTriggerMode;
 import top.xfunny.mod.lift.LiftDoorButtonLightMode;
 import top.xfunny.mod.lift.LiftFloorCancelMode;
 import top.xfunny.mod.lift.LiftMotionProfile;
+import top.xfunny.mod.lift.LiftServiceMode;
 
 public class YteLiftConfig extends YteLiftConfigSchema {
 
@@ -54,10 +55,21 @@ public class YteLiftConfig extends YteLiftConfigSchema {
             LiftMotionProfile motionProfile, boolean doorHoldEnabled, LiftDoorButtonLightMode doorButtonLightMode,
             LiftFloorCancelMode floorCancelMode, boolean floorCancelWhileMoving,
             LiftArrivalLanternTriggerMode arrivalLanternTriggerMode, String liftNumber) {
+        this(liftId, upSpeed, downSpeed, upAcceleration, downAcceleration, directionParametersLinked,
+                adoDistance, levellingDistance, levellingSpeed, motionProfile, doorHoldEnabled,
+                doorButtonLightMode, floorCancelMode, floorCancelWhileMoving,
+                arrivalLanternTriggerMode, LiftServiceMode.NORMAL, liftNumber);
+    }
+
+    public YteLiftConfig(long liftId, double upSpeed, double downSpeed, double upAcceleration, double downAcceleration,
+            boolean directionParametersLinked, double adoDistance, double levellingDistance, double levellingSpeed,
+            LiftMotionProfile motionProfile, boolean doorHoldEnabled, LiftDoorButtonLightMode doorButtonLightMode,
+            LiftFloorCancelMode floorCancelMode, boolean floorCancelWhileMoving,
+            LiftArrivalLanternTriggerMode arrivalLanternTriggerMode, LiftServiceMode serviceMode, String liftNumber) {
         super(liftId, upSpeed, downSpeed, upAcceleration, downAcceleration, directionParametersLinked,
                 adoDistance, levellingDistance, levellingSpeed, motionProfile.name(), doorHoldEnabled,
                 doorButtonLightMode.name(), floorCancelMode.name(), floorCancelWhileMoving,
-                arrivalLanternTriggerMode.name(), liftNumber);
+                arrivalLanternTriggerMode.name(), serviceMode.name(), liftNumber);
     }
 
     public YteLiftConfig(ReaderBase readerBase) {
@@ -106,6 +118,10 @@ public class YteLiftConfig extends YteLiftConfigSchema {
         return LiftArrivalLanternTriggerMode.fromSerializedName(arrivalLanternTriggerMode);
     }
 
+    public LiftServiceMode getServiceMode() {
+        return LiftServiceMode.fromSerializedName(serviceMode);
+    }
+
     public String getLiftNumber() { return liftNumber; }
 
     public void setSpeed(double speed) {
@@ -138,6 +154,10 @@ public class YteLiftConfig extends YteLiftConfigSchema {
 
     public void setArrivalLanternTriggerMode(LiftArrivalLanternTriggerMode arrivalLanternTriggerMode) {
         this.arrivalLanternTriggerMode = arrivalLanternTriggerMode.name();
+    }
+
+    public void setServiceMode(LiftServiceMode serviceMode) {
+        this.serviceMode = serviceMode.name();
     }
 
     public void setLiftNumber(String liftNumber) {
