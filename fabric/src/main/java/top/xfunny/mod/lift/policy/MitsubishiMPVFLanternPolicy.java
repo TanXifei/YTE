@@ -15,6 +15,9 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * 三菱 MP-VF 到站灯策略：电梯开门前约 5 秒开始慢闪（0.7 亮 / 0.4 熄），
  * 开门期间保持同频闪烁，关门后熄灭。
+ * <p>
+ * 锁存状态按 (liftId, lanternFloor) 二维 key 存储，避免不同楼层的
+ * 到站灯共享同一单例时互相覆盖触发时间戳、导致声音每帧重复播放。
  */
 public final class MitsubishiMPVFLanternPolicy implements LiftArrivalLanternPolicy {
 
@@ -24,14 +27,12 @@ public final class MitsubishiMPVFLanternPolicy implements LiftArrivalLanternPoli
     private static final long PRE_DOOR_MILLIS = 5000;
     private static final String SOUND_CUE = "mitsubishi_mp_lantern_1";
 
-    private final Map<Long, Integer> approachFloors = new ConcurrentHashMap<>();
-    private final Map<Long, Long> approachStartMillis = new ConcurrentHashMap<>();
+    private final Map<Long, Map<Integer, Long>> approachStartMillis = new ConcurrentHashMap<>();
 
     private MitsubishiMPVFLanternPolicy() {
     }
 
     public void clear() {
-        approachFloors.clear();
         approachStartMillis.clear();
     }
 
@@ -46,20 +47,17 @@ public final class MitsubishiMPVFLanternPolicy implements LiftArrivalLanternPoli
         // 避免速度接近 0 时 estimateMillisToTarget() 归为无穷导致熄灯。
         if (facts.getTargetFloor() == lanternFloor && facts.isMoving()
                 && context.estimateMillisToTarget() <= PRE_DOOR_MILLIS) {
-            final Integer previous = approachFloors.put(liftId, lanternFloor);
-            if (previous == null || previous != lanternFloor) {
-                approachStartMillis.put(liftId, context.getCurrentMillis());
-            }
-            approachStartMillis.putIfAbsent(liftId, context.getCurrentMillis());
+            approachStartMillis.computeIfAbsent(liftId, ignored -> new ConcurrentHashMap<>())
+                    .putIfAbsent(lanternFloor, context.getCurrentMillis());
         }
 
         final boolean activeDoorCycleAtLantern = facts.getDoorValue() > 0
                 && arrivalState.isActiveForFloor(lanternFloor);
-        final boolean approachLatched = approachFloors.getOrDefault(liftId, -1) == lanternFloor
+        final boolean approachLatched = getStartMillis(liftId, lanternFloor) > 0
                 && (facts.getTargetFloor() == lanternFloor || arrivalState.isActiveForFloor(lanternFloor));
 
         if (!approachLatched && !activeDoorCycleAtLantern) {
-            clearFinishedCycle(facts, arrivalState, liftId);
+            clearFinishedCycle(facts, arrivalState, liftId, lanternFloor);
             return LiftArrivalLanternDecision.inactive();
         }
 
@@ -73,20 +71,26 @@ public final class MitsubishiMPVFLanternPolicy implements LiftArrivalLanternPoli
             return LiftArrivalLanternDecision.inactive();
         }
 
+        final long startMillis = getStartMillis(liftId, lanternFloor);
         if (facts.getDoorValue() > 0) {
-            final long eventSequence = approachStartMillis.getOrDefault(liftId, arrivalState.getTriggerSequence());
-            final long phaseStartMillis = approachStartMillis.getOrDefault(liftId, arrivalState.getTriggerStartedMillis());
+            final long eventSequence = startMillis > 0 ? startMillis : arrivalState.getTriggerSequence();
+            final long phaseStartMillis = startMillis > 0 ? startMillis : arrivalState.getTriggerStartedMillis();
             return LiftArrivalLanternDecision.active(direction, LiftArrivalLanternDisplayPhase.ARRIVED,
                     SLOW_FLASH, SOUND_CUE, eventSequence, phaseStartMillis);
         }
 
         if (approachLatched) {
-            final long startMillis = approachStartMillis.getOrDefault(liftId, context.getCurrentMillis());
+            final long effectiveStart = startMillis > 0 ? startMillis : context.getCurrentMillis();
             return LiftArrivalLanternDecision.active(direction, LiftArrivalLanternDisplayPhase.APPROACHING,
-                    SLOW_FLASH, SOUND_CUE, startMillis, startMillis);
+                    SLOW_FLASH, SOUND_CUE, effectiveStart, effectiveStart);
         }
 
         return LiftArrivalLanternDecision.inactive();
+    }
+
+    private long getStartMillis(long liftId, int lanternFloor) {
+        final Map<Integer, Long> perFloor = approachStartMillis.get(liftId);
+        return perFloor == null ? 0 : perFloor.getOrDefault(lanternFloor, 0L);
     }
 
     private LiftDirection resolveDirection(boolean activeDoorCycleAtLantern,
@@ -102,12 +106,17 @@ public final class MitsubishiMPVFLanternPolicy implements LiftArrivalLanternPoli
         return direction;
     }
 
-    private void clearFinishedCycle(LiftDisplayState facts, LiftArrivalLanternState arrivalState, long liftId) {
-        final Integer approachFloor = approachFloors.get(liftId);
-        if (!facts.isDoorCycle() && (approachFloor == null
-                || !arrivalState.isActiveForFloor(approachFloor) && facts.getTargetFloor() != approachFloor)) {
-            approachFloors.remove(liftId);
-            approachStartMillis.remove(liftId);
+    private void clearFinishedCycle(LiftDisplayState facts, LiftArrivalLanternState arrivalState,
+            long liftId, int lanternFloor) {
+        if (!facts.isDoorCycle() && !arrivalState.isActiveForFloor(lanternFloor)
+                && facts.getTargetFloor() != lanternFloor) {
+            final Map<Integer, Long> perFloor = approachStartMillis.get(liftId);
+            if (perFloor != null) {
+                perFloor.remove(lanternFloor);
+                if (perFloor.isEmpty()) {
+                    approachStartMillis.remove(liftId);
+                }
+            }
         }
     }
 }
