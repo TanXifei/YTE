@@ -26,6 +26,7 @@ import top.xfunny.core.data.YteLiftConfig;
 import top.xfunny.core.operation.YteUpdateDataRequest;
 import top.xfunny.mod.client.InitClient;
 import top.xfunny.mod.client.YteMinecraftClientData;
+import top.xfunny.mod.client.screen.GuiHelper;
 import top.xfunny.mod.config.YteLiftConfigStore;
 import top.xfunny.mod.packet.YtePacketUpdateData;
 import top.xfunny.mod.lift.LiftArrivalLanternTriggerMode;
@@ -350,16 +351,32 @@ public abstract class MixinLiftCustomizationScreen extends MTRScreenBase {
         guiDrawing.drawRectangle(0, 0, IGui.PANEL_WIDTH, getHeightMapped(), PANEL_BACKGROUND);
         guiDrawing.finishDrawingRectangle();
 
-        super.render(graphicsHolder, mouseX, mouseY, delta);
+        // 全屏背景渐变（super.render 内部也会绘制，但会被下面的 scissor 裁到内容区，先画全屏避免面板外变亮）
+        renderBackground(graphicsHolder);
 
-        yte$drawScrollbar(graphicsHolder);
+        final double[] values = yte$computeCurrentValues();
+
+        // 内容区裁剪到标签栏之下、footer 之上，滚动时内容不会盖住顶部标签栏
+        GuiHelper.enableScissor(graphicsHolder, 0, IGui.SQUARE_SIZE, IGui.PANEL_WIDTH, yte$getContentBottom());
+        try {
+            super.render(graphicsHolder, mouseX, mouseY, delta);
+            yte$drawScrollbar(graphicsHolder);
+            yte$drawTabLabels(graphicsHolder, values);
+        } finally {
+            GuiHelper.disableScissor(graphicsHolder);
+        }
+
+        // 标签栏常驻顶部，渲染在内容之上
+        yte$tabSizeButton.render(graphicsHolder, mouseX, mouseY, delta);
+        yte$tabMotionButton.render(graphicsHolder, mouseX, mouseY, delta);
+        yte$tabLevelButton.render(graphicsHolder, mouseX, mouseY, delta);
+        yte$tabDoorButton.render(graphicsHolder, mouseX, mouseY, delta);
+
         if (yte$professionalModeButton.getVisibleMapped()) {
             // 常驻 footer 需盖在内容之上（小屏内容溢出时）
             yte$professionalModeButton.render(graphicsHolder, mouseX, mouseY, delta);
         }
 
-        final double[] values = yte$computeCurrentValues();
-        yte$drawTabLabels(graphicsHolder, values);
         yte$syncValuesToServer(values);
     }
 
