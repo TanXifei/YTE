@@ -132,7 +132,7 @@ public class RenderHitachiVIB679Button extends BlockEntityRenderer<HitachiVIB679
         buttonUpLight.setDimension(1F / 16);
         buttonUpLight.setGravity(Gravity.CENTER);
         buttonUpLight.setLight(light);
-        buttonUpLight.setDefaultColor(DEFAULT_COLOR);
+        buttonUpLight.setDefaultColor(0xed8f9ca6,true);
         buttonUpLight.setHoverColor(HOVER_COLOR);
         buttonUpLight.setPressedColor(PRESSED_COLOR);
         SoundPlaybackManager.registerButtonSound(buttonUpLight,"hitachi_wlmw_button_1");
@@ -152,7 +152,7 @@ public class RenderHitachiVIB679Button extends BlockEntityRenderer<HitachiVIB679
         buttonDownLight.setDimension(1F / 16);
         buttonDownLight.setGravity(Gravity.CENTER);
         buttonDownLight.setLight(light);
-        buttonDownLight.setDefaultColor(DEFAULT_COLOR);
+        buttonDownLight.setDefaultColor(0xdea1a1a1,true);
         buttonDownLight.setHoverColor(HOVER_COLOR);
         buttonDownLight.setPressedColor(PRESSED_COLOR);
         buttonDownLight.setFlip(false, false);
