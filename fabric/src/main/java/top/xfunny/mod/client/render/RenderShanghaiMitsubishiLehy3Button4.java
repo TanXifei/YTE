@@ -14,10 +14,10 @@ import org.mtr.mapping.mapper.PlayerHelper;
 import org.mtr.mod.Init;
 import org.mtr.mod.block.IBlock;
 import org.mtr.mod.data.IGui;
-import org.mtr.mod.render.QueuedRenderLayer;
 import org.mtr.mod.render.StoredMatrixTransformations;
 import top.xfunny.mod.block.ShanghaiMitsubishiLehy3Button4;
 import top.xfunny.mod.block.base.LiftButtonsBase;
+import top.xfunny.mod.client.client_data.LiftSpeed;
 import top.xfunny.mod.client.resource.FontList;
 import top.xfunny.mod.client.view.*;
 import top.xfunny.mod.client.view.view_group.FrameLayout;
@@ -34,9 +34,11 @@ public class RenderShanghaiMitsubishiLehy3Button4 extends BlockEntityRenderer<Sh
 
     private static final int HOVER_COLOR = 0xFFBCA27C;
     private static final int PRESSED_COLOR = 0xFFEFD5AF;
-    private static final Identifier ARROW_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "");
     private static final Identifier BUTTON_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/shanghai_mitsubishi_a11_button_1.png");
     private static final Identifier BUTTON_LIGHT_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/shanghai_mitsubishi_a11_button_1_light.png");
+    private static final String DIRECTION_FONT_ID = "shanghai_mitsubishi_727arrow"; // 方向箭头字体
+
+    private final LiftSpeed liftSpeed = new LiftSpeed();
 
     public RenderShanghaiMitsubishiLehy3Button4(Argument dispatcher) {
         super(dispatcher);
@@ -84,14 +86,14 @@ public class RenderShanghaiMitsubishiLehy3Button4 extends BlockEntityRenderer<Sh
         screenLayout.setWidth(LayoutSize.WRAP_CONTENT);
         screenLayout.setHeight(LayoutSize.WRAP_CONTENT);
         screenLayout.setGravity(Gravity.CENTER_HORIZONTAL);
-        screenLayout.setMargin(0, 1.7F / 16, 0, 0);
+        screenLayout.setMargin(0, 2.8F / 16, 0, 0);
 
 
         final FrameLayout buttonLayout = new FrameLayout();
         buttonLayout.setBasicsAttributes(world, blockPos);
         buttonLayout.setWidth(LayoutSize.MATCH_PARENT);
         buttonLayout.setHeight(LayoutSize.MATCH_PARENT);
-        buttonLayout.setMargin(0, -0.5F / 16, 0, 0);
+        buttonLayout.setMargin(0, -0.15F / 16, 0, 0);
 
         final LinearLayout buttonContainer = new LinearLayout(true);
         buttonContainer.setBasicsAttributes(world, blockPos);
@@ -192,49 +194,45 @@ public class RenderShanghaiMitsubishiLehy3Button4 extends BlockEntityRenderer<Sh
             for (int i = 0; i < count; i++) {
                 final Lift lift = sortedPositionsAndLifts.get(i).right();
                 ObjectObjectImmutablePair<LiftDirection, ObjectObjectImmutablePair<String, String>> liftDetails = ClientGetLiftDetails.getLiftDetails(world, lift, Init.positionToBlockPos(lift.getCurrentFloor().getPosition()));
-                String floorNumber = liftDetails.right().left();
+                final String floorNumber = liftDetails.right().left();
+                final LiftDirection direction = liftDetails.left();
+
+                final double speed = liftSpeed.getSpeed(lift);
+                final boolean hasDirection = direction == LiftDirection.UP || direction == LiftDirection.DOWN;
+                final boolean showDirection = hasDirection && Math.abs(speed) < 1 // 交替闪烁的最大速度
+                        && ((int) (org.mtr.mod.InitClient.getGameTick() / 16)) % 2 == 1; //闪烁频率，20 tick/s
+
+                final java.awt.Font font = FontList.instance.getFont(
+                        floorNumber.equals("1") ? "mitsubishi_modern_1" :
+                                (floorNumber.matches("^1.$") ? "mitsubishi_modern_10" : "mitsubishi_modern"));
 
                 final LiftFloorDisplayView liftFloorDisplayView = new LiftFloorDisplayView();
-                liftFloorDisplayView.setBasicsAttributes(world,
-                        blockPos,
-                        sortedPositionsAndLifts.get(i).right(),
-                        FontList.instance.getFont(
-                                floorNumber.equals("1") ? "mitsubishi_modern_1" :
-                                        (floorNumber.matches("^1.$") ? "mitsubishi_modern_10" : "mitsubishi_modern")
-                        ),
-                        6,
-                        0xFFFA7A24);
+                liftFloorDisplayView.setBasicsAttributes(world, blockPos, lift, font, 6, 0xFFFA7A24);
                 liftFloorDisplayView.setDisplayLength(2, 0);
                 liftFloorDisplayView.setTextureId(String.format("shanghai_mitsubishi_lehy_3_button_4_display_%d", i));
                 liftFloorDisplayView.setWidth(1.4F / 16);
                 liftFloorDisplayView.setHeight(1.7F / 16);
-                liftFloorDisplayView.setMargin(0, 0, 0.2F / 16, 0);
-                liftFloorDisplayView.setLetterSpacing(-10);
-                liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.RIGHT);
+                liftFloorDisplayView.setMargin(0.18F / 16, 0, 0.12F / 16, 0);
+                liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.CENTER);
 
-
-                final LiftArrowView liftArrowView = new LiftArrowView();
-                liftArrowView.setBasicsAttributes(world, blockPos, sortedPositionsAndLifts.get(i).right(), LiftArrowView.ArrowType.AUTO);
-                liftArrowView.setTexture(ARROW_TEXTURE);
-                liftArrowView.setQueuedRenderLayer(QueuedRenderLayer.LIGHT_TRANSLUCENT);
-                liftArrowView.setWidth(0.65F / 16);
-                liftArrowView.setHeight(0.65F / 16);
-                liftArrowView.setMargin(0, 1.27F / 16, 0, 0);
-                liftArrowView.setGravity(Gravity.CENTER_HORIZONTAL);
-                liftArrowView.setColor(0xFFE77831);
-
-
+                // 方向字符：向上为"<"，向下为">"，单字符与楼层数字占用同一显示区域
+                final java.awt.Font directionFont = FontList.instance.getFont(DIRECTION_FONT_ID);
+                final TextView directionView = new TextView();
+                directionView.setBasicsAttributes(world, blockPos, directionFont, 6, 0xFFFA7A24);
+                directionView.setDisplayLength(2, 0);
+                directionView.setTextureId(String.format("shanghai_mitsubishi_lehy_3_button_4_direction_%d", i));
+                directionView.setWidth(1.4F / 16);
+                directionView.setHeight(1.7F / 16);
+                directionView.setMargin(0.18F / 16, 0, 0.12F / 16, 0);
+                directionView.setTextAlign(TextView.HorizontalTextAlign.CENTER);
+                directionView.setText(direction == LiftDirection.UP ? "<" : ">");
 
                 final LinearLayout numberLayout = new LinearLayout(true);
                 numberLayout.setBasicsAttributes(world, blockPos);
                 numberLayout.setWidth(LayoutSize.WRAP_CONTENT);
                 numberLayout.setHeight(LayoutSize.WRAP_CONTENT);
 
-
-
-                numberLayout.addChild(liftArrowView);
-                numberLayout.addChild(liftFloorDisplayView);
-
+                numberLayout.addChild(showDirection ? directionView : liftFloorDisplayView);
 
                 if (reverseRendering) {
                     screenLayout.addChild(numberLayout);
