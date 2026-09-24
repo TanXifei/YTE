@@ -33,10 +33,11 @@ import java.util.Comparator;
 public class RenderShanghaiMitsubishiLehy3Button4 extends BlockEntityRenderer<ShanghaiMitsubishiLehy3Button4.BlockEntity> implements DirectionHelper, IGui, IBlock {
 
     private static final int HOVER_COLOR = 0xFFBCA27C;
-    private static final int PRESSED_COLOR = 0xFFEFD5AF;
+    private static final int PRESSED_COLOR = 0xFFFAFAFF;
     private static final Identifier BUTTON_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/shanghai_mitsubishi_a11_button_1.png");
     private static final Identifier BUTTON_LIGHT_TEXTURE = new Identifier(top.xfunny.mod.Init.MOD_ID, "textures/block/shanghai_mitsubishi_a11_button_1_light.png");
     private static final String DIRECTION_FONT_ID = "shanghai_mitsubishi_727arrow"; // 方向箭头字体
+    private static final float TEXT_SCALE_X = 0.9F; //横向压缩
 
     private final LiftSpeed liftSpeed = new LiftSpeed();
 
@@ -93,7 +94,7 @@ public class RenderShanghaiMitsubishiLehy3Button4 extends BlockEntityRenderer<Sh
         buttonLayout.setBasicsAttributes(world, blockPos);
         buttonLayout.setWidth(LayoutSize.MATCH_PARENT);
         buttonLayout.setHeight(LayoutSize.MATCH_PARENT);
-        buttonLayout.setMargin(0, -0.15F / 16, 0, 0);
+        buttonLayout.setMargin(0, -0.4F / 16, 0, 0);
 
         final LinearLayout buttonContainer = new LinearLayout(true);
         buttonContainer.setBasicsAttributes(world, blockPos);
@@ -200,14 +201,14 @@ public class RenderShanghaiMitsubishiLehy3Button4 extends BlockEntityRenderer<Sh
                 final double speed = liftSpeed.getSpeed(lift);
                 final boolean hasDirection = direction == LiftDirection.UP || direction == LiftDirection.DOWN;
                 final boolean showDirection = hasDirection && Math.abs(speed) < 1 // 交替闪烁的最大速度
-                        && ((int) (org.mtr.mod.InitClient.getGameTick() / 16)) % 2 == 1; //闪烁频率，20 tick/s
+                        && ((int) (org.mtr.mod.InitClient.getGameTick() / 30)) % 2 == 1; //闪烁频率，20 tick/s
 
                 final java.awt.Font font = FontList.instance.getFont(
                         floorNumber.equals("1") ? "mitsubishi_modern_1" :
                                 (floorNumber.matches("^1.$") ? "mitsubishi_modern_10" : "mitsubishi_modern"));
 
-                final LiftFloorDisplayView liftFloorDisplayView = new LiftFloorDisplayView();
-                liftFloorDisplayView.setBasicsAttributes(world, blockPos, lift, font, 6, 0xFFFA7A24);
+                final LiftFloorDisplayView liftFloorDisplayView = new SquishedFloorDisplayView(TEXT_SCALE_X);
+                liftFloorDisplayView.setBasicsAttributes(world, blockPos, lift, font, 5.8F, 0xFFFA7A24);
                 liftFloorDisplayView.setDisplayLength(2, 0);
                 liftFloorDisplayView.setTextureId(String.format("shanghai_mitsubishi_lehy_3_button_4_display_%d", i));
                 liftFloorDisplayView.setWidth(1.4F / 16);
@@ -217,8 +218,8 @@ public class RenderShanghaiMitsubishiLehy3Button4 extends BlockEntityRenderer<Sh
 
                 // 方向字符：向上为"<"，向下为">"，单字符与楼层数字占用同一显示区域
                 final java.awt.Font directionFont = FontList.instance.getFont(DIRECTION_FONT_ID);
-                final TextView directionView = new TextView();
-                directionView.setBasicsAttributes(world, blockPos, directionFont, 6, 0xFFFA7A24);
+                final TextView directionView = new SquishedTextView(TEXT_SCALE_X);
+                directionView.setBasicsAttributes(world, blockPos, directionFont, 5.8F, 0xFFFA7A24);
                 directionView.setDisplayLength(2, 0);
                 directionView.setTextureId(String.format("shanghai_mitsubishi_lehy_3_button_4_direction_%d", i));
                 directionView.setWidth(1.4F / 16);
@@ -264,5 +265,37 @@ public class RenderShanghaiMitsubishiLehy3Button4 extends BlockEntityRenderer<Sh
         parentLayout.addChild(buttonLayout);
 
         parentLayout.render();
+    }
+
+    /** 仅本型号使用的横向压扁文本：重写 calculateSize 压缩绘制宽度，不改动公共 TextView。 */
+    private static class SquishedTextView extends TextView {
+        private final float scaleX;
+
+        private SquishedTextView(float scaleX) {
+            this.scaleX = scaleX;
+        }
+
+        @Override
+        protected void calculateSize() {
+            super.calculateSize();
+            this.textWidth *= scaleX;
+            this.fixedWidth *= scaleX;
+        }
+    }
+
+    /** 仅本型号使用的横向压扁楼层文本。 */
+    private static class SquishedFloorDisplayView extends LiftFloorDisplayView {
+        private final float scaleX;
+
+        private SquishedFloorDisplayView(float scaleX) {
+            this.scaleX = scaleX;
+        }
+
+        @Override
+        protected void calculateSize() {
+            super.calculateSize();
+            this.textWidth *= scaleX;
+            this.fixedWidth *= scaleX;
+        }
     }
 }

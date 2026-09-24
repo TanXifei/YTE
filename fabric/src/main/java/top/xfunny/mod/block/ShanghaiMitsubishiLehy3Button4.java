@@ -39,8 +39,9 @@ public class ShanghaiMitsubishiLehy3Button4 extends LiftButtonsBase {
     }
 
     public void addTooltips(@NotNull ItemStack stack, @Nullable BlockView world, List<MutableText> tooltip, @NotNull TooltipContext options) {
-        tooltip.add(TextHelper.translatable("tooltip.shanghai_mitsubishi_display_zlhh-110ag01").formatted(TextFormatting.GRAY));
-        tooltip.add(TextHelper.translatable("tooltip.shanghai_mitsubishi_button_a12").formatted(TextFormatting.GRAY));
+        tooltip.add(TextHelper.translatable("tooltip.warning_block_testing").formatted(TextFormatting.RED));
+        tooltip.add(TextHelper.translatable("tooltip.shanghai_mitsubishi_display_727").formatted(TextFormatting.GRAY));
+        tooltip.add(TextHelper.translatable("tooltip.shanghai_mitsubishi_button_a11").formatted(TextFormatting.GRAY));
     }
 
     public static class BlockEntity extends BlockEntityBase {
