@@ -237,7 +237,7 @@ public final class SoundsHelper {
                         blockPos,
                         SoundEvents.MITSUBISHI_NEXWAY_BUTTON_1.get(),
                         SoundCategory.BLOCKS,
-                        0.4F,
+                        0.6F, //换了个新音频
                         1.0F
                 );
                 break;
