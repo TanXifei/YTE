@@ -213,7 +213,7 @@ public class RenderShanghaiMitsubishiLehy3Button4 extends BlockEntityRenderer<Sh
                 liftFloorDisplayView.setTextureId(String.format("shanghai_mitsubishi_lehy_3_button_4_display_%d", i));
                 liftFloorDisplayView.setWidth(1.4F / 16);
                 liftFloorDisplayView.setHeight(1.7F / 16);
-                liftFloorDisplayView.setMargin(0.18F / 16, 0, 0.12F / 16, 0);
+                liftFloorDisplayView.setMargin(0.2F / 16, 0, 0.12F / 16, 0);
                 liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.CENTER);
 
                 // 方向字符：向上为"<"，向下为">"，单字符与楼层数字占用同一显示区域
@@ -224,7 +224,7 @@ public class RenderShanghaiMitsubishiLehy3Button4 extends BlockEntityRenderer<Sh
                 directionView.setTextureId(String.format("shanghai_mitsubishi_lehy_3_button_4_direction_%d", i));
                 directionView.setWidth(1.4F / 16);
                 directionView.setHeight(1.7F / 16);
-                directionView.setMargin(0.18F / 16, 0, 0.12F / 16, 0);
+                directionView.setMargin(0.2F / 16, 0, 0.12F / 16, 0);
                 directionView.setTextAlign(TextView.HorizontalTextAlign.CENTER);
                 directionView.setText(direction == LiftDirection.UP ? "<" : ">");
 
