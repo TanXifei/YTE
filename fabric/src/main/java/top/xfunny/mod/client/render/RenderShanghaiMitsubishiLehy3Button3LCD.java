@@ -206,6 +206,7 @@ public class RenderShanghaiMitsubishiLehy3Button3LCD extends BlockEntityRenderer
                 ;
                 liftFloorDisplayView.setWidth(1.2F / 16);
                 liftFloorDisplayView.setHeight(1.5F / 16);
+                liftFloorDisplayView.setLetterSpacing(-8);
                 liftFloorDisplayView.setTextAlign(TextView.HorizontalTextAlign.CENTER);
                 liftFloorDisplayView.addStoredMatrixTransformations(graphicsHolder -> graphicsHolder.translate(0, 0, -SMALL_OFFSET));
                 if (liftFloorDisplayView.getTextLength() >= 3) {
